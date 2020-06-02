@@ -1,0 +1,158 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Topalian Copyright 2020 -->
+<!-- Topalian Game Engine Template -->
+
+<html><head>
+    <style>
+        #thePlayer{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: black;
+            /*background-image: url("player.jpg"); */ 
+        }
+            
+        #levelBackground{
+            position: absolute;
+            width: 1000;
+            height: 700px;
+            align-content:center;
+            background: grey;
+            left: 0px;
+            top: 0px;
+            z-index:-1;
+            /*background-image: url("level001.jpg");*/
+        }
+              
+        #box{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 200px;
+            top: 10px;
+            z-index: 0;
+            /* background-image: url("firstBox.jpg"); */
+        }
+
+        /*the overflow hidden stops the window from scrolling when the person uses their keyboard */
+        body{
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+    </head>
+
+    <body>
+    
+        <div id="thePlayer"></div>
+        <div id="levelBackground"></div>
+        <div id="box"></div>
+            
+        <script>
+
+        //Frames Per Second Refresh Rate is currently 60
+        var theFps = 1000/60;
+
+        //Keyboard Letter Codes Being Pressed
+        var keyboard = {};
+            keyboard.UP = 38;
+            keyboard.LEFT = 37;
+            keyboard.RIGHT = 39;
+            keyboard.DOWN = 40;
+            
+            //Player's start position and id
+            var thePlayer = {
+            x: 100,
+            y: 300,
+            speedMultiplier: 2,
+            theElement: document.getElementById("thePlayer")
+        };
+            
+        //Key Press Detection
+        document.body.onkeyup =
+        document.body.onkeydown = function(e){
+
+        //Find out which key was pressed
+        var theKeyCode = e.keyCode || e.which;
+            keyboard[theKeyCode] = e.type == 'keydown';
+        };
+            
+        //Character Movement Updating
+        var movePlayer = function(theX, theY){
+            thePlayer.x += (theX||0) * thePlayer.speedMultiplier;
+            thePlayer.y += (theY||0) * thePlayer.speedMultiplier;
+            
+            thePlayer.theElement.style.left = thePlayer.x + 'px';
+            thePlayer.theElement.style.top = thePlayer.y + 'px';
+        };
+            
+        //Player Controls
+        var sensePlayerMotion = function(){
+            if(keyboard[keyboard.LEFT]){
+                movePlayer(-1,0);
+            }
+            if(keyboard[keyboard.RIGHT]){
+                movePlayer(1,0);
+            }
+            if(keyboard[keyboard.UP]){
+                movePlayer(0,-1);
+            }
+            if(keyboard[keyboard.DOWN]){
+                movePlayer(0,1);
+            }
+        };
+            //Update the Position of the player
+            movePlayer();
+            
+            //60 Fps Refresh Rate
+            window.setInterval(function(){
+                sensePlayerMotion();
+                compareObjects();
+            }, theFps);
+
+        
+        //Collision Detection Section Below
+    
+        function getPos(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            var posXY = [theRect.x, theRect.y];
+            return posXY;
+        }
+
+        function getSize(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            var sizeXY = [theRect.width, theRect.height];
+            return sizeXY;
+        }
+
+        //alert(getPos("thePlayer"));//shows pos x and y
+        //alert(getSize("box")); //shows size x and y
+        //alert(getPlayerPos()[0]); //shows x
+        //alert(getPlayerPos()[1]); //shows y
+
+        function compareObjects()
+        {
+            //Half of the width of the player, to find center
+            var playerCenter = getPos("thePlayer")[0] + getSize("thePlayer")[0] /2;
+
+            //Half of the width of the box, to find center
+            var boxCenter = getPos("box")[0] + getSize("box")[0]/2;
+            
+            if(playerCenter == boxCenter)
+            {
+                //document.body.style.background="blue";
+                var theBg = document.getElementById("levelBackground");
+
+                theBg.style.background="rgb(10,100,100)";
+
+                console.log("hit");     
+            }
+        }   
+    </script>
+    </body>
+    </html>
