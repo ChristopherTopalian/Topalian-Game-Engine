@@ -1,0 +1,186 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Topalian Copyright 2020 -->
+<!-- Topalian Game Engine Template -->
+
+<html><head>
+    <style>
+        #thePlayer{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: black;
+            /*background-image: url("player.jpg"); */ 
+        }
+            
+        #levelBackground{
+            position: absolute;
+            width: 1000;
+            height: 700px;
+            align-content:center;
+            background: grey;
+            left: 0px;
+            top: 0px;
+            z-index:-1;
+            /*background-image: url("level001.jpg");*/
+        }
+              
+        #box{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 200px;
+            top: 10px;
+            z-index: 0;
+            /* background-image: url("firstBox.jpg"); */
+        }
+
+        /*the overflow hidden stops the window from scrolling when the person uses their keyboard */
+        body{
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+    </head>
+
+    <body onload="whenLoaded();">
+    
+        <div id="thePlayer"></div>
+        <div id="levelBackground"></div>
+        <div id="box"></div>
+            
+        <script>
+        
+        var counter = 0;
+
+        function whenLoaded()
+        {
+            document.getElementById("thePlayer").addEventListener("click", showPos, false);
+        }
+
+        //Frames Per Second Refresh Rate is currently 60
+        var theFps = 1000/60;
+
+        //Keyboard Letter Codes Being Pressed
+        var keyboard = {};
+            keyboard.UP = 38;
+            keyboard.LEFT = 37;
+            keyboard.RIGHT = 39;
+            keyboard.DOWN = 40;
+            
+            //Player's start position and id
+            var thePlayer = {
+            x: 100,
+            y: 300,
+            speedMultiplier: 2,
+            theElement: document.getElementById("thePlayer")
+        };
+            
+        //Key Press Detection
+        document.body.onkeyup =
+        document.body.onkeydown = function(e){
+
+        //Find out which key was pressed
+        var theKeyCode = e.keyCode || e.which;
+            keyboard[theKeyCode] = e.type == 'keydown';
+        };
+            
+        //Character Movement Updating
+        var movePlayer = function(theX, theY){
+            thePlayer.x += (theX||0) * thePlayer.speedMultiplier;
+            thePlayer.y += (theY||0) * thePlayer.speedMultiplier;
+            
+            thePlayer.theElement.style.left = thePlayer.x + 'px';
+            thePlayer.theElement.style.top = thePlayer.y + 'px';
+        };
+            
+        //Player Controls
+        var sensePlayerMotion = function(){
+            if(keyboard[keyboard.LEFT]){
+                movePlayer(-1,0);
+            }
+            if(keyboard[keyboard.RIGHT]){
+                movePlayer(1,0);
+            }
+            if(keyboard[keyboard.UP]){
+                movePlayer(0,-1);
+            }
+            if(keyboard[keyboard.DOWN]){
+                movePlayer(0,1);
+            }
+        };
+            //Update the Position of the player
+            movePlayer();
+            
+            //60 Fps Refresh Rate
+            window.setInterval(function(){
+                sensePlayerMotion();
+                compareObjects();
+            }, theFps);
+
+       
+        //Collision Detection Section Below
+    
+        function getPos(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            
+            var posXY = { 
+                x:parseInt(theRect.x) + parseInt(theRect.width)/2, 
+                y:parseInt(theRect.y) + parseInt(theRect.height)/2 
+            }; 
+
+            return posXY;
+        }
+
+        function getSize(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+       
+            var sizeXY = {
+                x:parseInt(theRect.width),
+                y:parseInt(theRect.height)
+            };
+
+            return sizeXY;
+        }
+
+        function showPos()
+        {
+            alert(getPos("thePlayer").x);
+        }
+        
+        function makeDiv()
+	      {
+            counter += 1;
+		        var ourDiv = document.createElement("div");
+		        ourDiv.innerHTML = "Count is " + parseInt(counter);
+		        document.body.append(ourDiv);
+	      }
+
+        alert(getPos("thePlayer").y + getSize("thePlayer").y);
+
+        function compareObjects()
+        {
+            var playerXCenter = getPos("thePlayer").x;
+
+            var boxXCenter = getPos("box").x;
+            
+            if(playerXCenter == boxXCenter)
+            {
+                //document.body.style.background="blue";
+                var theBg = document.getElementById("levelBackground");
+
+                theBg.style.background="rgb(10,100,100)";
+
+                console.log("hit");  
+                
+                makeDiv();
+                   
+            }
+        }   
+    </script>
+    </body>
+    </html>
