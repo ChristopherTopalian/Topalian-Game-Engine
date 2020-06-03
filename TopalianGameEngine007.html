@@ -118,10 +118,8 @@
                 compareObjects();
             }, theFps);
 
-       
-        //Collision Detection Section Below
-    
-        function getPos(theId)
+  
+        function getPos(theId) //not used in this Tutorial Video
         {
             theId = document.getElementById(theId);
             var theRect = theId.getBoundingClientRect();
@@ -134,7 +132,7 @@
             return posXY;
         }
 
-        function getAllInfo(theId)
+        function getAllInfo(theId) //not used in this Tutorial Video
         {
             theId = document.getElementById(theId);
 
@@ -144,8 +142,7 @@
         }
         //alert(JSON.stringify(getAllInfo('box')));
 
-
-        function getSize(theId)
+        function getSize(theId) //not used in this Tutorial Video
         {
             theId = document.getElementById(theId);
             var theRect = theId.getBoundingClientRect();
@@ -157,8 +154,7 @@
             return sizeXY;
         }
 
-       
-        function showPos()
+        function showPos() //not used in this Tutorial Video
         {
             alert(getPos("thePlayer").y);
         }
@@ -185,16 +181,16 @@
 
         function compareObjects()
         {
-            var rect1 = document.getElementById("thePlayer").getBoundingClientRect();
+            var theRect1 = document.getElementById("thePlayer").getBoundingClientRect();
 
-            var rect2 = document.getElementById("box").getBoundingClientRect();
+            var theRect2 = document.getElementById("box").getBoundingClientRect();
 
-            var overlap = !(rect1.right < rect2.left || 
-                rect1.left > rect2.right || 
-                rect1.bottom < rect2.top || 
-                rect1.top > rect2.bottom)
+            var collided = !(theRect1.right < theRect2.left || 
+                theRect1.left > theRect2.right || 
+                theRect1.bottom < theRect2.top || 
+                theRect1.top > theRect2.bottom);
 
-            if(overlap==true)
+            if(collided == true)
             {
                 //document.body.style.background="blue";
                 var theBg = document.getElementById("levelBackground");
