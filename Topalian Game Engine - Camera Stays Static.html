@@ -1,0 +1,272 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Topalian Copyright 2020 -->
+<!-- Topalian Game Engine Template --><!-- Camera Stays Static -->
+
+<html><head>
+    <style>
+        #thePlayer{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: black;
+            /*background-image: url("player.jpg"); */ 
+        }
+            
+        #levelBackground{
+            position: absolute;
+            width: 1000;    /*make long if using cam follow */
+            height: 2000px; /*make long if using cam follow  */
+            align-content:center;
+            background: grey;
+            left: 0px;
+            top: 0px;
+            z-index:-1;
+            /*background-image: url("level001.jpg");*/
+        }
+              
+        #boxOne{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 200px;
+            top: 10px;
+            z-index: 0;
+            /* background-image: url("boxOne.jpg"); */
+        }
+
+        #boxTwo{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 700px;
+            top: 10px;
+            z-index: 0;
+            /* background-image: url("boxTwo.jpg"); */
+        }
+
+        /*the overflow hidden makes scroll bars disappear*/
+        /*
+        body{
+            height: 100%;
+            overflow: hidden;
+        }
+        */
+        
+    </style>
+    </head>
+
+    <body onload="whenLoaded();">
+
+        <div id="thePlayer"></div>
+        <div id="levelBackground"></div>
+        <div id="boxOne"></div>
+        <div id="boxTwo"></div>
+            
+        <script>
+        
+        var counter = 0;
+
+        function whenLoaded()
+        {
+            document.getElementById("thePlayer").addEventListener("click", showPos, false);
+
+            document.getElementById("boxTwo").addEventListener("click", showPos, false);
+
+            document.getElementById("levelBackground").style.width = window.innerWidth;
+
+            document.getElementById("levelBackground").style.height = window.innerHeight;
+        }
+
+        //Frames Per Second Refresh Rate is currently 60
+        var theFps = 1000/60;
+
+        //Keyboard Letter Codes Being Pressed
+        var keyboard = {};
+            keyboard.UP = 38;
+            keyboard.LEFT = 37;
+            keyboard.RIGHT = 39;
+            keyboard.DOWN = 40;
+            
+        //Player's start position and id
+        var thePlayer = {
+            x: 100,
+            y: 300,
+            speedMultiplier: 2,
+            playerId: document.getElementById("thePlayer")
+        };
+            
+        //Key Press Detection
+        document.body.onkeyup =
+        document.body.onkeydown = function(e){
+
+        //Prevent Keyboard from Scrolling the Window
+        if (e.preventDefault)
+        {
+            e.preventDefault();
+        }
+        else
+        {
+            e.returnValue = false;
+        }
+
+        //Find out which key was pressed
+        var theKeyCode = e.keyCode || e.which;
+            keyboard[theKeyCode] = e.type == 'keydown';
+        };
+            
+        //Character Movement Updating
+        var movePlayer = function(theX, theY){
+            thePlayer.x += (theX||0) * thePlayer.speedMultiplier;
+            thePlayer.y += (theY||0) * thePlayer.speedMultiplier;
+            
+            thePlayer.playerId.style.left = thePlayer.x + 'px';
+            thePlayer.playerId.style.top = thePlayer.y + 'px';
+        };
+            
+        //Player Controls
+        var sensePlayerMotion = function(){
+            if(keyboard[keyboard.LEFT]){
+                movePlayer(-1,0);
+            }
+            if(keyboard[keyboard.RIGHT]){
+                movePlayer(1,0);
+            }
+            if(keyboard[keyboard.UP]){
+                movePlayer(0,-1);
+            }
+            if(keyboard[keyboard.DOWN]){
+                movePlayer(0,1);
+            }
+        };
+            //Update the Position of the player
+            movePlayer();
+
+        function getAllInfo(theId) //not used in this Tutorial Video
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            return theRect;
+        }
+        //alert(JSON.stringify(getAllInfo('boxOne')));
+
+        function getPos(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            
+            var posXY = { 
+                x:parseInt(theRect.x) + parseInt(theRect.width)/2, 
+                y:parseInt(theRect.y) + parseInt(theRect.height)/2
+            }; 
+            return posXY;
+        }
+
+    /* For Camera Follow Script
+        function scrollIt()
+        {
+            document.getElementById("thePlayer").scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
+        }
+    */
+    
+        function getSize(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+       
+            var sizeXY = {
+                x:parseInt(theRect.width),
+                y:parseInt(theRect.height)
+            };
+            return sizeXY;
+        }
+
+        function showPos()
+        {
+           // alert(getPos("thePlayer").y);
+            console.log("Player Y is " + getPos("thePlayer").y);
+            console.log("Box Y is " + getPos("boxTwo").y);
+        }
+        
+        function makeDiv()
+	    {
+                var ourDiv = document.createElement("div");
+                
+                //if(counter <= 10)
+                //{
+		            counter += 1;
+		            ourDiv.innerHTML = "Count is " + parseInt(counter);
+		            document.body.append(ourDiv);
+                //}
+                //else if(counter >= 11)
+                //else
+                //{
+                //  document.getElementById("boxOne").remove();
+                //  var ourDiv = document.createElement("div");
+		        //  ourDiv.innerHTML = "Winner";    
+                //}   
+                //alert('here');
+	    }
+       // alert(getPos("thePlayer").y + getSize("thePlayer").y);
+
+        function compareObjects()
+        {
+            //add an if statement
+            //if objects still exist, compare them
+            //else don't compare them
+
+            var theRect1 = document.getElementById("thePlayer").getBoundingClientRect();
+
+            var theRect2 = document.getElementById("boxOne").getBoundingClientRect();
+
+            var collided = !(theRect1.right < theRect2.left || 
+                theRect1.left > theRect2.right || 
+                theRect1.bottom < theRect2.top || 
+                theRect1.top > theRect2.bottom);
+
+            if(collided == true)
+            {
+                //document.body.style.background="blue";
+                var theBg = document.getElementById("levelBackground");
+
+                theBg.style.background="rgb(10,100,100)";
+
+                console.log("hit");  
+                
+                makeDiv();
+            }
+        
+            if(getPos("thePlayer").x == getPos("boxTwo").x)
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+
+                document.body.append(crossedLine);
+            }
+            
+            if(getPos("thePlayer").y < getPos("boxTwo").y)
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:50px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+
+                document.body.append(crossedLine);
+            }
+        } 
+
+        //60 Fps Refresh Rate
+        window.setInterval(function(){
+                sensePlayerMotion();
+                compareObjects();
+                //scrollIt();
+            }, theFps);
+</script>
+
+</body>
+</html>
