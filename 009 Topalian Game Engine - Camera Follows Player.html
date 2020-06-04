@@ -1,0 +1,379 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Topalian Copyright 2020 -->
+<!-- Topalian Game Engine Template --><!--Camera Follows Player -->
+
+<html><head>
+    <style>
+        #thePlayer{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgb(160, 207, 250);
+            z-index:5;
+            /*background-image: url("player.jpg"); */ 
+        }
+            
+        #theBackground{
+            position: absolute;
+            width: 20000;
+            height: 20000px;
+            align-content:center;
+            background: grey;
+            left: 0px;
+            top: 0px;
+            z-index:-1;           
+        }
+              
+        #boxOne{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 200px;
+            top: 10px;
+            z-index: 1;
+            /* background-image: url("boxOne.jpg"); */
+        }
+
+        #boxTwo{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 700px;
+            top: 10px;
+            z-index: 0;
+            /* background-image: url("boxTwo.jpg"); */
+        }
+
+        #boxThree{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background:blue;
+            left: 0px;
+            top: 0px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+    
+            /*border-image-repeat: repeat;*/
+        }
+
+        #boxFour{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 500px;
+            top: 0px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #boxFive{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 0px;
+            top: 500px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #boxSix{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 500px;
+            top: 500px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #boxSeven{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 700px;
+            top: 800px;
+            z-index: 0;
+            /* background-image: url("boxSeven.jpg"); */
+        }
+
+        #boxEight{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 400px;
+            top: 500px;
+            z-index: 0;
+            /* background-image: url("boxEight.jpg"); */
+        }
+
+        /*the overflow hidden makes scroll bars disappear*/
+        /*
+        body{
+            height: 100%;
+            overflow: hidden;
+        }
+        */
+
+        #theTitle
+        {
+            position:absolute;
+            word-wrap: break-word;
+            width:500px;
+            height:500px;
+            left: 525px;
+            top: 225px;
+            font-family: exo black;
+            font-size: 30px;
+
+        }
+    </style>
+    </head>
+
+    <body onload="whenLoaded();">
+    
+        <div id="thePlayer"></div>
+        <div id="theBackground"></div>
+        <div id="boxOne"></div>
+        <div id="boxTwo"></div>
+        <div id="boxThree"></div>
+        <div id="boxFour"></div>
+        <div id="boxFive"></div>
+        <div id="boxSix"></div>
+        <div id="boxSeven"></div>
+        <div id="boxEight"></div>
+
+        <div id="theTitle">
+            TOPALIAN GAME ENGINE
+            <br>
+            Camera Follows Player
+        </div>
+
+        <script>
+        
+        var counter = 0;
+
+        function whenLoaded()
+        {
+            window.addEventListener("click", mousePos, false);
+        }
+
+        //Frames Per Second Refresh Rate is currently 60
+        //var theFps = 1000/60;  //not used now
+
+        //Keyboard Letter Codes Being Pressed
+        var keyboard = {};
+            keyboard.UP = 38;
+            keyboard.LEFT = 37;
+            keyboard.RIGHT = 39;
+            keyboard.DOWN = 40;
+            
+        //Player's start position and id
+        var thePlayer = {
+            x: 100,
+            y: 300,
+            speedMultiplier: 2,
+            playerId: document.getElementById("thePlayer")
+        };
+            
+        //Key Press Detection
+        document.body.onkeyup =
+        document.body.onkeydown = function(e){
+
+        //Prevent Keyboard from Scrolling the Window
+        if (e.preventDefault)
+        {
+            e.preventDefault();
+        }
+        else
+        {
+            e.returnValue = false;
+        }
+
+        //Find out which key was pressed
+        var theKeyCode = e.keyCode || e.which;
+            keyboard[theKeyCode] = e.type == 'keydown';
+        };
+            
+        //Character Movement Updating
+        var movePlayer = function(theX, theY){
+            thePlayer.x += (theX||0) * thePlayer.speedMultiplier;
+            thePlayer.y += (theY||0) * thePlayer.speedMultiplier;
+            
+            thePlayer.playerId.style.left = thePlayer.x + 'px';
+            thePlayer.playerId.style.top = thePlayer.y + 'px';
+        };
+            
+        //Player Controls
+        var sensePlayerMotion = function(){
+            if(keyboard[keyboard.LEFT]){
+                movePlayer(-1,0);
+            }
+            if(keyboard[keyboard.RIGHT]){
+                movePlayer(1,0);
+            }
+            if(keyboard[keyboard.UP]){
+                movePlayer(0,-1);
+            }
+            if(keyboard[keyboard.DOWN]){
+                movePlayer(0,1);
+            }
+        };
+            //Update the Position of the player
+            movePlayer();
+
+        function getAllInfo(theId) //not used in this Tutorial Video
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            return theRect;
+        }
+        //alert(JSON.stringify(getAllInfo('boxOne')));
+
+        function getPos(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            
+            var posXY = { 
+                x:parseInt(theRect.x) + parseInt(theRect.width)/2, 
+                y:parseInt(theRect.y) + parseInt(theRect.height)/2
+            }; 
+            return posXY;
+        }
+
+        function scrollIt()
+        {
+            document.getElementById("thePlayer").scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
+        }
+
+        function getSize(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+       
+            var sizeXY = {
+                x:parseInt(theRect.width),
+                y:parseInt(theRect.height)
+            };
+            return sizeXY;
+        }
+
+        /*
+        function showPos()
+        {
+            console.log("Player X " + getPos("thePlayer").x);
+            console.log("Player Y " + getPos("thePlayer").y);
+        }
+        */
+        
+        function makeDiv()
+	    {
+                var ourDiv = document.createElement("div");
+                
+                if(counter <= 9)
+                {
+		            counter += 1;
+		            ourDiv.innerHTML = "Count is " + parseInt(counter);
+		            document.body.append(ourDiv);
+                }
+                else
+                {
+                    //document.getElementById("boxOne").remove();
+                    var ourDiv = document.createElement("div");
+		            ourDiv.innerHTML = "Winner"; 
+                    document.body.append(ourDiv);
+                    counter = 0;
+                }   
+	    }
+
+       // alert(getPos("thePlayer").y + getSize("thePlayer").y);
+
+        function compareObjects()
+        {
+            //later, add an if, to find out if objects still exist, else don't compare them.
+
+            var theRect1 = document.getElementById("thePlayer").getBoundingClientRect();
+
+            var theRect2 = document.getElementById("boxOne").getBoundingClientRect();
+
+            var collided = !(theRect1.right < theRect2.left || 
+                theRect1.left > theRect2.right || 
+                theRect1.bottom < theRect2.top || 
+                theRect1.top > theRect2.bottom);
+
+            if(collided == true)
+            {
+                //document.body.style.background="blue";
+                var theBg = document.getElementById("theBackground");
+                theBg.style.background="rgb(10,100,100)";
+                console.log("hit");  
+                makeDiv();      
+            }
+               
+            if(getPos("thePlayer").x == getPos("boxTwo").x)
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+                document.body.append(crossedLine);
+            }
+            
+            if(getPos("thePlayer").y < getPos("boxTwo").y)
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:50px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+                document.body.append(crossedLine);
+            }
+        } 
+
+        function mousePos(theEvent)
+        {
+            var mouseX = theEvent.pageX;
+            var mouseY = theEvent.pageY;
+            var mousePos = "Mouse X " + mouseX + ", Mouse Y " + mouseY;
+            console.log(mousePos);
+        }
+       
+       var theRefresh;
+       
+       function doThisLoop()
+       {
+           sensePlayerMotion();
+           compareObjects();
+           scrollIt();
+
+           theRefresh = requestAnimationFrame(doThisLoop);
+       }
+       doThisLoop();
+     
+        /*Flickering experienced with setInterval
+        so we instead use requestAnimationFrame above*/
+       /*
+        //60 Fps Refresh Rate
+        window.setInterval(function(){
+                sensePlayerMotion();
+                compareObjects();
+                scrollIt();
+            }, theFps);
+        */
+
+</script>
+</body>
+</html>
