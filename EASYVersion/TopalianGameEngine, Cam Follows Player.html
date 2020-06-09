@@ -2,6 +2,8 @@
 <!-- All Rights Reserved Christopher Topalian Copyright 2020 -->
 <!-- Topalian Game Engine Template --><!--Camera Follows Player -->
 
+<!-- W is up, S is Down, A is Left, D is Right. Click mouse to get coordinates of X and Y of any place on the screen-->
+
 <html><head>
     <style>
         #thePlayer{
@@ -10,6 +12,12 @@
             height: 50px;
             background: rgb(160, 207, 250);
             z-index:5;
+            
+            word-wrap: break-word;
+            font-family: Tahoma;
+            font-size: 13px;
+            padding: 4px; /*padding effects size of player */
+           
             /*background-image: url("player.jpg"); */ 
         }
             
@@ -174,13 +182,13 @@
 
         //Keyboard Letter Codes Being Pressed
         var keyboard = {};
-            keyboard.UP = 38;
-            keyboard.LEFT = 37;
-            keyboard.RIGHT = 39;
-            keyboard.DOWN = 40;
+            keyboard.UP = 87;     //87 is w, 38 is up arrow
+            keyboard.DOWN = 83;   //83 is s, 40 is down arrow
+            keyboard.LEFT = 65;   //65 is a, 37 is left arrow
+            keyboard.RIGHT = 68;  //68 is d, 39 is right arrow   
             
         //Player's start position and id
-        var thePlayer = {
+        var ourPlayer = {
             x: 100,
             y: 300,
             speedMultiplier: 2,
@@ -208,11 +216,11 @@
             
         //Character Movement Updating
         var movePlayer = function(theX, theY){
-            thePlayer.x += (theX||0) * thePlayer.speedMultiplier;
-            thePlayer.y += (theY||0) * thePlayer.speedMultiplier;
+            ourPlayer.x += (theX||0) * ourPlayer.speedMultiplier;
+            ourPlayer.y += (theY||0) * ourPlayer.speedMultiplier;
             
-            thePlayer.playerId.style.left = thePlayer.x + 'px';
-            thePlayer.playerId.style.top = thePlayer.y + 'px';
+            ourPlayer.playerId.style.left = ourPlayer.x + 'px';
+            ourPlayer.playerId.style.top = ourPlayer.y + 'px';
         };
             
         //Player Controls
@@ -347,8 +355,9 @@
         {
             var mouseX = theEvent.pageX;
             var mouseY = theEvent.pageY;
-            var mousePos = "Mouse X " + mouseX + ", Mouse Y " + mouseY;
+            var mousePos = "Mouse" + "<br>" + "X " + mouseX + "<br>"+ "Y " + mouseY;
             console.log(mousePos);
+            ourPlayer.playerId.innerHTML= mousePos;
         }
        
        var theRefresh;
