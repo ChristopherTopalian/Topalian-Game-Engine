@@ -20,8 +20,8 @@
             
         #levelBackground{
             position: absolute;
-            width: 1000;    /*make long if using cam follow */
-            height: 2000px; /*make long if using cam follow  */
+            width: 1000; 
+            height: 2000; 
             align-content:center;
             background: grey;
             left: 0px;
@@ -46,7 +46,29 @@
             width: 50px;
             height: 100px;
             background: tan;
-            left: 700px;
+            left: 400px;
+            top: 10px;
+            z-index: 0;
+            /* background-image: url("boxTwo.jpg"); */
+        }
+
+        #boxThree{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 600px;
+            top: 10px;
+            z-index: 0;
+            /* background-image: url("boxTwo.jpg"); */
+        }
+
+        #boxFour{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 800px;
             top: 10px;
             z-index: 0;
             /* background-image: url("boxTwo.jpg"); */
@@ -59,35 +81,136 @@
             overflow: hidden;
         }
         */
+        #tileOne{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background:blue;
+            left: 0px;
+            top: 0px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #tileTwo{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 500px;
+            top: 0px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #tileThree{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 0px;
+            top: 500px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #tileFour{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 500px;
+            top: 500px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        .box
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        .tile
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        #theTitle
+        {
+            position:absolute;
+            word-wrap: break-word;
+            width:500px;
+            height:500px;
+            left: 525px;
+            top: 225px;
+            font-family: exo black;
+            font-size: 30px;
+            color: white;
+        }
         
     </style>
     </head>
 
     <body onload="whenLoaded();">
+        <div id="thePlayer" class="box"></div>
+        <div id="levelBackground" class="box"></div>
 
-        <div id="thePlayer"></div>
-        <div id="levelBackground"></div>
-        <div id="boxOne"></div>
-        <div id="boxTwo"></div>
+        <div id="boxOne" class="box"></div>
+        <div id="boxTwo" class="box"></div>
+        <div id="boxThree" class="box"></div>
+        <div id="boxFour" class="box"></div>
+
+        <div id="tileOne" class="tile"></div>
+        <div id="tileTwo" class="tile"></div>
+        <div id="tileThree" class="tile"></div>
+        <div id="tileFour" class="tile"></div>
             
         <script>
         let ourObjects = [
         {
             name: "boxOne",
-            xPos:600,
-            yPos:500,
-            width:50,
-            height:1000,
+            xPos: 50,
+            yPos: 50,
+            width: 50,
+            height: 1000,
             id: "boxOne",
             kind: "box"
         },
         {
             name: "boxTwo",
-            xPos:700,
-            yPos:500,
+            xPos: 100,
+            yPos: 50,
             width:75,
             height:100,
             id: "boxTwo",
+            kind: "box"
+        },
+        {
+            name: "boxThree",
+            xPos: 200,
+            yPos: 50,
+            width:75,
+            height:100,
+            id: "boxThree",
+            kind: "box"
+        },
+        {
+            name: "boxFour",
+            xPos: 300,
+            yPos: 50,
+            width: 75,
+            height: 100,
+            id: "boxFour",
             kind: "box"
         }
         ];
@@ -96,17 +219,38 @@
         let ourTiles = [
         {
             name: "tileOne",
-            xPos: 1000,
-            yPos: 0,
+            xPos: 100,
+            yPos: 50,
+            width:500,
+            height:5,
             id: "tileOne",
             kind: "tile"
         },
-        
         {
             name: "tileTwo",
-            xPos:2210,
-            yPos: 2210,
+            xPos:100,
+            yPos: 100,
+            width:500,
+            height:5,
             id: "tileTwo",
+            kind: "tile"
+        },
+        {
+            name: "tileThree",
+            xPos:100,
+            yPos: 150,
+            width:500,
+            height:5,
+            id: "tileThree",
+            kind: "tile"
+        },
+        {
+            name: "tileFour",
+            xPos:100,
+            yPos: 200,
+            width:500,
+            height:5,
+            id: "tileFour",
             kind: "tile"
         }
         ];
@@ -117,9 +261,9 @@
         function positionBoxes()  
         {
             for(var i = 0; i < ourObjects.length; i++)
-	    {
-		if(ourObjects[i].kind == "box")
-		{
+	        {
+		        if(ourObjects[i].kind == "box")
+		        {
                     var d = document.getElementById(ourObjects[i].id);
                     d.style.position = "absolute";
                     d.style.left = ourObjects[i].xPos +'px';
@@ -131,9 +275,9 @@
         function positionTiles()  
         {
             for(var i = 0; i < ourTiles.length; i++)
-	    {
-		if(ourTiles[i].kind == "tile")
-		{
+	        {
+		        if(ourTiles[i].kind == "tile")
+		        {
                     var d = document.getElementById(ourTiles[i].id);
                     d.style.position = "absolute";
                     d.style.left = ourTiles[i].xPos +'px';
