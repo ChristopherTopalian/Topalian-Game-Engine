@@ -423,25 +423,7 @@
             console.log("Box Y is " + getPos("boxTwo").y);
         }
         
-        function makeDiv()
-	    {
-                var ourDiv = document.createElement("div");
-                
-                //if(counter <= 10)
-                //{
-		            counter += 1;
-		            ourDiv.innerHTML = "Count is " + parseInt(counter);
-		            document.body.append(ourDiv);
-                //}
-                //else if(counter >= 11)
-                //else
-                //{
-                //  document.getElementById("boxOne").remove();
-                //  var ourDiv = document.createElement("div");
-		        //  ourDiv.innerHTML = "Winner";    
-                //}   
-                //alert('here');
-	    }
+       
        // alert(getPos("thePlayer").y + getSize("thePlayer").y);
 
         function compareObjects()
@@ -462,10 +444,10 @@
             if(collided == true)
             {
                 //document.body.style.background="blue";
-                //var theBg = document.getElementById("levelBackground");
-                //theBg.style.background="rgb(10,100,100)";
+                var theBg = document.getElementById("levelBackground");
+                theBg.style.background="rgb(10,100,100)";
                 console.log("hit");  
-                makeDiv();
+       
             }
         
             if(getPos("thePlayer").x == getPos("boxTwo").x)
