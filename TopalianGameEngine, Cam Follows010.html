@@ -444,26 +444,6 @@
             };
             return sizeXY;
         }
-        
-        function makeDiv()
-	    {
-                var ourDiv = document.createElement("div");
-                
-                if(counter <= 9)
-                {
-		            counter += 1;
-		            ourDiv.innerHTML = "Count is " + parseInt(counter);
-		            document.body.append(ourDiv);
-                }
-                else
-                {
-                    //document.getElementById("boxOne").remove();
-                    var ourDiv = document.createElement("div");
-		            ourDiv.innerHTML = "Winner"; 
-                    document.body.append(ourDiv);
-                    counter = 0;
-                }   
-	    }
 
        // alert(getPos("thePlayer").y + getSize("thePlayer").y);
 
@@ -483,10 +463,10 @@
             if(collided == true)
             {
                 //document.body.style.background="blue";
-                //var theBg = document.getElementById("theBackground");
-                //theBg.style.background="rgb(10,100,100)";
+                var theBg = document.getElementById("theBackground");
+                theBg.style.background="rgb(10,100,100)";
                 console.log("hit");  
-                makeDiv();      
+                    
             }
 
             if(getPos("thePlayer").x == getPos("boxOne").x)
