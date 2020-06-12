@@ -159,23 +159,7 @@
             alert(getPos("thePlayer").y);
         }
         
-        function makeDiv()
-	    {
-                var ourDiv = document.createElement("div");
-                
-                if(counter <= 10)
-                {
-		            counter += 1;
-		            ourDiv.innerHTML = "Count is " + parseInt(counter);
-		            document.body.append(ourDiv);
-                }
-                else if(counter >= 10)
-                {
-                    document.getElementById("box").remove();
-                    //var ourDiv = document.createElement("div");
-		            //ourDiv.innerHTML = "Winner";    
-                }   
-	    }
+    
 
        // alert(getPos("thePlayer").y + getSize("thePlayer").y);
 
@@ -198,8 +182,6 @@
                 theBg.style.background="rgb(10,100,100)";
 
                 console.log("hit");  
-                
-                makeDiv();
                    
             }
             else
