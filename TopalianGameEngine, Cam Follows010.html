@@ -190,14 +190,14 @@
         {
 	        name: "Copper",
 	        number: "29",
-            url: "https://en.wikipedia.org/wiki/Copper",
-            tag: "natural"
+            	url: "https://en.wikipedia.org/wiki/Copper",
+            	tag: "natural"
         },
         {
 	        name: "Zinc",
 	        number: "30",
-            url: "https://en.wikipedia.org/wiki/Zinc",
-            tag: "natural"
+            	url: "https://en.wikipedia.org/wiki/Zinc",
+            	tag: "natural"
         }
         ];
 
@@ -269,9 +269,9 @@
         function positionBoxes()  
         {
             for(var i = 0; i < ourObjects.length; i++)
-	        {
-		        if(ourObjects[i].kind == "box")
-		        {
+	    {
+		if(ourObjects[i].kind == "box")
+		{
                     var d = document.getElementById(ourObjects[i].id);
                     d.style.position = "absolute";
                     d.style.left = ourObjects[i].xPos +'px';
@@ -289,9 +289,9 @@
         function positionTiles()  
         {
             for(var i = 0; i < ourTiles.length; i++)
-	        {
-		        if(ourTiles[i].kind == "tile")
-		        {
+	    {
+		if(ourTiles[i].kind == "tile")
+		{
                     var d = document.getElementById(ourTiles[i].id);
                     d.style.position = "absolute";
                     d.style.left = ourTiles[i].xPos +'px';
