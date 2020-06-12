@@ -190,14 +190,14 @@
         {
 	        name: "Copper",
 	        number: "29",
-            	url: "https://en.wikipedia.org/wiki/Copper",
-            	tag: "natural"
+            url: "https://en.wikipedia.org/wiki/Copper",
+            tag: "natural"
         },
         {
 	        name: "Zinc",
 	        number: "30",
-            	url: "https://en.wikipedia.org/wiki/Zinc",
-            	tag: "natural"
+            url: "https://en.wikipedia.org/wiki/Zinc",
+            tag: "natural"
         }
         ];
 
@@ -205,20 +205,38 @@
         let ourObjects = [
         {
             name: "boxOne",
-            xPos:600,
-            yPos:500,
-            width:50,
-            height:1000,
+            xPos: 600,
+            yPos: 500,
+            width: 50,
+            height: 1000,
             id: "boxOne",
             kind: "box"
         },
         {
             name: "boxTwo",
-            xPos:700,
-            yPos:500,
-            width:75,
-            height:100,
+            xPos: 700,
+            yPos: 500,
+            width: 75,
+            height: 100,
             id: "boxTwo",
+            kind: "box"
+        },
+        {
+            name: "boxThree",
+            xPos: 900,
+            yPos: 500,
+            width: 75,
+            height: 100,
+            id: "boxThree",
+            kind: "box"
+        },
+        {
+            name: "boxFour",
+            xPos: 1000,
+            yPos: 500,
+            width: 75,
+            height: 100,
+            id: "boxFour",
             kind: "box"
         }
         ];
@@ -269,9 +287,9 @@
         function positionBoxes()  
         {
             for(var i = 0; i < ourObjects.length; i++)
-	    {
-		if(ourObjects[i].kind == "box")
-		{
+	        {
+		        if(ourObjects[i].kind == "box")
+		        {
                     var d = document.getElementById(ourObjects[i].id);
                     d.style.position = "absolute";
                     d.style.left = ourObjects[i].xPos +'px';
@@ -289,9 +307,9 @@
         function positionTiles()  
         {
             for(var i = 0; i < ourTiles.length; i++)
-	    {
-		if(ourTiles[i].kind == "tile")
-		{
+	        {
+		        if(ourTiles[i].kind == "tile")
+		        {
                     var d = document.getElementById(ourTiles[i].id);
                     d.style.position = "absolute";
                     d.style.left = ourTiles[i].xPos +'px';
@@ -592,7 +610,3 @@
 </script>
 </body>
 </html>
-
-
-
-
