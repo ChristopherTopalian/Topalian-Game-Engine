@@ -301,10 +301,11 @@
         {
             theId = document.getElementById(theId);
             var theRect = theId.getBoundingClientRect();
-            
+            var theRectY = theId.getBoundingClientRect().top + window.scrollY; 
+
             var posXY = { 
-                x:parseInt(theRect.x) + parseInt(theRect.width)/2, 
-                y:parseInt(theRect.y) + parseInt(theRect.height)/2
+                x:parseInt(theRect.x) + parseInt(theRect.width)/2 + window.scrollX, 
+                y:parseInt(theRectY) + parseInt(theRect.height)/2
             }; 
             return posXY;
         }
@@ -369,7 +370,11 @@
                 showOneElement("Iron", "26", "https://en.wikipedia.org/wiki/Iron", "760", "5");
             }
             
-            if(getPos("thePlayer").y == getPos("boxThree").y) //line needs fixing, was causing lag pool
+            if(getPos("thePlayer").y == getPos("boxThree").y || 
+            getPos("thePlayer").y == getPos("boxThree").y+1  ||
+            getPos("thePlayer").y == getPos("boxThree").y+2  ||
+            getPos("thePlayer").y == getPos("boxThree").y+3
+            )
             {
                 var crossedLine = document.createElement("div");
                 
@@ -379,7 +384,11 @@
                 document.body.append(crossedLine);
             }
 
-            if(getPos("thePlayer").y == getPos("boxFour").y) //line needs fixing, was causing lag pool
+            if(getPos("thePlayer").y == getPos("boxFour").y || 
+            getPos("thePlayer").y == getPos("boxFour").y+1  ||
+            getPos("thePlayer").y == getPos("boxFour").y+2  ||
+            getPos("thePlayer").y == getPos("boxFour").y+3
+            )
             {
                 var crossedLine = document.createElement("div");
                 
