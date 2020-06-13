@@ -259,7 +259,7 @@
                 document.body.append(crossedLine);
             }
             
-            if(getPos("thePlayer").y < getPos("boxTwo").y)
+            if(getPos("thePlayer").y == getPos("boxTwo").y) //line needs fixing, was causing lag pool
             {
                 var crossedLine = document.createElement("div");
                 
