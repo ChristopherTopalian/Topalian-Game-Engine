@@ -369,7 +369,7 @@
                 showOneElement("Iron", "26", "https://en.wikipedia.org/wiki/Iron", "760", "5");
             }
             
-            if(getPos("thePlayer").y > getPos("boxThree").y)
+            if(getPos("thePlayer").y == getPos("boxThree").y) //line needs fixing, was causing lag pool
             {
                 var crossedLine = document.createElement("div");
                 
@@ -379,7 +379,7 @@
                 document.body.append(crossedLine);
             }
 
-            if(getPos("thePlayer").y > getPos("boxFour").y)
+            if(getPos("thePlayer").y == getPos("boxFour").y) //line needs fixing, was causing lag pool
             {
                 var crossedLine = document.createElement("div");
                 
