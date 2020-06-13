@@ -254,7 +254,8 @@
         {
             theId = document.getElementById(theId);
             var theRect = theId.getBoundingClientRect();
-            
+            var theRectY = theId.getBoundingClientRect().top + window.scrollY;
+	    
             var posXY = { 
                 x:parseInt(theRect.x) + parseInt(theRect.width)/2, 
                 y:parseInt(theRect.y) + parseInt(theRect.height)/2
@@ -341,7 +342,7 @@
                 document.body.append(crossedLine);
             }
             
-            if(getPos("thePlayer").y < getPos("boxTwo").y)
+            if(getPos("thePlayer").y == getPos("boxTwo").y) //line needs fixing
             {
                 var crossedLine = document.createElement("div");
                 
