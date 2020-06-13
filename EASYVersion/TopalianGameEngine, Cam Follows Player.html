@@ -1,6 +1,7 @@
 <!-- Dedicated to God the Father -->
 <!-- All Rights Reserved Christopher Topalian Copyright 2020 -->
 <!-- Topalian Game Engine Template --><!--Camera Follows Player -->
+<!--EASY VERSION -->
 
 <!-- W is up, S is Down, A is Left, D is Right. Click mouse to get the X and Y coordinates of any place on the screen -->
 <!-- At the moment, the Follow Player method we are using works ONLY in MOZILLA FIREFOX. Make sure you are using Firefox. -->
@@ -254,11 +255,11 @@
         {
             theId = document.getElementById(theId);
             var theRect = theId.getBoundingClientRect();
-            var theRectY = theId.getBoundingClientRect().top + window.scrollY;
-	    
+            var theRectY = theId.getBoundingClientRect().top + window.scrollY; 
+
             var posXY = { 
-                x:parseInt(theRect.x) + parseInt(theRect.width)/2, 
-                y:parseInt(theRect.y) + parseInt(theRect.height)/2
+                x:parseInt(theRect.x) + parseInt(theRect.width)/2 + window.scrollX, 
+                y:parseInt(theRectY) + parseInt(theRect.height)/2
             }; 
             return posXY;
         }
@@ -342,7 +343,11 @@
                 document.body.append(crossedLine);
             }
             
-            if(getPos("thePlayer").y == getPos("boxTwo").y) //line needs fixing
+            if(getPos("thePlayer").y == getPos("boxTwo").y || 
+            getPos("thePlayer").y == getPos("boxTwo").y+1  ||
+            getPos("thePlayer").y == getPos("boxTwo").y+2  ||
+            getPos("thePlayer").y == getPos("boxTwo").y+3
+            )
             {
                 var crossedLine = document.createElement("div");
                 
