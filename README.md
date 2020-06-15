@@ -8,5 +8,3 @@ Download and Play Instructions
 When you choose, CLONE, and ZIP file, you must remember to not try to run the game in the Zip folder!!!
 Remember to COPY the Folder to your DESKTOP before you run it.
 DO NOT RUN IT FROM THE ZIP FOLDER, because it won't load the textures or songs!!!
- 
-Solved: Just figured out that the Lag Pool had been created by using > and creating divs when the player crossed the boxThree point.
