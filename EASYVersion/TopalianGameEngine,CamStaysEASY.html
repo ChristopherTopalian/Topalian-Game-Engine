@@ -10,18 +10,17 @@
             position: absolute;
             width: 50px;
             height: 50px;
-            background: rgb(160, 207, 250);
-            z-index:5;
-            
+            background: purple;
+
             word-wrap: break-word;
             font-family: Tahoma;
             font-size: 13px;
-            padding: 4px; /*padding effects size of player */
-           
+            padding: 4px; /*padding effects size of player*/
+            color:white;
             /*background-image: url("player.jpg"); */ 
         }
             
-        #levelBackground{
+        #theBackground{
             position: absolute;
             width: 1000;    /*make long if using cam follow */
             height: 2000px; /*make long if using cam follow  */
@@ -38,9 +37,9 @@
             width: 50px;
             height: 100px;
             background: tan;
-            left: 200px;
-            top: 10px;
-            z-index: 0;
+            left: 150px;
+            top: 100px;
+            z-index: 1;
             /* background-image: url("boxOne.jpg"); */
         }
 
@@ -49,10 +48,80 @@
             width: 50px;
             height: 100px;
             background: tan;
-            left: 700px;
+            left: 300px;
             top: 10px;
             z-index: 0;
             /* background-image: url("boxTwo.jpg"); */
+        }
+        
+        #boxThree{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 400px;
+            top: 500px;
+            z-index: 0;
+            /* background-image: url("boxThree.jpg"); */
+        }
+
+        #boxFour{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 700px;
+            top: 400px;
+            z-index: 0;
+            /* background-image: url("boxFour.jpg"); */
+        }
+
+        #tileOne{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background:blue;
+            left: 0px;
+            top: 0px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #tileTwo{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 500px;
+            top: 0px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #tileThree{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 0px;
+            top: 500px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #tileFour{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 500px;
+            top: 500px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
         }
 
         /*the overflow hidden makes scroll bars disappear*/
@@ -62,16 +131,53 @@
             overflow: hidden;
         }
         */
+
+        .box
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        .tile
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        #theTitle
+        {
+            position:absolute;
+            word-wrap: break-word;
+            width:500px;
+            height:500px;
+            left: 525px;
+            top: 225px;
+            font-family: exo black;
+            font-size: 30px;
+            color: white;
+        }
         
     </style>
     </head>
 
     <body onload="whenLoaded();">
 
-        <div id="thePlayer"></div>
-        <div id="levelBackground"></div>
-        <div id="boxOne"></div>
-        <div id="boxTwo"></div>
+        <div id="thePlayer" class="box"></div>
+        <div id="theBackground" class="box"></div>
+
+        <div id="boxOne" class="box"></div>
+        <div id="boxTwo" class="box"></div>
+        <div id="boxThree" class="box"></div>
+        <div id="boxFour" class="box"></div>
+
+        <div id="tileOne" class="tile"></div>
+        <div id="tileTwo" class="tile"></div>
+        <div id="tileThree" class="tile"></div>
+        <div id="tileFour" class="tile"></div>
             
         <script>
         
@@ -85,13 +191,23 @@
 
             document.getElementById("boxTwo").addEventListener("click", showPos, false);
 
-            document.getElementById("levelBackground").style.width = window.innerWidth;
+            document.getElementById("theBackground").style.width = window.innerWidth;
 
-            document.getElementById("levelBackground").style.height = window.innerHeight;
+            document.getElementById("theBackground").style.height = window.innerHeight;
+
+            document.getElementById("boxOne").innerHTML="Box One";
+            document.getElementById("boxTwo").innerHTML="Box Two";
+            document.getElementById("boxThree").innerHTML="Box Three";
+            document.getElementById("boxFour").innerHTML="Box Four";
+
+            document.getElementById("tileOne").innerHTML="Tile One";
+            document.getElementById("tileTwo").innerHTML="Tile Two";
+            document.getElementById("tileThree").innerHTML="Tile Three";
+            document.getElementById("tileFour").innerHTML="Tile Four";
         }
 
         //Frames Per Second Refresh Rate is currently 60
-        var theFps = 1000/60;
+        //var theFps = 1000/60;
 
         //Keyboard Letter Codes Being Pressed
         var keyboard = {};
@@ -221,56 +337,99 @@
 	    }
        // alert(getPos("thePlayer").y + getSize("thePlayer").y);
 
-        function compareObjects()
+       function compareObjects(obj1, obj2)
         {
-            //add an if statement
-            //if objects still exist, compare them
-            //else don't compare them
+            //later, add an if, to find out if objects still exist, else don't compare them.
 
-            var theRect1 = document.getElementById("thePlayer").getBoundingClientRect();
+            let theRect1 = document.getElementById(obj1).getBoundingClientRect();
 
-            var theRect2 = document.getElementById("boxOne").getBoundingClientRect();
+            let theRect2 = document.getElementById(obj2).getBoundingClientRect();
 
-            var collided = !(theRect1.right < theRect2.left || 
+            let collided = !(theRect1.right < theRect2.left || 
                 theRect1.left > theRect2.right || 
                 theRect1.bottom < theRect2.top || 
                 theRect1.top > theRect2.bottom);
 
             if(collided == true)
             {
-                //document.body.style.background="blue";
-                var theBg = document.getElementById("levelBackground");
+                //ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                //console.log(obj2 + " Hit");
 
-                theBg.style.background="rgb(10,100,100)";
-
-                console.log("hit");  
-                
-                makeDiv();
+                if(obj2 == "boxOne")
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="tan";
+                    //console.log("boxOne has been hit");
+                }
+                if(obj2 == "boxTwo")
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="black";
+                    //console.log("boxTwo has been hit");
+                }
+                if(obj2 == "boxThree")
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="orange";
+                    //console.log("boxThree has been hit");
+                }
+                if(obj2 == "boxFour")
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="purple";
+                    //console.log("boxFour has been hit");
+                }
             }
-        
+        }
+
+        function wasLineCrossed()
+        {
+            if(getPos("thePlayer").x == getPos("boxOne").x)
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:150px;top:200px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+                document.body.append(crossedLine);
+            }
+               
             if(getPos("thePlayer").x == getPos("boxTwo").x)
             {
                 var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:350px;top:60px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
                 crossedLine.innerHTML = "Line Crossed";
-
                 document.body.append(crossedLine);
+
             }
             
-            if(getPos("thePlayer").y == getPos("boxTwo").y || 
-            getPos("thePlayer").y == getPos("boxTwo").y+1  ||
-            getPos("thePlayer").y == getPos("boxTwo").y+2  ||
-            getPos("thePlayer").y == getPos("boxTwo").y+3
+            if(getPos("thePlayer").y == getPos("boxThree").y || 
+            getPos("thePlayer").y == getPos("boxThree").y+1  ||
+            getPos("thePlayer").y == getPos("boxThree").y+2  ||
+            getPos("thePlayer").y == getPos("boxThree").y+3
             )
             {
                 var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:50px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:385px;top:415px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
                 crossedLine.innerHTML = "Line Crossed";
+                document.body.append(crossedLine);
+            }
 
+            if(getPos("thePlayer").y == getPos("boxFour").y || 
+            getPos("thePlayer").y == getPos("boxFour").y+1  ||
+            getPos("thePlayer").y == getPos("boxFour").y+2  ||
+            getPos("thePlayer").y == getPos("boxFour").y+3
+            )
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:750px;top:400px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
                 document.body.append(crossedLine);
             }
         } 
@@ -289,7 +448,11 @@
         function doThisLoop()
         {
             sensePlayerMotion();
-            compareObjects();
+            compareObjects("thePlayer", "boxOne");
+            compareObjects("thePlayer", "boxTwo");
+            compareObjects("thePlayer", "boxThree");
+            compareObjects("thePlayer", "boxFour");
+            wasLineCrossed();
             timeId = requestAnimationFrame(doThisLoop);
         }
         doThisLoop();
