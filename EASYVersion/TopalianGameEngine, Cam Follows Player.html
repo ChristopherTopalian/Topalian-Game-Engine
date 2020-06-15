@@ -12,21 +12,21 @@
             position: absolute;
             width: 50px;
             height: 50px;
-            background: rgb(160, 207, 250);
+            background: rgb(163, 157, 245);
             z-index:5;
             
             word-wrap: break-word;
             font-family: Tahoma;
             font-size: 13px;
+            font-weight:bold;
             padding: 4px; /*padding effects size of player */
-           
             /*background-image: url("player.jpg"); */ 
         }
             
         #theBackground{
             position: absolute;
-            width: 20000;
-            height: 20000px;
+            width: 10000px;
+            height: 10000px;
             align-content:center;
             background: grey;
             left: 0px;
@@ -39,8 +39,8 @@
             width: 50px;
             height: 100px;
             background: tan;
-            left: 200px;
-            top: 10px;
+            left: 150px;
+            top: 500px;
             z-index: 1;
             /* background-image: url("boxOne.jpg"); */
         }
@@ -50,13 +50,35 @@
             width: 50px;
             height: 100px;
             background: tan;
-            left: 700px;
+            left: 730px;
             top: 10px;
             z-index: 0;
             /* background-image: url("boxTwo.jpg"); */
         }
-
+        
         #boxThree{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 400px;
+            top: 500px;
+            z-index: 0;
+            /* background-image: url("boxThree.jpg"); */
+        }
+
+        #boxFour{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 700px;
+            top: 800px;
+            z-index: 0;
+            /* background-image: url("boxFour.jpg"); */
+        }
+
+        #tileOne{
             position: absolute;
             width: 500px;
             height: 500px;
@@ -66,11 +88,9 @@
             z-index: -1;
             background-image: url("textures/asphalt.jpg");
             background-size: cover;
-    
-            /*border-image-repeat: repeat;*/
         }
 
-        #boxFour{
+        #tileTwo{
             position: absolute;
             width: 500px;
             height: 500px;
@@ -82,7 +102,7 @@
             background-size: cover;
         }
 
-        #boxFive{
+        #tileThree{
             position: absolute;
             width: 500px;
             height: 500px;
@@ -94,7 +114,7 @@
             background-size: cover;
         }
 
-        #boxSix{
+        #tileFour{
             position: absolute;
             width: 500px;
             height: 500px;
@@ -104,28 +124,6 @@
             z-index: -1;
             background-image: url("textures/asphalt.jpg");
             background-size: cover;
-        }
-
-        #boxSeven{
-            position: absolute;
-            width: 50px;
-            height: 100px;
-            background: tan;
-            left: 700px;
-            top: 800px;
-            z-index: 0;
-            /* background-image: url("boxSeven.jpg"); */
-        }
-
-        #boxEight{
-            position: absolute;
-            width: 50px;
-            height: 100px;
-            background: tan;
-            left: 400px;
-            top: 500px;
-            z-index: 0;
-            /* background-image: url("boxEight.jpg"); */
         }
 
         /*the overflow hidden makes scroll bars disappear*/
@@ -136,6 +134,21 @@
         }
         */
 
+        .box
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        .tile
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: white;
+        }
         #theTitle
         {
             position:absolute;
@@ -146,23 +159,25 @@
             top: 225px;
             font-family: exo black;
             font-size: 30px;
-
+            color: white;
         }
     </style>
     </head>
 
     <body onload="whenLoaded();">
     
-        <div id="thePlayer"></div>
-        <div id="theBackground"></div>
-        <div id="boxOne"></div>
-        <div id="boxTwo"></div>
-        <div id="boxThree"></div>
-        <div id="boxFour"></div>
-        <div id="boxFive"></div>
-        <div id="boxSix"></div>
-        <div id="boxSeven"></div>
-        <div id="boxEight"></div>
+        <div id="thePlayer" class="box"></div>
+        <div id="theBackground" class="box"></div>
+
+        <div id="boxOne" class="box"></div>
+        <div id="boxTwo" class="box"></div>
+        <div id="boxThree" class="box"></div>
+        <div id="boxFour" class="box"></div>
+
+        <div id="tileOne" class="tile"></div>
+        <div id="tileTwo" class="tile"></div>
+        <div id="tileThree" class="tile"></div>
+        <div id="tileFour" class="tile"></div>
 
         <div id="theTitle">
             TOPALIAN GAME ENGINE
@@ -177,6 +192,15 @@
         function whenLoaded()
         {
             window.addEventListener("click", mousePos, false);
+            document.getElementById("boxOne").innerHTML="Box One";
+            document.getElementById("boxTwo").innerHTML="Box Two";
+            document.getElementById("boxThree").innerHTML="Box Three";
+            document.getElementById("boxFour").innerHTML="Box Four";
+
+            document.getElementById("tileOne").innerHTML="Tile One";
+            document.getElementById("tileTwo").innerHTML="Tile Two";
+            document.getElementById("tileThree").innerHTML="Tile Three";
+            document.getElementById("tileFour").innerHTML="Tile Four";
         }
 
         //Frames Per Second Refresh Rate is currently 60
@@ -311,26 +335,57 @@
 
        // alert(getPos("thePlayer").y + getSize("thePlayer").y);
 
-        function compareObjects()
+       function compareObjects(obj1, obj2)
         {
             //later, add an if, to find out if objects still exist, else don't compare them.
 
-            var theRect1 = document.getElementById("thePlayer").getBoundingClientRect();
+            let theRect1 = document.getElementById(obj1).getBoundingClientRect();
 
-            var theRect2 = document.getElementById("boxOne").getBoundingClientRect();
+            let theRect2 = document.getElementById(obj2).getBoundingClientRect();
 
-            var collided = !(theRect1.right < theRect2.left || 
+            let collided = !(theRect1.right < theRect2.left || 
                 theRect1.left > theRect2.right || 
                 theRect1.bottom < theRect2.top || 
                 theRect1.top > theRect2.bottom);
 
             if(collided == true)
             {
-                //document.body.style.background="blue";
-                var theBg = document.getElementById("theBackground");
-                theBg.style.background="rgb(10,100,100)";
-                console.log("hit");  
-                makeDiv();      
+                //ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                //console.log(obj2 + " Hit");
+
+                if(obj2 == "boxOne") //if boxOne is hit
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="tan";
+                }
+                if(obj2 == "boxTwo") //if boxTwo is hit
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="black";
+                }
+                if(obj2 == "boxThree") //if boxThree is hit
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="orange";
+                }
+                if(obj2 == "boxFour") //if boxFour is hit
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="purple";
+                }
+            }
+        }
+
+        function wasLineCrossed()
+        {
+            if(getPos("thePlayer").x == getPos("boxOne").x)
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:2050px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+                document.body.append(crossedLine);
             }
                
             if(getPos("thePlayer").x == getPos("boxTwo").x)
@@ -343,15 +398,29 @@
                 document.body.append(crossedLine);
             }
             
-            if(getPos("thePlayer").y == getPos("boxTwo").y || 
-            getPos("thePlayer").y == getPos("boxTwo").y+1  ||
-            getPos("thePlayer").y == getPos("boxTwo").y+2  ||
-            getPos("thePlayer").y == getPos("boxTwo").y+3
+            if(getPos("thePlayer").y == getPos("boxThree").y || 
+            getPos("thePlayer").y == getPos("boxThree").y+1  ||
+            getPos("thePlayer").y == getPos("boxThree").y+2  ||
+            getPos("thePlayer").y == getPos("boxThree").y+3
             )
             {
                 var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:50px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:385px;top:415px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+                document.body.append(crossedLine);
+            }
+
+            if(getPos("thePlayer").y == getPos("boxFour").y || 
+            getPos("thePlayer").y == getPos("boxFour").y+1  ||
+            getPos("thePlayer").y == getPos("boxFour").y+2  ||
+            getPos("thePlayer").y == getPos("boxFour").y+3
+            )
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:800px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
                 crossedLine.innerHTML = "Line Crossed";
                 document.body.append(crossedLine);
@@ -372,7 +441,11 @@
        function doThisLoop()
        {
            sensePlayerMotion();
-           compareObjects();
+           compareObjects("thePlayer", "boxOne");
+           compareObjects("thePlayer", "boxTwo");
+           compareObjects("thePlayer", "boxThree");
+           compareObjects("thePlayer", "boxFour");
+           wasLineCrossed();
            scrollIt();
 
            theRefresh = requestAnimationFrame(doThisLoop);
