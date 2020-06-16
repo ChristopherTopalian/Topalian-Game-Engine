@@ -8,3 +8,5 @@ Download and Play Instructions
 When you choose, CLONE, and ZIP file, you must remember to not try to run the game in the Zip folder!!!
 Remember to COPY the Folder to your DESKTOP before you run it.
 DO NOT RUN IT FROM THE ZIP FOLDER, because it won't load the textures or songs!!!
+
+QUICK NOTE: The collision making a new div is an experiment, that doesn't have a limiter. Thus, if you keep colliding it will make hundreds and hundreds of divs, thus making lag. We will put a limiter in soon. Stay tuned :-)
