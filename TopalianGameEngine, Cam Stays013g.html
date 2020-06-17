@@ -1,0 +1,562 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Topalian Copyright 2020 -->
+<!-- Topalian Game Engine Template --><!-- Camera Stays Static -->
+
+<!-- W is up, S is Down, A is Left, D is Right. Click mouse to get the X and Y coordinates of any place on the screen -->
+<!-- At the moment, the Follow Player method we are using works ONLY in MOZILLA FIREFOX. Make sure you are using Firefox. -->
+
+<html><head>
+    <style>
+        #thePlayer{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: purple;
+
+            word-wrap: break-word;
+            font-family: Tahoma;
+            font-size: 13px;
+            padding: 4px; /*padding effects size of player*/
+            color:white;
+            /*background-image: url("player.jpg"); */ 
+        }
+            
+        #theBackground{
+            position: absolute;
+            width: 1000;    /*make long if using cam follow */
+            height: 2000px; /*make long if using cam follow  */
+            align-content:center;
+            background: grey;
+            left: 0px;
+            top: 0px;
+            z-index:-1;
+            /*background-image: url("level001.jpg");*/
+        }
+              
+        #boxOne{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 150px;
+            top: 100px;
+            z-index: 1;
+            /* background-image: url("boxOne.jpg"); */
+        }
+
+        #boxTwo{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 300px;
+            top: 10px;
+            z-index: 0;
+            /* background-image: url("boxTwo.jpg"); */
+        }
+        
+        #boxThree{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 400px;
+            top: 500px;
+            z-index: 0;
+            /* background-image: url("boxThree.jpg"); */
+        }
+
+        #boxFour{
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background: tan;
+            left: 700px;
+            top: 400px;
+            z-index: 0;
+            /* background-image: url("boxFour.jpg"); */
+        }
+
+        #tileOne{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background:blue;
+            left: 0px;
+            top: 0px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #tileTwo{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 500px;
+            top: 0px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #tileThree{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 0px;
+            top: 500px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        #tileFour{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 500px;
+            top: 500px;
+            z-index: -1;
+            background-image: url("textures/asphalt.jpg");
+            background-size: cover;
+        }
+
+        /*the overflow hidden makes scroll bars disappear*/
+        /*
+        body{
+            height: 100%;
+            overflow: hidden;
+        }
+        */
+
+        .box
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        .tile
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        #theTitle
+        {
+            position:absolute;
+            word-wrap: break-word;
+            width:500px;
+            height:500px;
+            left: 525px;
+            top: 225px;
+            font-family: exo black;
+            font-size: 30px;
+            color: white;
+        }
+        
+    </style>
+    </head>
+
+    <body onload="whenLoaded();">
+
+        <audio id="ActionStrikeSong" controls preload="none" loop>
+            <source src="songs\Action Strike.mp3" type="audio/mpeg">
+        </audio>
+
+        <div id="thePlayer" class="box"></div>
+        <div id="theBackground" class="box"></div>
+
+        <div id="boxOne" class="box"></div>
+        <div id="boxTwo" class="box"></div>
+        <div id="boxThree" class="box"></div>
+        <div id="boxFour" class="box"></div>
+
+        <div id="tileOne" class="tile"></div>
+        <div id="tileTwo" class="tile"></div>
+        <div id="tileThree" class="tile"></div>
+        <div id="tileFour" class="tile"></div>
+            
+        <script>
+
+        function playSong(whichSongId)
+        {
+            var song = document.getElementById(whichSongId);
+            song.play();
+            song.volume= 0.5;
+        }
+
+        let ourObjects = [
+        {
+            name: "boxOne",
+            xPos:50,
+            yPos:500,
+            width:50,
+            height:1000,
+            id: "boxOne",
+            kind: "box"
+        },
+        {
+            name: "boxTwo",
+            xPos:150,
+            yPos:500,
+            width:75,
+            height:100,
+            id: "boxTwo",
+            kind: "box"
+        },
+        {
+            name: "boxthree",
+            xPos:300,
+            yPos:500,
+            width:50,
+            height:1000,
+            id: "boxthree",
+            kind: "box"
+        },
+        {
+            name: "boxFour",
+            xPos:450,
+            yPos:500,
+            width:50,
+            height:1000,
+            id: "boxFour",
+            kind: "box"
+        },
+        ];
+        
+
+        let ourTiles = [
+        {
+            name: "tileOne",
+            xPos: 100,
+            yPos: 50,
+            width:500,
+            height:5,
+            id: "tileOne",
+            kind: "tile"
+        },
+        {
+            name: "tileTwo",
+            xPos:100,
+            yPos: 100,
+            width:500,
+            height:5,
+            id: "tileTwo",
+            kind: "tile"
+        },
+        {
+            name: "tileThree",
+            xPos:100,
+            yPos: 150,
+            width:500,
+            height:5,
+            id: "tileThree",
+            kind: "tile"
+        },
+        {
+            name: "tileFour",
+            xPos:100,
+            yPos: 200,
+            width:500,
+            height:5,
+            id: "tileFour",
+            kind: "tile"
+        }
+        ];
+
+        function posSizeObject(whichArray)  
+        {
+            for(var i = 0; i < whichArray.length; i++)
+	        {
+		        if(whichArray[i].kind == "box" || whichArray[i].kind =="tile")
+		        {
+                    var d = document.getElementById(whichArray[i].id);
+                    d.style.position = "absolute";
+                    d.style.left = whichArray[i].xPos +'px';
+                    d.style.top = whichArray[i].yPos +'px';
+                    d.style.width = whichArray[i].width +'px';
+                    d.style.height = whichArray[i].height +'px';
+                }
+            }
+        }  
+
+        var counter = 0;
+
+        function whenLoaded()
+        {
+            window.addEventListener("click", mousePos, false);
+
+            document.getElementById("boxOne").innerHTML="Box One";
+            document.getElementById("boxTwo").innerHTML="Box Two";
+            document.getElementById("boxThree").innerHTML="Box Three";
+            document.getElementById("boxFour").innerHTML="Box Four";
+
+            document.getElementById("tileOne").innerHTML="Tile One";
+            document.getElementById("tileTwo").innerHTML="Tile Two";
+            document.getElementById("tileThree").innerHTML="Tile Three";
+            document.getElementById("tileFour").innerHTML="Tile Four";
+
+            document.getElementById("thePlayer").addEventListener("click", showPos, false);
+
+            document.getElementById("boxTwo").addEventListener("click", showPos, false);
+
+            document.getElementById("theBackground").style.width = window.innerWidth;
+
+            document.getElementById("theBackground").style.height = window.innerHeight;
+        }
+
+        //Frames Per Second Refresh Rate is currently 60
+        //var theFps = 1000/60;
+
+        //Keyboard Letter Codes Being Pressed
+        var keyboard = {};
+            keyboard.UP = 87;     //87 is w, 38 is up arrow
+            keyboard.DOWN = 83;   //83 is s, 40 is down arrow
+            keyboard.LEFT = 65;   //65 is a, 37 is left arrow
+            keyboard.RIGHT = 68;  //68 is d, 39 is right arrow   
+            
+        //Player's start position and id
+        var ourPlayer = {
+            x: 100,
+            y: 300,
+            speedMultiplier: 2,
+            playerId: document.getElementById("thePlayer")
+        };
+            
+        //Key Press Detection
+        document.body.onkeyup =
+        document.body.onkeydown = function(e){
+
+        //Prevent Keyboard from Scrolling the Window
+        if (e.preventDefault)
+        {
+            e.preventDefault();
+        }
+        else
+        {
+            e.returnValue = false;
+        }
+
+        if(e.keyCode == 80) //Press Letter P
+        {
+            posSizeObject(ourObjects);
+            posSizeObject(ourTiles);
+           // var userName = prompt("Enter Name");
+           // ourPlayer.playerId.innerHTML= userName;
+        }
+
+        //Find out which key was pressed
+        var theKeyCode = e.keyCode || e.which;
+            keyboard[theKeyCode] = e.type == 'keydown';
+        };
+            
+        //Character Movement Updating
+        var movePlayer = function(theX, theY){
+            ourPlayer.x += (theX||0) * ourPlayer.speedMultiplier;
+            ourPlayer.y += (theY||0) * ourPlayer.speedMultiplier;
+            
+            ourPlayer.playerId.style.left = ourPlayer.x + 'px';
+            ourPlayer.playerId.style.top = ourPlayer.y + 'px';
+        };
+            
+        //Player Controls
+        var sensePlayerMotion = function(){
+            if(keyboard[keyboard.LEFT]){
+                movePlayer(-1,0);
+            }
+            if(keyboard[keyboard.RIGHT]){
+                movePlayer(1,0);
+            }
+            if(keyboard[keyboard.UP]){
+                movePlayer(0,-1);
+            }
+            if(keyboard[keyboard.DOWN]){
+                movePlayer(0,1);
+            }
+        };
+            //Update the Position of the player
+            movePlayer();
+
+        function getAllInfo(theId) //not used in this Tutorial Video
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            return theRect;
+        }
+        //alert(JSON.stringify(getAllInfo('boxOne')));
+
+        function getPos(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            
+            var posXY = { 
+                x:parseInt(theRect.x) + parseInt(theRect.width)/2, 
+                y:parseInt(theRect.y) + parseInt(theRect.height)/2
+            }; 
+            return posXY;
+        }
+
+    /* For Camera Follow Script
+        function scrollIt()
+        {
+            document.getElementById("thePlayer").scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
+        }
+    */
+    
+        function getSize(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+       
+            var sizeXY = {
+                x:parseInt(theRect.width),
+                y:parseInt(theRect.height)
+            };
+            return sizeXY;
+        }
+
+        function showPos()
+        {
+           // alert(getPos("thePlayer").y);
+            console.log("Player Y is " + getPos("thePlayer").y);
+            console.log("Box Y is " + getPos("boxTwo").y);
+        }
+
+        function compareObjects(obj1, obj2)
+        {
+            //later, add an if, to find out if objects still exist, else don't compare them.
+
+            let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+            let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+            let collided = !(theRect1.right < theRect2.left || 
+                theRect1.left > theRect2.right || 
+                theRect1.bottom < theRect2.top || 
+                theRect1.top > theRect2.bottom);
+
+            if(collided == true)
+            {
+                //ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                //console.log(obj2 + " Hit");
+
+                if(obj2 == "boxOne")
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="tan";
+                    //console.log("boxOne has been hit");
+                }
+                if(obj2 == "boxTwo")
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="black";
+                    //console.log("boxTwo has been hit");
+                }
+                if(obj2 == "boxThree")
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="orange";
+                    //console.log("boxThree has been hit");
+                }
+                if(obj2 == "boxFour")
+                {
+                    ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.style.backgroundColor="purple";
+                    //console.log("boxFour has been hit");
+                }
+            }
+        }
+
+        function wasLineCrossed()
+        {
+            if(getPos("thePlayer").x == getPos("boxOne").x)
+            {
+                playSong("ActionStrikeSong");
+            }
+               
+            if(getPos("thePlayer").x == getPos("boxTwo").x)
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+                document.body.append(crossedLine);
+
+            }
+            
+            if(getPos("thePlayer").y == getPos("boxThree").y || 
+            getPos("thePlayer").y == getPos("boxThree").y+1  ||
+            getPos("thePlayer").y == getPos("boxThree").y+2  ||
+            getPos("thePlayer").y == getPos("boxThree").y+3
+            )
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:385px;top:415px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+                document.body.append(crossedLine);
+            }
+
+            if(getPos("thePlayer").y == getPos("boxFour").y || 
+            getPos("thePlayer").y == getPos("boxFour").y+1  ||
+            getPos("thePlayer").y == getPos("boxFour").y+2  ||
+            getPos("thePlayer").y == getPos("boxFour").y+3
+            )
+            {
+                var crossedLine = document.createElement("div");
+                
+                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:800px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                crossedLine.innerHTML = "Line Crossed";
+                document.body.append(crossedLine);
+            }
+        } 
+
+        function mousePos(theEvent)
+        {
+            var mouseX = theEvent.pageX;
+            var mouseY = theEvent.pageY;
+            var mousePos = "Mouse X " + mouseX + ", Mouse Y " + mouseY;
+            console.log(mousePos);
+            ourPlayer.playerId.innerHTML= mousePos;
+        }
+
+        var timeId;
+       
+        function doThisLoop()
+        {
+            sensePlayerMotion();
+            compareObjects("thePlayer", "boxOne");
+            compareObjects("thePlayer", "boxTwo");
+            compareObjects("thePlayer", "boxThree");
+            compareObjects("thePlayer", "boxFour");
+            wasLineCrossed();
+            timeId = requestAnimationFrame(doThisLoop);
+        }
+        doThisLoop();
+
+        /* Flickering occurs with setInterval,
+        so we use requestionAnimationFrame instead, as shown above
+        //60 Fps Refresh Rate
+        window.setInterval(function(){
+                sensePlayerMotion();
+                compareObjects();
+                //scrollIt();
+            }, theFps);
+        */
+
+</script>
+
+</body>
+</html>
