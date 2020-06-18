@@ -329,7 +329,11 @@
         
       
 
-       // alert(getPos("thePlayer").y + getSize("thePlayer").y);
+       // console.log(getPos("thePlayer").y + getSize("thePlayer").y);
+	let lineOneFlag = 0;
+        let lineTwoFlag = 0;
+        let lineThreeFlag = 0;
+        let lineFourFlag = 0;
 
         function compareObjects()
         {
@@ -355,19 +359,27 @@
 
             if(getPos("thePlayer").x == getPos("boxOne").x)
             {
-                periodicElements();
+		if(lineOneFlag == 0)
+                {
+                	periodicElements();
+		}
+		lineOneFlag = 1;
             }
                
             if(getPos("thePlayer").x == getPos("boxTwo").x)
             {
-                var crossedLine = document.createElement("div");
+		if(lineTwoFlag == 0)
+                {
+                	var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                	crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                	crossedLine.innerHTML = "Line Crossed";
+                	document.body.append(crossedLine);
 
-                showOneElement("Iron", "26", "https://en.wikipedia.org/wiki/Iron", "760", "5");
+                	showOneElement("Iron", "26", "https://en.wikipedia.org/wiki/Iron", "760", "5");
+		}
+		lineTwoFlag = 1;
             }
             
             if(getPos("thePlayer").y == getPos("boxThree").y || 
@@ -376,12 +388,16 @@
             getPos("thePlayer").y == getPos("boxThree").y+3
             )
             {
-                var crossedLine = document.createElement("div");
+		if(lineThreeFlag == 0)
+                {
+                	var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:385px;top:415px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                	crossedLine.setAttribute('style','background-color:blue;position:absolute;left:385px;top:415px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                	crossedLine.innerHTML = "Line Crossed";
+                	document.body.append(crossedLine);
+		}
+		lineThreeFlag = 1;
             }
 
             if(getPos("thePlayer").y == getPos("boxFour").y || 
@@ -390,12 +406,16 @@
             getPos("thePlayer").y == getPos("boxFour").y+3
             )
             {
-                var crossedLine = document.createElement("div");
+		if(lineFourFlag == 0)
+                {   
+                	var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:800px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                	crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:800px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                	crossedLine.innerHTML = "Line Crossed";
+                	document.body.append(crossedLine);
+		}
+	        lineFourFlag = 1;
             }
         } 
 
