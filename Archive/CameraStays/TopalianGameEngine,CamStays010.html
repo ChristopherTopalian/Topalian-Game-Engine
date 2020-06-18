@@ -424,7 +424,10 @@
         }
         
        
-       // alert(getPos("thePlayer").y + getSize("thePlayer").y);
+       // console.log(getPos("thePlayer").y + getSize("thePlayer").y);
+		
+	let lineTwoXFlag = 0;
+        let lineTwoYFlag = 0;
 
         function compareObjects()
         {
@@ -452,13 +455,17 @@
         
             if(getPos("thePlayer").x == getPos("boxTwo").x)
             {
-                var crossedLine = document.createElement("div");
+		if(lineTwoXFlag == 0)
+                {
+                  var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                  crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+ 
+                  crossedLine.innerHTML = "Line Crossed";
 
-                crossedLine.innerHTML = "Line Crossed";
-
-                document.body.append(crossedLine);
+                  document.body.append(crossedLine);
+		}
+		lineTwoXFlag = 1;
             }
             
             if(getPos("thePlayer").y == getPos("boxTwo").y || 
@@ -467,14 +474,18 @@
             getPos("thePlayer").y == getPos("boxTwo").y+3
             )
             {
-                var crossedLine = document.createElement("div");
+		if(lineTwoYFlag == 0)
+                {
+                  var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:50px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                  crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:50px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
+                  crossedLine.innerHTML = "Line Crossed";
 
-                document.body.append(crossedLine);
-            }
+                  document.body.append(crossedLine);
+            	}
+	        lineTwoYFlag = 1;
+	    }
         } 
 
         function mousePos(theEvent)
