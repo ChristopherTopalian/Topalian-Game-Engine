@@ -1,3 +1,8 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Topalian Copyright 2020 -->
+<!-- Topalian Game Engine Template --><!-- Removed Functions to Include Later -->
+
+
 //Removed Functions to Include Later
 
 function makeDiv()
