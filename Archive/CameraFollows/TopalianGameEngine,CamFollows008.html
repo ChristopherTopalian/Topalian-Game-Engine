@@ -224,7 +224,8 @@
             console.log("Box Y is " + getPos("boxTwo").y);
         }
         
-
+        let lineOneFlag = 0;
+        let lineTwoFlag = 0;
 
        // alert(getPos("thePlayer").y + getSize("thePlayer").y);
 
@@ -252,12 +253,16 @@
                
             if(getPos("thePlayer").x == getPos("boxTwo").x)
             {
-                var crossedLine = document.createElement("div");
+                if(lineOneFlag == 0)
+                {
+                    var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                    crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                    crossedLine.innerHTML = "Line Crossed";
+                    document.body.append(crossedLine);
+                }
+                lineOneFlag = 1;
             }
             
             if(getPos("thePlayer").y == getPos("boxTwo").y || 
@@ -266,12 +271,16 @@
             getPos("thePlayer").y == getPos("boxTwo").y+3
             )
             {
-                var crossedLine = document.createElement("div");
+                if(lineTwoFlag == 0)
+                {
+                    var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:50px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                    crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:50px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                    crossedLine.innerHTML = "Line Crossed";
+                    document.body.append(crossedLine);
+                }
+                lineTwoFlag = 1;
             }
         } 
 
