@@ -50,8 +50,8 @@
             width: 50px;
             height: 100px;
             background: tan;
-            left: 730px;
-            top: 10px;
+            left: 370px;
+            top: 370px;
             z-index: 0;
             /* background-image: url("boxTwo.jpg"); */
         }
@@ -62,7 +62,7 @@
             height: 100px;
             background: tan;
             left: 400px;
-            top: 500px;
+            top: 700px;
             z-index: 0;
             /* background-image: url("boxThree.jpg"); */
         }
@@ -73,7 +73,7 @@
             height: 100px;
             background: tan;
             left: 700px;
-            top: 800px;
+            top: 1000px;
             z-index: 0;
             /* background-image: url("boxFour.jpg"); */
         }
@@ -273,7 +273,7 @@
             var theRect = theId.getBoundingClientRect();
             return theRect;
         }
-        //alert(JSON.stringify(getAllInfo('boxOne')));
+        //console.log(JSON.stringify(getAllInfo('boxOne')));
 
         function getPos(theId)
         {
@@ -312,28 +312,6 @@
             console.log("Player Y " + getPos("thePlayer").y);
         }
         */
-        
-        function makeDiv()
-	    {
-                var ourDiv = document.createElement("div");
-                
-                if(counter <= 9)
-                {
-		            counter += 1;
-		            ourDiv.innerHTML = "Count is " + parseInt(counter);
-		            document.body.append(ourDiv);
-                }
-                else
-                {
-                    //document.getElementById("boxOne").remove();
-                    var ourDiv = document.createElement("div");
-		            ourDiv.innerHTML = "Winner"; 
-                    document.body.append(ourDiv);
-                    counter = 0;
-                }   
-	    }
-
-       // alert(getPos("thePlayer").y + getSize("thePlayer").y);
 
        function compareObjects(obj1, obj2)
         {
@@ -376,41 +354,60 @@
             }
         }
 
+        let lineOneFlag = 0;
+        let lineTwoFlag = 0;
+        let lineThreeFlag = 0;
+        let lineFourFlag = 0;
+
         function wasLineCrossed()
         {
             if(getPos("thePlayer").x == getPos("boxOne").x)
             {
-                var crossedLine = document.createElement("div");
-                
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:2050px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                if(lineOneFlag == 0)
+                {
+                    console.log("boxOne x line crossed");
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                    var crossedLine = document.createElement("div");
+                    
+                    crossedLine.setAttribute('style','background-color:blue;position:absolute;left:153px;top:430px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+
+                    crossedLine.innerHTML = "Line 1 Crossed";
+                    document.body.append(crossedLine);
+                }
+                lineOneFlag =1;
             }
                
             if(getPos("thePlayer").x == getPos("boxTwo").x)
             {
-                var crossedLine = document.createElement("div");
+                if(lineTwoFlag == 0)
+                {
+                    var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:700px;top:150px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                    crossedLine.setAttribute('style','background-color:blue;position:absolute;left:370px;top:305px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                    crossedLine.innerHTML = "Line 2 Crossed";
+                    document.body.append(crossedLine);
+                }
+                lineTwoFlag = 1;
             }
             
-            if(getPos("thePlayer").y == getPos("boxThree").y || 
-            getPos("thePlayer").y == getPos("boxThree").y+1  ||
-            getPos("thePlayer").y == getPos("boxThree").y+2  ||
-            getPos("thePlayer").y == getPos("boxThree").y+3
-            )
-            {
-                var crossedLine = document.createElement("div");
+                if(getPos("thePlayer").y == getPos("boxThree").y || 
+                getPos("thePlayer").y == getPos("boxThree").y+1  ||
+                getPos("thePlayer").y == getPos("boxThree").y+2  ||
+                getPos("thePlayer").y == getPos("boxThree").y+3
+                )
+                {
+                    if(lineThreeFlag == 0)
+                    {
+                        var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:385px;top:415px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                        crossedLine.setAttribute('style','background-color:blue;position:absolute;left:476px;top:720px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
-            }
+                        crossedLine.innerHTML = "Line 3 Crossed";
+                        document.body.append(crossedLine);
+                    }
+                    lineThreeFlag = 1;
+                }
 
             if(getPos("thePlayer").y == getPos("boxFour").y || 
             getPos("thePlayer").y == getPos("boxFour").y+1  ||
@@ -418,12 +415,16 @@
             getPos("thePlayer").y == getPos("boxFour").y+3
             )
             {
-                var crossedLine = document.createElement("div");
+                if(lineFourFlag == 0 )
+                {
+                    var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:500px;top:800px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                    crossedLine.setAttribute('style','background-color:blue;position:absolute;left:765px;top:1020px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                    crossedLine.innerHTML = "Line 4 Crossed";
+                    document.body.append(crossedLine);
+                }
+            lineFourFlag = 1;
             }
         } 
 
