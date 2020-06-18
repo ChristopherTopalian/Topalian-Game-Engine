@@ -90,7 +90,7 @@ function periodicElements()
         //this function below, is one way, of many, to display a simple div that contains a link to a webpage. note also that, this way below utilizes a different way to style the div
         function showOneElement(theName, theNumber, theLink, xPos, yPos)
 	    {
-            document.body.removeElement(theName);
+         
             var topicDiv = document.createElement("div");
 
             topicDiv.style.position="absolute";
