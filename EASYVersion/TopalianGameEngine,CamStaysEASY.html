@@ -382,27 +382,41 @@
             }
         }
 
+        let lineOneFlag = 0;
+        let lineTwoFlag = 0;
+        let lineThreeFlag = 0;
+        let lineFourFlag = 0;
+		
+		
         function wasLineCrossed()
         {
             if(getPos("thePlayer").x == getPos("boxOne").x)
             {
-                var crossedLine = document.createElement("div");
+		if(lineOneFlag == 0)
+                {
+                    console.log("boxOne x line crossed"); 
+                    var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:150px;top:200px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                    crossedLine.setAttribute('style','background-color:blue;position:absolute;left:150px;top:200px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                    crossedLine.innerHTML = "Line Crossed";
+                    document.body.append(crossedLine);
+		}
+		lineOneFlag = 1;
             }
                
             if(getPos("thePlayer").x == getPos("boxTwo").x)
             {
-                var crossedLine = document.createElement("div");
+		if(lineTwoFlag == 0)
+                {
+                    var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:350px;top:60px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                    crossedLine.setAttribute('style','background-color:blue;position:absolute;left:350px;top:60px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
-
+                    crossedLine.innerHTML = "Line Crossed";
+                    document.body.append(crossedLine);
+		}
+		lineTwoFlag = 1;   
             }
             
             if(getPos("thePlayer").y == getPos("boxThree").y || 
@@ -411,12 +425,16 @@
             getPos("thePlayer").y == getPos("boxThree").y+3
             )
             {
-                var crossedLine = document.createElement("div");
+		if(lineThreeFlag == 0)
+                {
+                    var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:385px;top:415px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                    crossedLine.setAttribute('style','background-color:blue;position:absolute;left:385px;top:415px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
+                    crossedLine.innerHTML = "Line Crossed";
+                    document.body.append(crossedLine);
+		}
+		lineThreeFlag = 1;     
             }
 
             if(getPos("thePlayer").y == getPos("boxFour").y || 
@@ -425,13 +443,17 @@
             getPos("thePlayer").y == getPos("boxFour").y+3
             )
             {
-                var crossedLine = document.createElement("div");
+		if(lineFourFlag == 0)
+                {
+                   var crossedLine = document.createElement("div");
                 
-                crossedLine.setAttribute('style','background-color:blue;position:absolute;left:750px;top:400px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
+                   crossedLine.setAttribute('style','background-color:blue;position:absolute;left:750px;top:400px;color:yellow;z-index:1;width:150px;height:50px;padding:8px');
 
-                crossedLine.innerHTML = "Line Crossed";
-                document.body.append(crossedLine);
-            }
+                   crossedLine.innerHTML = "Line Crossed";
+                   document.body.append(crossedLine);
+                }
+		lineFourFlag = 1;
+	    }
         } 
 
         function mousePos(theEvent)
