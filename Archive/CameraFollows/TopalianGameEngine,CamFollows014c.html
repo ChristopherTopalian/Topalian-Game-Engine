@@ -3,7 +3,6 @@
 <!-- Topalian Game Engine Template --><!--Camera Follows Player -->
 
 <!-- W is up, S is Down, A is Left, D is Right. Click mouse to get the X and Y coordinates of any place on the screen -->
-<!-- At the moment, the Follow Player method we are using works ONLY in MOZILLA FIREFOX. Make sure you are using Firefox. -->
 
 <!-- Watch the video here   https://youtu.be/SnMGmr8CQjA   -->
 <!-- https://github.com/ChristopherTopalian/Topalian-Game-Engine -->
@@ -484,7 +483,7 @@
         
         function scrollIt()
         {
-            document.getElementById("thePlayer").scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
+            document.getElementById("thePlayer").scrollIntoView({block: "center", inline: "center"});
         }
 
         function getSize(theId)
