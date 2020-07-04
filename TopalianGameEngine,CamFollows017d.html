@@ -1,0 +1,965 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Topalian Copyright 2020 -->
+<!-- Topalian Game Engine Template --><!--Camera Follows Player -->
+
+<!-- W is up, S is Down, A is Left, D is Right. Click mouse to get the X and Y coordinates of any place on the screen -->
+
+<!-- tested and works in firefox, chrome, brave -->
+
+<!-- https://github.com/ChristopherTopalian/Topalian-Game-Engine -->
+
+<html><head>
+    <style>
+        #thePlayer{
+            position: absolute;
+            width: 70px;  /*70 */
+            height: 70px;  /*70 */
+            background: rgb(163, 157, 245);
+            z-index:10;
+            
+            word-wrap: break-word;
+            font-family: Tahoma;
+            font-size: 13px;
+            font-weight:bold;
+            padding: 4px; /*padding effects size of player */
+            text-align: center;
+            background-image: url("textures/arrows.png");
+            background-size: 550%;
+            background-position: 302;
+        }
+            
+        #theBackground{
+            position: absolute;
+            width: 10000px;
+            height: 10000px;
+           /* align-content:center;*/
+            background: black;
+            left: 0px;
+            top: 0px;
+            opacity: 1.0;
+            z-index:0;           
+        }
+              
+        #boxOne{  /*IRON*/
+            position: absolute;
+            width: 83px;
+            height: 84px;
+            background: black;
+            left: 600px;
+            top: 351px;
+            z-index: 4;
+            opacity: 0.3;
+            text-align: center;
+            /* background-image: url("boxOne.jpg"); */
+        }
+
+        #boxTwo{    /*COPPER*/
+            position: absolute;
+            width: 83px;
+            height: 84px;
+            background: black;
+            left: 853px;
+            top: 351px;
+            z-index: 4;
+            opacity: 0.3;
+            text-align: center;
+            /* background-image: url("boxTwo.jpg"); */
+        }
+        
+        #boxThree{   /*SILVER */
+            position: absolute;
+            width: 82px;
+            height: 85px;
+            background: tan;
+            left: 375px;
+            top: 925px;
+            z-index: 4;
+            /* background-image: url("boxThree.jpg"); */
+        }
+
+        #boxFour{    /*GOLD */
+            position: absolute;
+            width: 82px;
+            height: 85px;
+            background: tan;
+            left: 700px;
+            top: 1100px;
+            z-index: 4;
+            /* background-image: url("boxFour.jpg"); */
+        }
+
+        #tileOne{   /*Iron picture */
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background:blue;
+            left: 1200px;
+            top: 1000px;
+            z-index: 2;
+            background-image: url("textures/iron.jpg");
+            background-size: cover;
+        }
+
+        #tileTwo{  /*Copper picture */
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 1200px;
+            top: 1500px;
+            z-index: 2;
+            background-image: url("textures/copper.jpg");
+            background-size: cover;
+        }
+ 
+        #tileThree{    /*Zinc picture */
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 1200px;
+            top: 2000px;
+            z-index: 2;
+            background-image: url("textures/zinc.jpg");
+            background-size: cover;
+        }
+
+        #tileFour{  /*Silver picture */
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: white;
+            left: 1200px;
+            top: 2500px;
+            z-index: 2;
+            background-image: url("textures/silver.jpg");
+            background-size: cover;
+        }
+
+        /*the overflow hidden makes scroll bars disappear*/
+        /*
+        body{
+            height: 100%;
+            overflow: hidden;
+        }
+        */
+        body{
+            color:white;
+        }
+
+        .box
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        .tile
+        {
+            font-family: exo black;
+            font-size: 15px;
+            word-wrap: break-word;
+            color: black;
+        }
+
+        #theTitle
+        {
+            position:absolute;
+            word-wrap: break-word;
+            width:500px;
+            height:500px;
+            left: 1015px;
+            top: 120px;
+            font-family: exo black;
+            font-size: 35px;
+            color: black;
+            z-index:5;
+        }
+
+        #instructions
+        {
+            position:absolute;
+            word-wrap: break-word;
+            width:500px;
+            height:500px;
+            left: 300px;
+            top: 15px;
+            font-family: exo black;
+            font-size: 22px;
+            color: white;
+        }
+
+        #periodicTable
+        {
+            position: absolute;
+            width: 1535;
+            height: 912px;
+            background: white;
+            left: 0px;
+            top: 0px;
+            z-index: 3;
+            background-image: url("textures/periodicTable.png");
+            background-size: cover;
+        }
+
+        #elementInfo
+        {
+            position: absolute;
+            width: 163;
+            height: 167;
+            background: black;
+            left: 319px;
+            top: 133px;
+            z-index: 4;
+            color:white;
+            font-family:"exo";
+            font-size:30px;
+            font-weight: bold;
+            text-align:center;
+            padding:10px;
+        }
+
+        details
+        {
+            color:white;
+            font-family:"exo";
+            font-size:22px;
+            font-weight: bold;
+            text-align:left;
+            padding:10px;
+            word-wrap: break-word;
+        }
+
+        video
+        {
+            border: solid;
+            border-width: 1px;
+            border-color:white;
+            width: 500px;
+        }
+    
+        summary{
+            font-size:30px;
+            background:tan;
+        }
+
+        #onTheOrigin
+        {
+            position: absolute;
+            top:6000px;
+            left:500px;
+            width: 550px;
+            height: 500px;
+            z-index:4;
+        }  
+        
+    </style>
+    </head>
+
+    <body onload="whenLoaded();">
+    
+        <div id="thePlayer" class="box">LOADING<br>Please Wait</div>
+        <div id="theBackground" class="box"></div>
+
+        <div id="boxOne" class="box"></div>
+        <div id="boxTwo" class="box"></div>
+        <div id="boxThree" class="box"></div>
+        <div id="boxFour" class="box"></div>
+
+        <div id="tileOne" class="tile"></div>
+        <div id="tileTwo" class="tile"></div>
+        <div id="tileThree" class="tile"></div>
+        <div id="tileFour" class="tile"></div>
+
+        <div id="periodicTable"></div>
+
+        <div id="theTitle">
+            TOPALIAN GAME ENGINE
+        </div>
+      
+        <div id="instructions">
+            W is up, S is down, <br>
+            A is left, D is Right <br>
+            Letter P moves the boxes to new location
+        </div>
+
+        <div id="elementInfo"></div>      
+
+
+        <audio id="theSong" controls preload="auto" loop>
+            <source src="songs\Action Strike.mp3" type="audio/mpeg">
+        </audio>
+
+        <audio id="blipSound" controls preload="auto">
+            <source src="sfx\blip.mp4" type="audio/mpeg">
+        </audio>
+
+        <audio id="zipSound" controls preload="auto">
+            <source src="sfx\zip.mp4" type="audio/mpeg">
+        </audio>
+
+        <details id="onTheOrigin">
+            <summary>What is the Full Title of "Origin of the Species"?</summary>
+            <b>On the Origin of Species by Means of Natural Selection,
+            or the Preservation of Favoured Races in the Struggle for Life</b>
+            <br>
+            &nbsp &nbsp Published November 24, 1859
+            <br>
+            https://en.wikipedia.org/wiki/On_the_Origin_of_Species
+            <br>
+            Read the Full Title of his book Again! That is the Real Title! In addition, we will later examine Darwin's other book, The Descent of Man, which has many shockingly racist quotes by Darwin.
+          </details> 
+
+        <script>
+
+        function playSound(whichSongId, theVolume)
+        {
+            var song = document.getElementById(whichSongId);
+            song.play();
+            song.volume= theVolume;
+        }
+
+        function stopSong(whichSongId)
+        {
+            var song = document.getElementById(whichSongId);
+            song.pause();
+        }
+
+        var counter = 0;
+                   
+        let ourObjects = [
+        {
+            name: "boxOne",
+            xPos: 25,
+            yPos: 50,
+            width: 50,
+            height: 1000,
+            id: "boxOne",
+            kind: "box"
+        },
+        {
+            name: "boxTwo",
+            xPos: 200,
+            yPos: 50,
+            width:75,
+            height:100,
+            id: "boxTwo",
+            kind: "box"
+        },
+        {
+            name: "boxThree",
+            xPos: 300,
+            yPos: 50,
+            width:75,
+            height:100,
+            id: "boxThree",
+            kind: "box"
+        },
+        {
+            name: "boxFour",
+            xPos: 400,
+            yPos: 50,
+            width: 75,
+            height: 100,
+            id: "boxFour",
+            kind: "box"
+        }
+        ];
+        
+        let ourTiles = [
+        {
+            name: "tileOne",
+            xPos: 100,
+            yPos: 50,
+            width:500,
+            height:5,
+            id: "tileOne",
+            kind: "tile"
+        },
+        {
+            name: "tileTwo",
+            xPos:100,
+            yPos: 100,
+            width:500,
+            height:5,
+            id: "tileTwo",
+            kind: "tile"
+        },
+        {
+            name: "tileThree",
+            xPos:100,
+            yPos: 150,
+            width:500,
+            height:5,
+            id: "tileThree",
+            kind: "tile"
+        },
+        {
+            name: "tileFour",
+            xPos:100,
+            yPos: 200,
+            width:500,
+            height:5,
+            id: "tileFour",
+            kind: "tile"
+        }
+        ];
+
+        function makeTiles(howManyX, tileX, tileY, sizeX, sizeY)
+        {
+            tileX -= sizeX;
+            for(var i = 0; i < howManyX; i++)
+	        {
+                tileX = tileX + sizeX;  //columns across
+                //console.log(tileX);
+
+                var makeTile = document.createElement("img");
+
+                makeTile.src = "textures/asphalt.jpg";
+                makeTile.style.position="absolute";
+                makeTile.style.left= tileX;
+                makeTile.style.top= tileY;
+                makeTile.style.color="white";
+                makeTile.style.zIndex="1";
+                //makeTile.style.padding="5px"; //shows a border
+                makeTile.style.fontFamily="exo";
+                makeTile.style.fontWeight="bold";
+                makeTile.style.fontSize="xx-large";
+                makeTile.style.width= sizeX;
+                makeTile.style.height= sizeY;
+                makeTile.style.background="black";
+                makeTile.style.textAlign="center";
+
+                document.body.append(makeTile);
+            }
+        }
+
+        //the simplified version of this function is at the bottom of the page
+        function posSizeObject(whichArray)  
+        {
+            for(var i = 0; i < whichArray.length; i++)
+	        {
+		        if(whichArray[i].kind == "box" || whichArray[i].kind =="tile")
+		        {
+                    var d = document.getElementById(whichArray[i].id);
+                    d.style.position = "absolute";
+                    d.style.left = whichArray[i].xPos +'px';
+                    d.style.top = whichArray[i].yPos +'px';
+                    d.style.width = whichArray[i].width +'px';
+                    d.style.height = whichArray[i].height +'px';
+                }
+            }
+        }   
+
+
+        let videoEvidence = 
+        [
+            {
+                title: "Event 201 Pandemic Exercise Highlights Reel",
+                date: "Nov 4",
+                year: "2019",
+                url: "https://www.youtube.com/embed/AoLw-Q8X174",
+                tag: "youtubeVideo"
+            },
+            {
+                title: "Pompeo admits Outbreak is live exercise, Trump says should have let us know",
+                date: "Apr 11",
+                year: "2020",
+                url: "https://www.youtube.com/embed/vv650lRNYwI",
+                tag: "youtubeVideo"
+            },
+            {
+                title: "Dr. Fauci Predicted a Pandemic Under Trump in 2017 | NowThis",
+                date: "May 18",
+                year: "2020",
+                url: "https://www.youtube.com/embed/puqaaeLnEww",
+                tag: "youtubeVideo"
+            },
+            {
+                title: "March 2020: Dr. Anthony Fauci talks with Dr Jon LaPook about Covid-19",
+                date: "Mar 8",
+                year: "2020",
+                url: "https://www.youtube.com/embed/PRa6t_e7dgI",
+                tag: "youtubeVideo"
+            },
+            {
+                title: "Let's see if these masks hold in coughing using vaping",
+                date: "Jun 21",
+                year: "2020",
+                url: "https://www.youtube.com/embed/zJ6k1RHE4QA",
+                tag: "youtubeVideo"
+            },
+            {
+                title: "Put far away these Masks, they are bad for your health",
+                date: "Jun 27",
+                year: "2020",
+                url: "https://www.youtube.com/embed/J1ijcuCKuoI",
+                tag: "youtubeVideo"
+            },
+            {
+                title: "2020 is Strange: Nobody's Talking About This!",
+                date: "Mar 22",
+                year: "2020",
+                url: "https://www.youtube.com/embed/rxHMIz1PhaQ",
+                tag: "youtubeVideo"
+            }
+        ]
+        
+        function makeWebsites(theX, theY, sizeX, sizeY)
+        {
+            theX -= sizeX;
+
+            for(var i = 0; i < videoEvidence.length; i++)
+	        {
+                theX = theX + sizeX;  //columns across
+
+                var makeFrame = document.createElement("iframe");
+
+                makeFrame.src = videoEvidence[i].url;
+
+                makeFrame.style.position="absolute";
+                makeFrame.style.left= theX;
+                makeFrame.style.top= theY;
+                makeFrame.style.color="white";
+                makeFrame.style.zIndex="1";
+                //makeFrame.style.padding="5px";
+                makeFrame.style.fontFamily="exo";
+                makeFrame.style.fontWeight="bold";
+                makeFrame.style.fontSize="xx-large";
+                makeFrame.style.width= sizeX;
+                makeFrame.style.height= sizeY;
+                makeFrame.style.background="black";
+                makeFrame.style.textAlign="center";
+
+                document.body.append(makeFrame);
+            }
+        }
+
+        function whenLoaded()
+        {
+            makeWebsites(50, 7000, 550, 550); //theX,theY,sizeX,sizeY
+
+            makeTiles(10, 0, 0, 500, 500);  //howManyX,tileX,tileY,sizeX,sizeY
+            makeTiles(10, 0, 500, 500, 500);
+            makeTiles(10, 0, 1000, 500, 500);
+            makeTiles(10, 0, 1500, 500, 500);
+            makeTiles(10, 0, 2000, 500, 500);
+            makeTiles(10, 0, 2500, 500, 500);
+            makeTiles(10, 0, 3000, 500, 500);
+            makeTiles(10, 0, 3500, 500, 500);
+            makeTiles(10, 0, 4000, 500, 500);
+            makeTiles(10, 0, 4500, 500, 500);
+            makeTiles(10, 0, 5000, 500, 500);
+            makeTiles(10, 0, 5500, 500, 500);
+
+            document.getElementById("thePlayer").innerHTML="Page is Loaded<br>READY!"; //boxOne is Iron
+
+            document.getElementById("boxOne").innerHTML="IRON"; //boxOne is Iron
+            document.getElementById("boxTwo").innerHTML="COPPER";
+            document.getElementById("boxThree").innerHTML="SILVER";
+            document.getElementById("boxFour").innerHTML="GOLD";
+
+            document.getElementById("tileOne").innerHTML="PICTURE OF IRON";
+            document.getElementById("tileTwo").innerHTML="PICTURE OF COPPER";
+            document.getElementById("tileThree").innerHTML="PICTURE OF ZINC";
+            document.getElementById("tileFour").innerHTML="PICTURE OF SILVER";
+
+            window.addEventListener("click", mousePos, false);
+
+           window.addEventListener("keydown", theControls, false);
+           window.addEventListener("keyup", theControls, false);
+        }
+
+        //Keyboard Letter Codes Being Pressed
+        var keyboard = {};
+            keyboard.UP = 87;     //87 is w, 38 is up arrow
+            keyboard.DOWN = 83;   //83 is s, 40 is down arrow
+            keyboard.LEFT = 65;   //65 is a, 37 is left arrow
+            keyboard.RIGHT = 68;  //68 is d, 39 is right arrow       
+
+        //Player's start position and id
+        var ourPlayer = {
+            x: 400,
+            y: 7100,
+            speedMultiplier: 2,
+            playerId: document.getElementById("thePlayer")
+        }; 
+        
+        //Key Press Detection
+        //document.body.onkeyup =
+       // document.body.onkeydown = function(e){
+
+        function theControls(e)
+        { 
+        if(e.keyCode == 80) //Press Letter P
+        {
+            posSizeObject(ourTiles);
+            posSizeObject(ourObjects);
+           //var userName = prompt("Enter Name");
+           //ourPlayer.playerId.innerHTML= userName;
+        }
+        if(e.keyCode == 79) //Press Letter o
+        {
+            stopSong("theSong");
+            ourPlayer.playerId.innerHTML= "Song Stopped";
+        }
+
+        //Find out which key was pressed
+        var theKeyCode = e.keyCode || e.which;
+            keyboard[theKeyCode] = e.type == 'keydown';
+        };
+         
+        //Character Movement Updating
+        var movePlayer = function(theX, theY){
+            
+           ourPlayer.x += (theX||0) * ourPlayer.speedMultiplier;
+           ourPlayer.y += (theY||0) * ourPlayer.speedMultiplier;
+
+           ourPlayer.playerId.style.left = ourPlayer.x + 'px';
+           ourPlayer.playerId.style.top = ourPlayer.y + 'px';
+        };
+            
+        //Player Controls
+        var sensePlayerMotion = function(){
+            if(keyboard[keyboard.LEFT]){
+                movePlayer(-1,0);
+                ourPlayer.playerId.style.backgroundPosition=-2;
+                //Note: need to simplify for logical backgroundPosition coordinates.
+            }
+            if(keyboard[keyboard.RIGHT]){
+                movePlayer(1,0);
+                ourPlayer.playerId.style.backgroundPosition=302;
+            }
+            if(keyboard[keyboard.UP]){
+                movePlayer(0,-1);
+                ourPlayer.playerId.style.backgroundPosition=97;
+            }
+            if(keyboard[keyboard.DOWN]){
+                movePlayer(0,1);
+                ourPlayer.playerId.style.backgroundPosition=625;
+            }
+        };
+        
+        function getAllInfo(theId) //not used in this Tutorial Video
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            return theRect;
+        }
+        //console.log(JSON.stringify(getAllInfo('boxOne')));
+
+        function getPos(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+            var theRectY = theId.getBoundingClientRect().top + window.scrollY; 
+
+            var posXY = { 
+                x:parseInt(theRect.x) + parseInt(theRect.width)/2 + window.scrollX, 
+                y:parseInt(theRectY) + parseInt(theRect.height)/2
+            }; 
+            return posXY;
+        }
+        
+        //FIXED THE FLICKERING BY TAKING OUT, behavior: "smooth"
+        //the behavior:"smooth" had caused the flickering issue
+        //tested and works in firefox, chrome, brave
+        function scrollIt()
+        {
+           ourPlayer.playerId.scrollIntoView({block: "center", inline: "center"});
+        }
+
+        function getSize(theId)
+        {
+            theId = document.getElementById(theId);
+            var theRect = theId.getBoundingClientRect();
+       
+            var sizeXY = {
+                x: parseInt(theRect.width),
+                y: parseInt(theRect.height)
+            };
+            return sizeXY;
+        }
+
+        function compareObjects(obj1, obj2)
+        {
+            //later, add an if, to find out if objects still exist, else don't compare them.
+
+            let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+            let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+            let collided = !(theRect1.right < theRect2.left || 
+                theRect1.left > theRect2.right || 
+                theRect1.bottom < theRect2.top || 
+                theRect1.top > theRect2.bottom);
+
+            if(collided == true)
+            {
+                //ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                //console.log(obj2 + " Hit");
+
+                if(obj2 == "boxOne") //if boxOne is hit. IRON
+                {
+                    playSound("blipSound", 1.0);
+                    //ourPlayer.playerId.innerHTML= obj2 + " IRON";
+                    ourPlayer.playerId.innerHTML= "IRON <br> 26 <br> Fe";
+                    ourPlayer.playerId.style.backgroundColor="grey";
+
+                    document.getElementById("elementInfo").innerHTML= "IRON <br> 26 <br> Fe <br> <a href='https://en.wikipedia.org/wiki/Iron' target='_blank'>Link</a>";
+                }
+                if(obj2 == "boxTwo") //if boxTwo is hit. COPPER
+                {
+                    playSound("blipSound", 1.0);
+                    //ourPlayer.playerId.innerHTML= obj2 + " Hit";
+                    ourPlayer.playerId.innerHTML= "COPPER <br> 29 <br> Cu";
+                    ourPlayer.playerId.style.backgroundColor="tan";
+
+                    document.getElementById("elementInfo").innerHTML= "COPPER <br> 29 <br> Cu <br><a href='https://en.wikipedia.org/wiki/Copper' target='_blank'>Link</a>";
+                }
+                if(obj2 == "boxThree") //if boxThree is hit. SILVER
+                {
+                    playSound("blipSound", 1.0);
+                    ourPlayer.playerId.innerHTML= "SILVER <br> 47 <br> Ag";
+                    ourPlayer.playerId.style.backgroundColor="orange";   
+                }
+                if(obj2 == "boxFour") //if boxFour is hit. GOLD
+                {
+                    playSound("blipSound", 1.0);
+                    ourPlayer.playerId.innerHTML= "Gold <br> 79 <br> Au";
+                    ourPlayer.playerId.style.backgroundColor="purple";
+                }
+            }
+        }
+        
+        let lineYBoxThreeFlag = 0;
+        let lineYBoxFourFlag = 0;
+        let lineAt1500Flag = 0;
+        let lineAt1700Flag = 0;
+        let lineAt1900Flag = 0;
+
+        function wasLineCrossed()
+        {
+            //if player crosses 150px or 151px from the left of the screen
+            if(Math.floor(getPos("thePlayer").x) == 150 ||
+            Math.floor(getPos("thePlayer").x) == 151)
+            {
+                playSound("theSong", 0.3);
+                ourPlayer.playerId.innerHTML = "Song Activated <br> 150 X Crossed";
+            }
+
+            //if player crosses the x of boxOne
+            //if(getPos("thePlayer").x == getPos("boxOne").x)
+            if(Math.floor(getPos("thePlayer").x) == Math.floor(getPos("boxOne").x) ||
+            Math.floor(getPos("thePlayer").x) == Math.floor(getPos("boxOne").x+1))
+            {
+                playSound("zipSound", 1.0);
+                ourPlayer.playerId.innerHTML = "boxOne X Crossed";
+            }
+               
+            //if(getPos("thePlayer").x == getPos("boxTwo").x)
+            if(Math.floor(getPos("thePlayer").x) == Math.floor(getPos("boxTwo").x) || Math.floor(getPos("thePlayer").x) == Math.floor(getPos("boxTwo").x+1))
+            {   
+                playSound("zipSound", 1.0);
+                ourPlayer.playerId.innerHTML = "boxTwo X Crossed";
+            }
+            
+            if(Math.floor(getPos("thePlayer").y) == Math.floor(getPos("boxThree").y) || Math.floor(getPos("thePlayer").y) == Math.floor(getPos("boxThree").y+1))
+            {
+                ourPlayer.playerId.innerHTML = "boxThree Y Crossed";
+                if(lineYBoxThreeFlag == 0)
+                {
+                    playSound("zipSound", 1.0);
+                    showOneElement("Silver", 47, "https://en.wikipedia.org/wiki/Silver", 190, 925);
+                }
+                lineYBoxThreeFlag = 1;
+            }
+
+            if(Math.floor(getPos("thePlayer").y) == Math.floor(getPos("boxFour").y) ||
+            Math.floor(getPos("thePlayer").y) == Math.floor(getPos("boxFour").y+1))
+            {
+                ourPlayer.playerId.innerHTML = "boxFour Y Crossed";
+                if(lineYBoxFourFlag == 0)
+                {
+                    playSound("zipSound", 1.0);
+                    showOneElement("Gold", 79, "https://en.wikipedia.org/wiki/Gold", 510, 1100);
+                }
+                lineYBoxFourFlag = 1;
+            }
+
+            if(Math.floor(getPos("thePlayer").y) == 1500 ||
+            Math.floor(getPos("thePlayer").y) == 1501)
+            {
+                ourPlayer.playerId.innerHTML = "1500 Y Crossed";
+                if(lineAt1500Flag == 0)   //creates only one
+                {
+                    playSound("zipSound", 1.0);
+                    periodicElements();
+                }
+                lineAt1500Flag = 1;
+            }
+
+            if(Math.floor(getPos("thePlayer").y) == 1700 ||
+            Math.floor(getPos("thePlayer").y) == 1701)
+            {
+                ourPlayer.playerId.innerHTML = "1700 Y Crossed";
+                if(lineAt1700Flag == 0)   //creates only one
+                {
+                    playSound("zipSound", 1.0);
+                    showOneElement("Hydrogen", 1, "https://en.wikipedia.org/wiki/Hydrogen", 50, 1700);
+                }
+                lineAt1700Flag = 1;
+            }
+
+            if(Math.floor(getPos("thePlayer").y) == 1900 ||
+            Math.floor(getPos("thePlayer").y) == 1901)
+            {
+                ourPlayer.playerId.innerHTML = "1900 Y Crossed";
+                if(lineAt1900Flag == 0)   //creates only one
+                {
+                    playSound("zipSound", 1.0);
+                    showOneElement("Helium", 2, "https://en.wikipedia.org/wiki/Helium", 50, 1900);
+                }
+                lineAt1900Flag = 1;
+            }
+        } 
+
+        let theElements = [
+        {
+            name: "Iron",
+            number: "26",
+            url: "https://en.wikipedia.org/wiki/Iron",
+            tag: "natural"
+        },
+        {
+            name: "Copper",
+            number: "29",
+            url: "https://en.wikipedia.org/wiki/Copper",
+            tag: "natural"
+        },
+        {
+            name: "Zinc",
+            number: "30",
+            url: "https://en.wikipedia.org/wiki/Zinc",
+            tag: "natural"
+        }
+        ];
+
+        function periodicElements()
+        {
+            var elementDiv = document.createElement("div");
+
+            document.body.append(elementDiv);
+
+            elementDiv.setAttribute('style','color:white; width:100px; height:150px; background:tan; color:white; position:absolute; top:1470px; left:225px; z-index:5; padding:10px; font-family:Exo;font-weight:bold;a{color:white;}');
+
+            var output = '';
+
+	        for(var i = 0; i < theElements.length; i++)
+	        {
+                if(theElements[i].tag == "natural")
+                {
+		            output += theElements[i].name + " ";
+                    output += theElements[i].number + " ";
+                    output += '<br>';
+		            output +='<a href=\''+theElements[i].url+'\' target="_blank">Link</a>';
+		            output += '<br>';
+                }
+            }
+            elementDiv.innerHTML = output;
+        }
+
+        //this function below, is one way, of many, to display a simple div that contains a link to a webpage. note also that, this way below utilizes a different way to style the div
+        function showOneElement(theName, theNumber, theLink, xPos, yPos)
+	    {
+            var topicDiv = document.createElement("div");
+
+            topicDiv.style.position="absolute";
+            topicDiv.style.left=xPos;
+            topicDiv.style.top=yPos;
+            topicDiv.style.color="white";
+            topicDiv.style.zIndex="5";
+            topicDiv.style.padding="10px";
+            topicDiv.style.fontFamily="exo";
+            topicDiv.style.fontWeight="bold";
+            topicDiv.style.fontSize="xx-large";
+            topicDiv.style.width="163px";
+            topicDiv.style.height="167px";
+            topicDiv.style.background="black";
+            topicDiv.style.textAlign="center";
+
+		    topicDiv.innerHTML = theName + "<br>";
+		    topicDiv.innerHTML += theNumber + "<br>";
+            topicDiv.innerHTML+='<a href=\''+ theLink+'\' target="_blank">Link</a>';
+            topicDiv.id = theName;
+
+            document.body.append(topicDiv);
+		}
+
+        function mousePos(theEvent)
+        {
+            var mouseX = theEvent.pageX;
+            var mouseY = theEvent.pageY;
+            var mousePos = "Mouse" + "<br>" + "X " + mouseX + "<br>"+ "Y " + mouseY;
+            console.log(mousePos);
+            ourPlayer.playerId.innerHTML= mousePos;
+        }
+
+       function doThisLoop()
+       {
+           sensePlayerMotion();
+           compareObjects("thePlayer", "boxOne");
+           compareObjects("thePlayer", "boxTwo");
+           compareObjects("thePlayer", "boxThree");
+           compareObjects("thePlayer", "boxFour");
+           wasLineCrossed();
+           scrollIt();         
+           requestAnimationFrame(doThisLoop);  
+       }
+       doThisLoop();
+            
+        //Update the Position of the player
+        movePlayer();
+    
+        /*
+        //Frames Per Second Refresh Rate is currently 60
+        var theFps = 1000/60;  //not used now
+       
+        //60 Fps Refresh Rate
+        window.setInterval(function(){
+           sensePlayerMotion();
+           compareObjects("thePlayer", "boxOne");
+           compareObjects("thePlayer", "boxTwo");
+           compareObjects("thePlayer", "boxThree");
+           compareObjects("thePlayer", "boxFour");
+           wasLineCrossed();
+           scrollIt();
+            }, theFps);
+        */
+
+</script>
+</body>
+</html>
+
+<!--
+//The function below, is kept here, to show you the simplified version of looping through an array of objects
+        /*
+        function posSizeObject()  
+        {
+           // alert(ourObjects[0].id);
+            for(var i = 0; i < ourObjects.length; i++)
+	        {
+		        if(ourObjects[i].kind == "box")
+		        {
+                    var d = document.getElementById(ourObjects[i].id);
+                    d.style.position = "absolute";
+                    d.style.left = ourObjects[i].xPos +'px';
+                    d.style.top = ourObjects[i].yPos +'px';
+                    d.style.width = ourObjects[i].width +'px';
+                    d.style.height = ourObjects[i].height +'px';
+                }
+            }
+        }   
+        */
+    -->
