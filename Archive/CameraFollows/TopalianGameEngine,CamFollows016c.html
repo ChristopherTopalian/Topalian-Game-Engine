@@ -371,13 +371,13 @@
         }
         ];
 
-        function makeTiles(howManyX, tileX, tileY)
+        function makeTiles(howManyX, tileX, tileY, sizeX, sizeY)
         {
-            tileX = -500;
+            tileX -= sizeX;
             for(var i = 0; i < howManyX; i++)
 	        {
-                tileX = tileX + 500;  //columns across
-                console.log(tileX);
+                tileX = tileX + sizeX;  //columns across
+                //console.log(tileX);
 
                 var makeTile = document.createElement("img");
 
@@ -391,8 +391,8 @@
                 makeTile.style.fontFamily="exo";
                 makeTile.style.fontWeight="bold";
                 makeTile.style.fontSize="xx-large";
-                makeTile.style.width="500px";
-                makeTile.style.height="500px";
+                makeTile.style.width= sizeX;
+                makeTile.style.height= sizeY;
                 makeTile.style.background="black";
                 makeTile.style.textAlign="center";
 
@@ -419,15 +419,18 @@
 
         function whenLoaded()
         {
-            makeTiles(10, 0, 0);
-            makeTiles(10, 0, 500);
-            makeTiles(10, 0, 1000);
-            makeTiles(10, 0, 1500);
-            makeTiles(10, 0, 2000);
-            makeTiles(10, 0, 2500);
-            makeTiles(10, 0, 3000);
-            makeTiles(10, 0, 3500);
-            makeTiles(10, 0, 4000);
+            makeTiles(10, 0, 0, 500, 500);//howManyX,tileX,tileY,sizeX,sizeY
+            makeTiles(10, 0, 500, 500, 500);
+            makeTiles(10, 0, 1000, 500, 500);
+            makeTiles(10, 0, 1500, 500, 500);
+            makeTiles(10, 0, 2000, 500, 500);
+            makeTiles(10, 0, 2500, 500, 500);
+            makeTiles(10, 0, 3000, 500, 500);
+            makeTiles(10, 0, 3500, 500, 500);
+            makeTiles(10, 0, 4000, 500, 500);
+            makeTiles(10, 0, 4500, 500, 500);
+            makeTiles(10, 0, 5000, 500, 500);
+            makeTiles(10, 0, 5500, 500, 500);
 
             document.getElementById("boxOne").innerHTML="IRON"; //boxOne is Iron
             document.getElementById("boxTwo").innerHTML="COPPER";
