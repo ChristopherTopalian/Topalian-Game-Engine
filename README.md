@@ -4,5 +4,5 @@
 The EASYVersion Folder gives the total Beginner a very simple Game engine template to start with.
 The EasyVersion is kept simple and will be kept in this folder forever, so that beginners can have the easiest time possible learning from the bare minimum of what is needed to make a game in JavaScript!
  
-When you choose, CLONE as ZIP file, you must remember to not try to run the game in the Zip folder!!!
-Remember to COPY the Folder to your DESKTOP before you run it.
+When you choose, Download as ZIP file, remember to not try to run the game from the Zip folder!
+Remember to first COPY the Folder to your DESKTOP before you run it.
