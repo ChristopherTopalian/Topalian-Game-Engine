@@ -2,7 +2,7 @@
 NEW VERSION COMING SOON! <br>
 TGE 18 Will be Published very soon! <br>
 
-Remember too, to download the Topaian Game Engine Data Navigator, https://github.com/ChristopherTopalian/TopalianGameEngineDataNavigator
+Remember too, to download the Topalian Game Engine Data Navigator, https://github.com/ChristopherTopalian/TopalianGameEngineDataNavigator
 
 100% Pure JavaScript Game Engine made for absolute beginners to learn how to make HTML/JS games very easily! There are Two Versions: 1. Static Camera, where we design games on one screen that keeps the camera still. 2. Follow Camera,  is where the camera follows the player through the world, which is utilized for open world exploration games! Watch Here:  https://youtu.be/Eb6oW4gkZBk
 
