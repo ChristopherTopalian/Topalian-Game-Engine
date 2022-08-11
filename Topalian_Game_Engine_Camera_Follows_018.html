@@ -1,0 +1,2660 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Topalian Copyright 2020-2022 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- Topalian_Game_Engine_Camera_Follows_018.html -->
+<!-- Camera Follows Player -->
+
+<!--
+Controls:
+W is up
+S is Down
+A is Left
+D is Right
+
+Speed:
+~ 1 2 3 4 5 6 7 8 9 0 for Speed Setting
+Hold Shift to Boost Speed
+
+Mouse Position:
+Click the left mouse button to get the X and Y coordinates of any place on the screen
+
+Audio:
+Letter V to Start the song
+Letter B to Stop the song
+
+Transparency:
+Letter N for the player to be see-through
+Letter M for solid
+-->
+
+<!-- https://github.com/ChristopherTopalian/Topalian-Game-Engine -->
+
+<html>
+<head>
+<title> Topalian Game Engine Camera Follows 018 </title>
+
+<style>
+
+#thePlayer
+{
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    padding: 4px;
+    z-index: 10;
+    border-radius: 7px;
+    background: rgb(73, 100, 150);
+    font-family: tahoma;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+#theBackgroundDimensions
+{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 250000px;
+    height: 250000px;
+    z-index: 0;
+    background: rgb(0, 0, 0);
+    align-content: center;
+}
+
+#theBackgroundTexture
+{
+    /* position: absolute to stop parallax effect */
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 0;
+    background: rgb(0, 0, 0);
+    align-content: center;
+
+    background-image: url("https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/stars-nice-edited_orig.png");
+
+    /*
+    background-image: url("textures/stars-nice-edited_orig.png");
+    */
+}
+
+/* menu on the top right */
+.infoStyle
+{
+    position: fixed;
+    top: 1;
+    right: 1;
+    max-width: 100px;
+    z-index: 998;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-style: solid;
+    border-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    background: rgb(0, 0, 0);
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    word-wrap: break-word;
+}
+
+/* instructions menu on the top left */
+.instructionsDetailsStyle
+{
+    position: fixed;
+    top: 1;
+    left: 1;
+    max-width: 300px;
+    color: rgb(255, 255, 255);
+    z-index: 998;
+    padding-left: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(170, 170, 170);
+    border-radius: 4px;
+    background: rgb(0, 0, 0);
+}
+
+.instructionsStyle
+{
+    padding-left: 4px;
+    padding-right: 8px;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    font-family: tahoma;
+    font-size: 17px;
+    color: rgb(255, 255, 255);
+    line-height: 18px;
+    word-wrap: break-word;
+}
+
+.textStyle001
+{
+    padding-left: 4px;
+    padding-right: 8px;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    font-family: tahoma;
+    font-size: 17px;
+    color: rgb(255, 255, 255);
+    line-height: 18px;
+    word-wrap: break-word;
+}
+
+.textStyle002
+{
+    padding-left: 4px;
+    padding-right: 8px;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    font-family: arial;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    line-height: 18px;
+    word-wrap: break-word;
+}
+
+body
+{
+    height: 100%;
+    /* the overflow hidden makes scroll bars disappear */
+    overflow: hidden;
+    color: rgb(255, 255, 255);
+}
+
+a:link
+{
+    color: rgb(0, 200, 255);  /* 0, 153, 155 */
+}
+
+a:visited
+{
+    color: rgb(200, 200, 200);
+}
+
+.tile
+{
+    font-family: tahoma;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    word-wrap: break-word;
+}
+
+.dedicationStyle
+{
+    position: absolute;
+    left: 1580px;
+    top: 40px;
+    width: 500px;
+    height: 400px;
+    z-index: 5;
+    font-family: arial;
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+#periodicTable
+{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 1535;
+    height: 912px;
+    z-index: 3;
+
+    background-image: url("textures/periodicTable.png");
+
+    /*
+    background-image: url("https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/periodictable.png");
+    */
+
+    background-size: cover;
+}
+
+.elementInfoStyle
+{
+    position: absolute;
+    left: 195px;
+    top: 132px;
+    width: 430px;
+    height: 200px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 0px;
+    z-index: 4;
+    background: rgb(0, 0, 0);
+    font-family: tahoma;
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+video
+{
+    width: 500px;
+    border: solid;
+    border-width: 1px;
+    border-color: rgb(255, 255, 255);
+}
+
+audio
+{
+    display: none;
+}
+
+.theImage
+{
+    height: 80%;
+    z-index: 10;
+    vertical-align: middle;
+}
+
+.boxStyle001
+{
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    z-index: 4;
+    border-style: solid;
+    border-width: 3px;
+    border-color: rgb(0, 0, 0);
+    background: rgb(171, 171, 171);
+    font-family: tahoma;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.boxStyle002
+{
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    z-index: 4;
+    border-style: solid;
+    border-width: 3px;
+    border-color: rgb(170, 170, 170);
+    background: rgb(0, 0, 0);
+    font-family: tahoma;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    word-wrap: break-word;
+}
+
+</style>
+
+</head>
+
+<body onload = "whenLoaded();">
+
+<!-- player -->
+<div id = "thePlayer" class = "boxStyle1"> WASD<br>To Move </div>
+
+<!-- background dimensions -->
+<div id = "theBackgroundDimensions"></div>
+
+<!-- background texture -->
+<div id = "theBackgroundTexture"></div>
+
+<!-- info -->
+<details class = "infoStyle">
+<summary></summary>
+<div id = "infoSongStatusId" class = "textStyle001"> Song Status </div>
+
+<div id = "infoMousePositionId" class = "textStyle001"> Mouse Position </div>
+</details>
+
+<!-- periodic table -->
+<div id = "periodicTable"></div>
+
+<!-- dedication -->
+<div id = "theDedication" class = "dedicationStyle">
+Dedicated to God the Father<br>
+<b>TOPALIAN GAME ENGINE</b><br>
+<a href = "https://github.com/ChristopherTopalian" target = "_blank" class = "textStyle002">https://github.com/ChristopherTopalian</a>
+
+</div>
+
+<!-- info -->
+<details class = "instructionsDetailsStyle">
+<summary></summary>
+<!-- instructions -->
+<div id = "instructions" class = "instructionsStyle">
+W is up, S is down, <br>
+A is left, D is Right <br>
+~ 1 2 3 4 5 6 7 8 9 0 for speed <br>
+Hold Shift to Boost Speed <br>
+Letter V to Start Song <br>
+Letter B to Stop Song <br>
+Letter N player is see-through <br>
+Letter M player is solid
+</div>
+</details>
+
+<!-- element info box -->
+<table class = "elementInfoStyle">
+<tr>
+<td>
+<div id = "elementInfo">ELEMENT<br>INFO</div>
+</td>
+</tr>
+
+<!-- sound files -->
+<!-- if no internet resource is found, it instead uses the local file -->
+<audio id = "songActionStrike" controls preload = "auto" loop>
+    <source src = "https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/action_strike.mp3">
+    <source src = "songs\Action Strike.mp3" type = "audio/mpeg">
+</audio>
+
+<audio id = "sfxBlip001Id" controls preload = "auto">
+    <source src = "https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/sfx_blip_001.mp4">
+    <source src = "sfx\sfx_blip_001.mp4" type = "video/mp4">
+</audio>
+
+<audio id = "sfxCrystalBell001Id" controls preload = "auto">
+    <source src = "https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/sfx_crystal_bell_001.mp4" type = "video/mp4">
+    <source src = "sfx\sfx_crystal_bell_001.mp4" type = "video/mp4">
+</audio>
+
+<audio id = "sfxZap001Id" controls preload = "auto">
+    <source src = "https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/sfx_zap_001.mp4" type = "video/mp4">
+    <source src = "sfx\sfx_zap_001.mp4" type = "video/mp4">
+</audio>
+
+<script>
+
+let collisionColor001 = "rgb(128, 128, 128)";
+
+let collisionColor002 = "rgb(170, 170, 170)";
+
+let videosChemistry = [
+{
+title: "The Periodic Table Explained",
+date: "July 27",
+year: "2017",
+url: "https://www.youtube.com/embed/wXRHz5ZEIK0?start=13",
+tag: "youtubeVideo"
+},
+{
+title: " Atomic Number Atomic Mass And Mass Number ",
+date: "March 25",
+year: "2015",
+url: "https://www.youtube.com/embed/iTpadg_faDk?start=53",
+tag: "youtubeVideo"
+},
+{
+title: " Chemical Reactions And Equations ",
+date: "March 25",
+year: "2015",
+url: "https://www.youtube.com/embed/WIISgj-BriE",
+tag: "youtubeVideo"
+},
+{
+title: "Faraday's First Law of Electrolysis",
+date: "April 1",
+year: "2013",
+url: "https://www.youtube.com/embed/sZ8Z54E4WXI",
+tag: "youtubeVideo"
+}
+];
+
+let theElements = [
+{
+name: "Hydrogen",
+number: "1",
+abbreviation: "H",
+url: "https://en.wikipedia.org/wiki/Hydrogen",
+tag: "chemicalElement"
+},
+{
+name: "Helium",
+number: "2",
+abbreviation: "He",
+url: "https://en.wikipedia.org/wiki/Helium",
+tag: "chemicalElement"
+},
+{
+name: "Lithium",
+number: "3",
+abbreviation: "Li",
+url: "https://en.wikipedia.org/wiki/Lithium",
+tag: "chemicalElement"
+},
+{
+name: "Beryllium",
+number: "4",
+abbreviation: "Be",
+url: "https://en.wikipedia.org/wiki/Beryllium",
+tag: "chemicalElement"
+},
+{
+name: "Boron",
+number: "5",
+abbreviation: "B",
+url: "https://en.wikipedia.org/wiki/Boron",
+tag: "chemicalElement"
+},
+{
+name: "Carbon",
+number: "6",
+abbreviation: "C",
+url: "https://en.wikipedia.org/wiki/Carbon",
+tag: "chemicalElement"
+},
+{
+name: "Nitrogen",
+number: "7",
+abbreviation: "N",
+url: "https://en.wikipedia.org/wiki/Nitrogen",
+tag: "chemicalElement"
+},
+{
+name: "Oxygen",
+number: "8",
+abbreviation: "O",
+url: "https://en.wikipedia.org/wiki/Oxygen",
+tag: "chemicalElement"
+},
+{
+name: "Fluorine",
+number: "9",
+abbreviation: "F",
+url: "https://en.wikipedia.org/wiki/Fluorine",
+tag: "chemicalElement"
+},
+{
+name: "Neon",
+number: "10",
+abbreviation: "Ne",
+url: "https://en.wikipedia.org/wiki/Neon",
+tag: "chemicalElement"
+},
+{
+name: "Sodium",
+number: "11",
+abbreviation: "Na",
+url: "https://en.wikipedia.org/wiki/Sodium",
+tag: "chemicalElement"
+},
+{
+name: "Magnesium",
+number: "12",
+abbreviation: "Mg",
+url: "https://en.wikipedia.org/wiki/Magnesium",
+tag: "chemicalElement"
+},
+{
+name: "Aluminum",
+number: "13",
+abbreviation: "Al",
+url: "https://en.wikipedia.org/wiki/Aluminum",
+tag: "chemicalElement"
+},
+{
+name: "Silicon",
+number: "14",
+abbreviation: "Si",
+url: "https://en.wikipedia.org/wiki/Silicon",
+tag: "chemicalElement"
+},
+{
+name: "Phosphorus",
+number: "15",
+abbreviation: "P",
+url: "https://en.wikipedia.org/wiki/Phosphorus",
+tag: "chemicalElement"
+},
+{
+name: "Sulfur",
+number: "16",
+abbreviation: "S",
+url: "https://en.wikipedia.org/wiki/Sulfur",
+tag: "chemicalElement"
+},
+{
+name: "Chlorine",
+number: "17",
+abbreviation: "Cl",
+url: "https://en.wikipedia.org/wiki/Chlorine",
+tag: "chemicalElement"
+},
+{
+name: "Argon",
+number: "18",
+abbreviation: "Ar",
+url: "https://en.wikipedia.org/wiki/Argon",
+tag: "chemicalElement"
+},
+{
+name: "Potassium",
+number: "19",
+abbreviation: "K",
+url: "https://en.wikipedia.org/wiki/Potassium",
+tag: "chemicalElement"
+},
+{
+name: "Calcium",
+number: "20",
+abbreviation: "Ca",
+url: "https://en.wikipedia.org/wiki/Calcium",
+tag: "chemicalElement"
+},
+{
+name: "Scandium",
+number: "21",
+abbreviation: "Sc",
+url: "https://en.wikipedia.org/wiki/Scandium",
+tag: "chemicalElement"
+},
+{
+name: "Titanium",
+number: "22",
+abbreviation: "Ti",
+url: "https://en.wikipedia.org/wiki/Titanium",
+tag: "chemicalElement"
+},
+{
+name: "Vanadium",
+number: "23",
+abbreviation: "V",
+url: "https://en.wikipedia.org/wiki/Vanadium",
+tag: "chemicalElement"
+},
+{
+name: "Chromium",
+number: "24",
+abbreviation: "Cr",
+url: "https://en.wikipedia.org/wiki/Chromium",
+tag: "chemicalElement"
+},
+{
+name: "Manganese",
+number: "25",
+abbreviation: "Mn",
+url: "https://en.wikipedia.org/wiki/Manganese",
+tag: "chemicalElement"
+},
+{
+name: "Iron",
+number: "26",
+abbreviation: "Fe",
+url: "https://en.wikipedia.org/wiki/Iron",
+tag: "chemicalElement"
+},
+{
+name: "Cobalt",
+number: "27",
+abbreviation: "Co",
+url: "https://en.wikipedia.org/wiki/Cobalt",
+tag: "chemicalElement"
+},
+{
+name: "Nickel",
+number: "28",
+abbreviation: "Ni",
+url: "https://en.wikipedia.org/wiki/Nickel",
+tag: "chemicalElement"
+},
+{
+name: "Copper",
+number: "29",
+abbreviation: "Cu",
+url: "https://en.wikipedia.org/wiki/Copper",
+tag: "chemicalElement"
+},
+{
+name: "Zinc",
+number: "30",
+abbreviation: "Zn",
+url: "https://en.wikipedia.org/wiki/Zinc",
+tag: "chemicalElement"
+},
+{
+name: "Gallium",
+number: "31",
+abbreviation: "Ga",
+url: "https://en.wikipedia.org/wiki/Gallium",
+tag: "chemicalElement"
+},
+{
+name: "Germanium",
+number: "32",
+abbreviation: "Ge",
+url: "https://en.wikipedia.org/wiki/Germanium",
+tag: "chemicalElement"
+},
+{
+name: "Arsenic",
+number: "33",
+abbreviation: "As",
+url: "https://en.wikipedia.org/wiki/Arsenic",
+tag: "chemicalElement"
+},
+{
+name: "Selenium",
+number: "34",
+abbreviation: "Se",
+url: "https://en.wikipedia.org/wiki/Selenium",
+tag: "chemicalElement"
+},
+{
+name: "Bromine",
+number: "35",
+abbreviation: "Br",
+url: "https://en.wikipedia.org/wiki/Bromine",
+tag: "chemicalElement"
+},
+{
+name: "Krypton",
+number: "36",
+abbreviation: "Kr",
+url: "https://en.wikipedia.org/wiki/Krypton",
+tag: "chemicalElement"
+},
+{
+name: "Rubidium",
+number: "37",
+abbreviation: "Rb",
+url: "https://en.wikipedia.org/wiki/Rubidium",
+tag: "chemicalElement"
+},
+{
+name: "Strontium",
+number: "38",
+abbreviation: "Sr",
+url: "https://en.wikipedia.org/wiki/Strontium",
+tag: "chemicalElement"
+},
+{
+name: "Yttrium",
+number: "39",
+abbreviation: "Y",
+url: "https://en.wikipedia.org/wiki/Yttrium",
+tag: "chemicalElement"
+},
+{
+name: "Zirconium",
+number: "40",
+abbreviation: "Zr",
+url: "https://en.wikipedia.org/wiki/Zirconium",
+tag: "chemicalElement"
+},
+{
+name: "Niobium",
+number: "41",
+abbreviation: "Nb",
+url: "https://en.wikipedia.org/wiki/Niobium",
+tag: "chemicalElement"
+},
+{
+name: "Molybdenum",
+number: "42",
+abbreviation: "Mo",
+url: "https://en.wikipedia.org/wiki/Molybdenum",
+tag: "chemicalElement"
+},
+{
+name: "Technetium",
+number: "43",
+abbreviation: "Tc",
+url: "https://en.wikipedia.org/wiki/Technetium",
+tag: "chemicalElement"
+},
+{
+name: "Ruthenium",
+number: "44",
+abbreviation: "Ru",
+url: "https://en.wikipedia.org/wiki/Ruthenium",
+tag: "chemicalElement"
+},
+{
+name: "Rhodium",
+number: "45",
+abbreviation: "Rh",
+url: "https://en.wikipedia.org/wiki/Rhodium",
+tag: "chemicalElement"
+},
+{
+name: "Palladium",
+number: "46",
+abbreviation: "Pd",
+url: "https://en.wikipedia.org/wiki/Palladium",
+tag: "chemicalElement"
+},
+{
+name: "Silver",
+number: "47",
+abbreviation: "Ag",
+url: "https://en.wikipedia.org/wiki/Silver",
+tag: "chemicalElement"
+},
+{
+name: "Cadmium",
+number: "48",
+abbreviation: "Cd",
+url: "https://en.wikipedia.org/wiki/Cadmium",
+tag: "chemicalElement"
+},
+{
+name: "Indium",
+number: "49",
+abbreviation: "In",
+url: "https://en.wikipedia.org/wiki/Indium",
+tag: "chemicalElement"
+},
+{
+name: "Tin",
+number: "50",
+abbreviation: "Sn",
+url: "https://en.wikipedia.org/wiki/Tin",
+tag: "chemicalElement"
+},
+{
+name: "Antimony",
+number: "51",
+abbreviation: "Sb",
+url: "https://en.wikipedia.org/wiki/Antimony",
+tag: "chemicalElement"
+},
+{
+name: "Tellurium",
+number: "52",
+abbreviation: "Te",
+url: "https://en.wikipedia.org/wiki/Tellurium",
+tag: "chemicalElement"
+},
+{
+name: "Iodine",
+number: "53",
+abbreviation: "I",
+url: "https://en.wikipedia.org/wiki/Iodine",
+tag: "chemicalElement"
+},
+{
+name: "Xenon",
+number: "54",
+abbreviation: "Xe",
+url: "https://en.wikipedia.org/wiki/Xenon",
+tag: "chemicalElement"
+},
+{
+name: "Cesium",  // also spelled Caesium
+number: "55",
+abbreviation: "Cs",
+url: "https://en.wikipedia.org/wiki/Caesium",
+tag: "chemicalElement"
+},
+{
+name: "Barium",
+number: "56",
+abbreviation: "Ba",
+url: "https://en.wikipedia.org/wiki/Barium",
+tag: "chemicalElement"
+},
+{
+name: "Lanthanum",
+number: "57",
+abbreviation: "La",
+url: "https://en.wikipedia.org/wiki/Lanthanum",
+tag: "chemicalElement"
+},
+{
+name: "Cerium",
+number: "58",
+abbreviation: "Ce",
+url: "https://en.wikipedia.org/wiki/Cerium",
+tag: "chemicalElement"
+},
+{
+name: "Praseodymium",
+number: "59",
+abbreviation: "Pr",
+url: "https://en.wikipedia.org/wiki/Praseodymium",
+tag: "chemicalElement"
+},
+{
+name: "Neodymium",
+number: "60",
+abbreviation: "Nd",
+url: "https://en.wikipedia.org/wiki/Neodymium",
+tag: "chemicalElement"
+},
+{
+name: "Promethium",
+number: "61",
+abbreviation: "Pm",
+url: "https://en.wikipedia.org/wiki/Promethium",
+tag: "chemicalElement"
+},
+{
+name: "Samarium",
+number: "62",
+abbreviation: "Sm",
+url: "https://en.wikipedia.org/wiki/Samarium",
+tag: "chemicalElement"
+},
+{
+name: "Europium",
+number: "63",
+abbreviation: "Eu",
+url: "https://en.wikipedia.org/wiki/Europium",
+tag: "chemicalElement"
+},
+{
+name: "Gadolinium",
+number: "64",
+abbreviation: "Gd",
+url: "https://en.wikipedia.org/wiki/Gadolinium",
+tag: "chemicalElement"
+},
+{
+name: "Terbium",
+number: "65",
+abbreviation: "Tb",
+url: "https://en.wikipedia.org/wiki/Terbium",
+tag: "chemicalElement"
+},
+{
+name: "Dysprosium",
+number: "66",
+abbreviation: "Dy",
+url: "https://en.wikipedia.org/wiki/Dysprosium",
+tag: "chemicalElement"
+},
+{
+name: "Holmium",
+number: "67",
+abbreviation: "Ho",
+url: "https://en.wikipedia.org/wiki/Holmium",
+tag: "chemicalElement"
+},
+{
+name: "Erbium",
+number: "68",
+abbreviation: "Er",
+url: "https://en.wikipedia.org/wiki/Erbium",
+tag: "chemicalElement"
+},
+{
+name: "Thulium",
+number: "69",
+abbreviation: "Tm",
+url: "https://en.wikipedia.org/wiki/Thulium",
+tag: "chemicalElement"
+},
+{
+name: "Ytterbium",
+number: "70",
+abbreviation: "Yb",
+url: "https://en.wikipedia.org/wiki/Ytterbium",
+tag: "chemicalElement"
+},
+{
+name: "Lutetium",
+number: "71",
+abbreviation: "Lu",
+url: "https://en.wikipedia.org/wiki/Lutetium",
+tag: "chemicalElement"
+},
+{
+name: "Hafnium",
+number: "72",
+abbreviation: "Hf",
+url: "https://en.wikipedia.org/wiki/Hafnium",
+tag: "chemicalElement"
+},
+{
+name: "Tantalum",
+number: "73",
+abbreviation: "Ta",
+url: "https://en.wikipedia.org/wiki/Tantalum",
+tag: "chemicalElement"
+},
+{
+name: "Tungsten",
+number: "74",
+abbreviation: "W",
+url: "https://en.wikipedia.org/wiki/Tungsten",
+tag: "chemicalElement"
+},
+{
+name: "Rhenium",
+number: "75",
+abbreviation: "Re",
+url: "https://en.wikipedia.org/wiki/Rhenium",
+tag: "chemicalElement"
+},
+{
+name: "Osmium",
+number: "76",
+abbreviation: "Os",
+url: "https://en.wikipedia.org/wiki/Osmium",
+tag: "chemicalElement"
+},
+{
+name: "Iridium",
+number: "77",
+abbreviation: "Ir",
+url: "https://en.wikipedia.org/wiki/Iridium",
+tag: "chemicalElement"
+},
+{
+name: "Platinum",
+number: "78",
+abbreviation: "Pt",
+url: "https://en.wikipedia.org/wiki/Platinum",
+tag: "chemicalElement"
+},
+{
+name: "Gold",
+number: "79",
+abbreviation: "Au",
+url: "https://en.wikipedia.org/wiki/Gold",
+tag: "chemicalElement"
+},
+{
+name: "Mercury",
+number: "80",
+abbreviation: "Hg",
+url: "https://en.wikipedia.org/wiki/Mercury_(element)",
+tag: "chemicalElement"
+},
+{
+name: "Thallium",
+number: "81",
+abbreviation: "Tl",
+url: "https://en.wikipedia.org/wiki/Thallium",
+tag: "chemicalElement"
+},
+{
+name: "Lead",
+number: "82",
+abbreviation: "Pb",
+url: "https://en.wikipedia.org/wiki/Lead",
+tag: "chemicalElement"
+},
+{
+name: "Bismuth",
+number: "83",
+abbreviation: "Bi",
+url: "https://en.wikipedia.org/wiki/Bismuth",
+tag: "chemicalElement"
+},
+{
+name: "Polonium",
+number: "84",
+abbreviation: "Po",
+url: "https://en.wikipedia.org/wiki/Polonium",
+tag: "chemicalElement"
+},
+{
+name: "Astatine",
+number: "85",
+abbreviation: "At",
+url: "https://en.wikipedia.org/wiki/Astatine",
+tag: "chemicalElement"
+},
+{
+name: "Radon",
+number: "86",
+abbreviation: "Rn",
+url: "https://en.wikipedia.org/wiki/Radon",
+tag: "chemicalElement"
+},
+{
+name: "Francium",
+number: "87",
+abbreviation: "Fr",
+url: "https://en.wikipedia.org/wiki/Francium",
+tag: "chemicalElement"
+},
+{
+name: "Radium",
+number: "88",
+abbreviation: "Ra",
+url: "https://en.wikipedia.org/wiki/Radium",
+tag: "chemicalElement"
+},
+{
+name: "Actinium",
+number: "89",
+abbreviation: "Ac",
+url: "https://en.wikipedia.org/wiki/Actinium",
+tag: "chemicalElement"
+},
+{
+name: "Thorium",
+number: "90",
+abbreviation: "Th",
+url: "https://en.wikipedia.org/wiki/Thorium",
+tag: "chemicalElement"
+},
+{
+name: "Protactinium",
+number: "91",
+abbreviation: "Pa",
+url: "https://en.wikipedia.org/wiki/Protactinium",
+tag: "chemicalElement"
+},
+{
+name: "Uranium",
+number: "92",
+abbreviation: "U",
+url: "https://en.wikipedia.org/wiki/Uranium",
+tag: "chemicalElement"
+},
+{
+name: "Neptunium",
+number: "93",
+abbreviation: "Np",
+url: "https://en.wikipedia.org/wiki/Neptunium",
+tag: "chemicalElement"
+},
+{
+name: "Plutonium",
+number: "94",
+abbreviation: "Pu",
+url: "https://en.wikipedia.org/wiki/Plutonium",
+tag: "chemicalElement"
+},
+{
+name: "Americium",
+number: "95",
+abbreviation: "Am",
+url: "https://en.wikipedia.org/wiki/Americium",
+tag: "chemicalElement"
+},
+{
+name: "Curium",
+number: "96",
+abbreviation: "Cm",
+url: "https://en.wikipedia.org/wiki/Curium",
+tag: "chemicalElement"
+},
+{
+name: "Berkelium",
+number: "97",
+abbreviation: "Bk",
+url: "https://en.wikipedia.org/wiki/Berkelium",
+tag: "chemicalElement"
+},
+{
+name: "Californium",
+number: "98",
+abbreviation: "Cf",
+url: "https://en.wikipedia.org/wiki/Californium",
+tag: "chemicalElement"
+},
+{
+name: "Einsteinium",
+number: "99",
+abbreviation: "Es",
+url: "https://en.wikipedia.org/wiki/Einsteinium",
+tag: "chemicalElement"
+},
+{
+name: "Fermium",
+number: "100",
+abbreviation: "Fm",
+url: "https://en.wikipedia.org/wiki/Fermium",
+tag: "chemicalElement"
+},
+{
+name: "Mendelevium",
+number: "101",
+abbreviation: "Md",
+url: "https://en.wikipedia.org/wiki/Mendelevium",
+tag: "chemicalElement"
+},
+{
+name: "Nobelium",
+number: "102",
+abbreviation: "No",
+url: "https://en.wikipedia.org/wiki/Nobelium",
+tag: "chemicalElement"
+},
+{
+name: "Lawrencium",
+number: "103",
+abbreviation: "Lr",
+url: "https://en.wikipedia.org/wiki/Lawrencium",
+tag: "chemicalElement"
+},
+{
+name: "Rutherfordium",
+number: "104",
+abbreviation: "Rf",
+url: "https://en.wikipedia.org/wiki/Rutherfordium",
+tag: "chemicalElement"
+},
+{
+name: "Dubnium",
+number: "105",
+abbreviation: "Db",
+url: "https://en.wikipedia.org/wiki/Dubnium",
+tag: "chemicalElement"
+},
+{
+name: "Seaborgium",
+number: "106",
+abbreviation: "Sg",
+url: "https://en.wikipedia.org/wiki/Seaborgium",
+tag: "chemicalElement"
+},
+{
+name: "Bohrium",
+number: "107",
+abbreviation: "Bh",
+url: "https://en.wikipedia.org/wiki/Bohrium",
+tag: "chemicalElement"
+},
+{
+name: "Hassium",
+number: "108",
+abbreviation: "Hs",
+url: "https://en.wikipedia.org/wiki/Hassium",
+tag: "chemicalElement"
+},
+{
+name: "Meitnerium",
+number: "109",
+abbreviation: "Mt",
+url: "https://en.wikipedia.org/wiki/Meitnerium",
+tag: "chemicalElement"
+},
+{
+name: "Darmstadtium",
+number: "110",
+abbreviation: "Ds",
+url: "https://en.wikipedia.org/wiki/Darmstadtium",
+tag: "chemicalElement"
+},
+{
+name: "Roentgenium",
+number: "111",
+abbreviation: "Rg",
+url: "https://en.wikipedia.org/wiki/Roentgenium",
+tag: "chemicalElement"
+},
+{
+name: "Copernicium",
+number: "112",
+abbreviation: "Cn",
+url: "https://en.wikipedia.org/wiki/Copernicium",
+tag: "chemicalElement"
+},
+{
+name: "Nihonium",
+number: "113",
+abbreviation: "Nh",
+url: "https://en.wikipedia.org/wiki/Nihonium",
+tag: "chemicalElement"
+},
+{
+name: "Flerovium",
+number: "114",
+abbreviation: "Fl",
+url: "https://en.wikipedia.org/wiki/Flerovium",
+tag: "chemicalElement"
+},
+{
+name: "Moscovium",
+number: "115",
+abbreviation: "Mc",
+url: "https://en.wikipedia.org/wiki/Moscovium",
+tag: "chemicalElement"
+},
+{
+name: "Livermorium",
+number: "116",
+abbreviation: "Lv",
+url: "https://en.wikipedia.org/wiki/Livermorium",
+tag: "chemicalElement"
+},
+{
+name: "Tennessine",
+number: "117",
+abbreviation: "Ts",
+url: "https://en.wikipedia.org/wiki/Tennessine",
+tag: "chemicalElement"
+},
+{
+name: "Oganesson",
+number: "118",
+abbreviation: "Og",
+url: "https://en.wikipedia.org/wiki/Oganesson",
+tag: "chemicalElement"
+},
+];
+
+let objectsPeriodicTable = [
+{
+name: "boxIron",
+type: "div",
+positionType: "absolute",
+x: 603,
+y: 353,
+width: 65,
+height: 60,
+
+// text: "IRON <br> 26 <br> Fe",
+
+text: theElements[findIndexByName(theElements, "Iron")].name + "<br>" + theElements[findIndexByName(theElements, "Iron")].number + "<br>" +
+theElements[findIndexByName(theElements, "Iron")].abbreviation,
+
+id: "boxIron",
+styleName: "boxStyle001"
+},
+{
+name: "boxCopper",
+type: "div",
+positionType: "absolute",
+x: 855,
+y: 354,
+width: 65,
+height: 60,
+
+// text: "COPPER <br> 29 <br> Cu",
+
+text: theElements[findIndexByName(theElements, "Copper")].name + "<br>" + theElements[findIndexByName(theElements, "Copper")].number + "<br>" +
+theElements[findIndexByName(theElements, "Copper")].abbreviation,
+
+id: "boxCopper",
+styleName: "boxStyle001"
+},
+{
+name: "boxSilver",
+type: "div",
+positionType: "absolute",
+x: 855,
+y: 437,
+width: 65,
+height: 60,
+
+// text: "SILVER <br> 47 <br> Ag",
+
+text: theElements[findIndexByName(theElements, "Silver")].name + "<br>" + theElements[findIndexByName(theElements, "Silver")].number + "<br>" +
+theElements[findIndexByName(theElements, "Silver")].abbreviation,
+
+id: "boxSilver",
+styleName: "boxStyle001"
+},
+{
+name: "boxGold",
+type: "div",
+positionType: "absolute",
+x: 855,
+y: 522,
+width: 65,
+height: 60,
+
+// text: "GOLD <br> 79 <br> Au",
+
+text: theElements[findIndexByName(theElements, "Gold")].name + "<br>" + theElements[findIndexByName(theElements, "Gold")].number + "<br>" +
+theElements[findIndexByName(theElements, "Gold")].abbreviation,
+
+id: "boxGold",
+styleName: "boxStyle001"
+}
+];
+
+let objectsPart2 = [
+{
+name: "boxCarbonTrigger",
+type: "div",
+positionType: "absolute",
+x: 1650,
+y: 400,
+width: 65,
+height: 60,
+text: "boxCarbonTrigger",
+id: "boxCarbonTrigger",
+styleName: "boxStyle002"
+},
+{
+name: "boxNitrogenTrigger",
+type: "div",
+positionType: "absolute",
+x: 1965,
+y: 400,
+width: 65,
+height: 60,
+text: "boxNitrogenTrigger",
+id: "boxNitrogenTrigger",
+styleName: "boxStyle002"
+}
+];
+
+let objectsTriggers = [
+{
+name: "boxSilverTrigger",
+type: "div",
+positionType: "absolute",
+x: 186,
+y: 2280,
+width: 65,
+height: 60,
+text: "boxSilverTrigger",
+id: "boxSilverTrigger",
+styleName: "boxStyle002"
+},
+{
+name: "boxGoldTrigger",
+type: "div",
+positionType: "absolute",
+x: 186,
+y: 2500,
+width: 65,
+height: 60,
+text: "boxGoldTrigger",
+id: "boxGoldTrigger",
+styleName: "boxStyle002"
+}
+];
+
+let objectsPart3 = [
+{
+name: "boxCollideTop",
+type: "div",
+positionType: "absolute",
+x: 100,
+y: 1100,
+width: 150,
+height: 150,
+text: "Collide Top boxCollideTop",
+id: "boxCollideTop",
+styleName: "boxStyle002"
+},
+{
+name: "boxCollideBottom",
+type: "div",
+positionType: "absolute",
+x: 400,
+y: 1100,
+width: 150,
+height: 150,
+text: "Collide Bottom boxCollideBottom",
+id: "boxCollideBottom",
+styleName: "boxStyle002"
+},
+{
+name: "boxCollideLeft",
+type: "div",
+positionType: "absolute",
+x: 700,
+y: 1100,
+width: 150,
+height: 150,
+text: "Collide Left boxCollideLeft",
+id: "boxCollideLeft",
+styleName: "boxStyle002"
+},
+{
+name: "boxCollideRight",
+type: "div",
+positionType: "absolute",
+x: 1000,
+y: 1100,
+width: 150,
+height: 150,
+text: "Collide Right boxCollideRight",
+id: "boxCollideRight",
+styleName: "boxStyle002"
+}
+];
+
+function findIndexByName(whichArray, searchWord)
+{
+    // name of the array we are searching
+    let theArray = eval(whichArray);
+
+    // index in the array of the found word
+    let index = theArray.findIndex(
+        function(theArray)
+        {
+            return theArray.name === searchWord;
+        }
+    );
+    return index;
+}
+
+function showElementFromArrayOfObjects(whichArray, theChoice, xPos, yPos)
+{
+    whichArray = eval(whichArray);
+
+    let theName = whichArray[findIndexByName(whichArray, theChoice)].name;
+
+    let theNumber = whichArray[findIndexByName(whichArray, theChoice)].number;
+
+    let theAbbreviation = whichArray[findIndexByName(whichArray, theChoice)].abbreviation;
+
+    let theLink = whichArray[findIndexByName(whichArray, theChoice)].url;
+
+    let topicDiv = document.createElement("div");
+    topicDiv.style.position = "absolute";
+    topicDiv.style.left = xPos + 50;
+    topicDiv.style.top = yPos - 50;
+    topicDiv.style.width = "163px";
+    topicDiv.style.padding = "10px";
+    topicDiv.style.zIndex = "2";
+    topicDiv.style.borderStyle = "solid";
+    topicDiv.style.borderColor = "rgb(255, 255, 255)";
+    topicDiv.style.background = "rgb(0, 0, 0)";
+    topicDiv.style.fontFamily = "tahoma";
+    topicDiv.style.fontSize = "20px";
+    topicDiv.style.fontWeight = "bold";
+    topicDiv.style.color = "rgb(255, 255, 255)";
+    topicDiv.style.textAlign = "center";
+    topicDiv.innerHTML = theName + "<br>";
+    topicDiv.innerHTML += theNumber + "<br>";
+    topicDiv.innerHTML += theAbbreviation + "<br>";
+    topicDiv.innerHTML += '<a href = \'' +theLink+ '\' target = "_blank"> Link </a>';
+    topicDiv.id = theName;
+    document.body.append(topicDiv);
+}
+
+// shows the list of periodic elements in a div
+function periodicElements(whichArray, xPos, yPos)
+{
+    whichArray = eval(whichArray);
+
+    let elementDiv = document.createElement("div");
+    elementDiv.style.position = "absolute";
+    elementDiv.style.left = xPos + "px";
+    elementDiv.style.top = yPos + "px";
+    elementDiv.style.paddingLeft = 10 + "px";
+    elementDiv.style.paddingRight = 10 + "px";
+    elementDiv.style.paddingTop = 10 + "px";
+    elementDiv.style.paddingBottom = 14 + "px";
+    elementDiv.style.zIndex = 2;
+    elementDiv.style.borderStyle = "solid";
+    elementDiv.style.borderColor = "rgb(255, 255, 255)";
+    elementDiv.style.borderRadius = "4px";
+    elementDiv.style.backgroundColor = "rgb(0, 0, 0)";
+    elementDiv.style.fontFamily = "Tahoma";
+    elementDiv.style.fontWeight = "bold";
+    elementDiv.style.color = "rgb(255, 255, 255)";
+    elementDiv.style.textAlign = "right";
+    elementDiv.id = "periodicTableElements";
+    document.body.append(elementDiv);
+
+    let output = "";
+
+    for (let x = 0; x < whichArray.length; x++)
+    {
+        if (whichArray[x].tag == "chemicalElement")
+        {
+            output += whichArray[x].name + " ";
+            output += whichArray[x].number + " ";
+            output += '<a href = \'' + whichArray[x].url + '\' target = "_blank"> Link </a>';
+            output += '<br>';
+        }
+    }
+    elementDiv.innerHTML = output;
+}
+
+// shows the list of periodic elements in a div
+function periodicElementsNameAsLink(whichArray, xPos, yPos)
+{
+    whichArray = eval(whichArray);
+
+    let elementDiv = document.createElement("div");
+    elementDiv.style.position = "absolute";
+    elementDiv.style.left = xPos + "px";
+    elementDiv.style.top = yPos + "px";
+    elementDiv.style.paddingLeft = 10 + "px";
+    elementDiv.style.paddingRight = 10 + "px";
+    elementDiv.style.paddingTop = 10 + "px";
+    elementDiv.style.paddingBottom = 14 + "px";
+    elementDiv.style.zIndex = 2;
+    elementDiv.style.borderStyle = "solid";
+    elementDiv.style.borderColor = "rgb(255, 255, 255)";
+    elementDiv.style.borderRadius = "4px";
+    elementDiv.style.backgroundColor = "rgb(0, 0, 0)";
+    elementDiv.style.fontFamily = "Tahoma";
+    elementDiv.style.fontSize = 20 + "px";
+    elementDiv.style.fontWeight = "bold";
+    elementDiv.style.color = "rgb(255, 255, 255)";
+    elementDiv.style.textAlign = "right";
+    elementDiv.id = "periodicTableElements";
+    document.body.append(elementDiv);
+
+    let output = "";
+
+    for (let x = 0; x < whichArray.length; x++)
+    {
+        if (whichArray[x].tag == "chemicalElement")
+        {
+            output += '<a href = \'' + whichArray[x].url + '\' target = "_blank"> '+whichArray[x].name+'</a>';
+
+            output += '&nbsp';
+
+            output += whichArray[x].number;
+
+            output += '<br>';
+        }
+    }
+    elementDiv.innerHTML = output;
+}
+
+function showOneElement(theName, theNumber, theLink, xPos, yPos)
+{
+    let topicDiv = document.createElement("div");
+    topicDiv.style.position = "absolute";
+    topicDiv.style.left = xPos + 50;
+    topicDiv.style.top = yPos - 50;
+    topicDiv.style.width = "163px";
+    topicDiv.style.padding = "10px";
+    topicDiv.style.zIndex = "2";
+    topicDiv.style.borderStyle = "solid";
+    topicDiv.style.borderColor = "rgb(255, 255, 255)";
+    topicDiv.style.background = "rgb(0, 0, 0)";
+    topicDiv.style.fontFamily = "tahoma";
+    topicDiv.style.fontSize = "20px";
+    topicDiv.style.fontWeight = "bold";
+    topicDiv.style.color = "rgb(255, 255, 255)";
+    topicDiv.style.textAlign = "center";
+    topicDiv.innerHTML = theName + "<br>";
+    topicDiv.innerHTML += theNumber + "<br>";
+    topicDiv.innerHTML += '<a href = \'' +theLink+ '\' target = "_blank"> Link </a>';
+    topicDiv.id = theName;
+    document.body.append(topicDiv);
+}
+
+// makes divs in a row
+function rowOfElements(whichArray, xPos, yPos, sizeX)
+{
+    whichArray = eval(whichArray);
+
+    // correct x position by subtracting the sizeX
+    xPos -= sizeX;
+
+    for (let x = 0; x < whichArray.length; x++)
+    {
+        // add the sizeX to xPos and add an offset
+        xPos = xPos + sizeX + 75;
+
+        let theDiv = document.createElement("div");
+        theDiv.style.position = "absolute";
+        theDiv.style.left = xPos;
+        theDiv.style.top = yPos;
+        theDiv.style.width = sizeX;
+        theDiv.style.zIndex = "2";
+        theDiv.style.padding = "25px";
+        theDiv.style.borderStyle = "solid";
+        theDiv.style.borderWidth = "2px";
+        theDiv.style.borderColor = "rgb(255, 255, 255)";
+        theDiv.style.background = "rgb(0, 0, 0)";
+        theDiv.style.fontFamily = "tahoma";
+        theDiv.style.fontWeight = "bold";
+        theDiv.style.fontSize = "25px";
+        theDiv.style.color = "rgb(255, 255, 255)";
+        theDiv.style.textAlign = "center";
+        theDiv.style.lineHeight = 30 + "px";
+        theDiv.innerHTML = whichArray[x].name + "<br>";
+        theDiv.innerHTML += whichArray[x].number + "<br>";
+        theDiv.innerHTML += '<a href = \'' + whichArray[x].url + '\' target = "_blank"> Link </a>';
+        document.body.append(theDiv);
+    }
+}
+
+// create the objects on the screen
+function objectsToScreen(whichArray)
+{
+    whichArray = eval(whichArray);
+
+    for (let x = 0; x < whichArray.length; x++)
+    {
+        let theElement = document.createElement(whichArray[x].type);
+        theElement.style.position = whichArray[x].positionType;
+        theElement.style.left = whichArray[x].x + "px";
+        theElement.style.top = whichArray[x].y + "px";
+        theElement.style.width = whichArray[x].width + "px";
+        theElement.style.height = whichArray[x].height + "px";
+        theElement.id = whichArray[x].id;
+        theElement.innerHTML = whichArray[x].text;
+        theElement.title = whichArray[x].name;
+        theElement.className = whichArray[x].styleName;
+        document.body.append(theElement);
+    }
+}
+
+// make Tiles in one row for a Background
+function makeTilesOneRow(theTexture, howManyX, xPos, yPos, sizeX, sizeY)
+{
+    // correct x position by subtracting the sizeX
+    xPos -= sizeX;
+
+    for (let x = 0; x < howManyX; x++)
+    {
+        // add the sizeX to xPos
+        xPos = xPos + sizeX;
+
+        let makeTile = document.createElement("img");
+        makeTile.src = theTexture;
+        makeTile.style.position = "absolute";
+        makeTile.style.left = xPos;
+        makeTile.style.top = yPos;
+        makeTile.style.width = sizeX;
+        makeTile.style.height = sizeY;
+        makeTile.style.background = "rgb(0, 0, 0)";
+        makeTile.style.zIndex = "1";
+        makeTile.style.fontFamily = "tahoma";
+        makeTile.style.fontWeight = "bold";
+        makeTile.style.fontSize = "25px";
+        makeTile.style.color = "rgb(255, 255, 255)";
+        makeTile.style.textAlign = "center";
+        document.body.append(makeTile);
+    }
+}
+
+// make Tiles by specifying the amount of rows and columns for a Background
+function makeTiles(theTexture, rows, columns, xPos, yPos, sizeX, sizeY)
+{
+    // rows
+    for (let j = 0; j < rows; j++)
+    {
+        // correct x position by subtracting the sizeX
+        xPos -= sizeX;
+
+        // columns
+        for (let x = 0; x < columns; x++)
+        {
+            // add the sizeX to xPos
+            xPos = xPos + sizeX;
+
+            let makeTile = document.createElement("img");
+            makeTile.src = theTexture;
+            makeTile.style.position = "absolute";
+            makeTile.style.left = xPos;
+            makeTile.style.top = yPos;
+            makeTile.style.width = sizeX;
+            makeTile.style.height = sizeY;
+            makeTile.style.color = "rgb(255, 255, 255)";
+            makeTile.style.zIndex = "1";
+            makeTile.style.fontFamily = "tahoma";
+            makeTile.style.fontWeight = "bold";
+            makeTile.style.fontSize = "25px";
+            makeTile.style.textAlign = "center";
+            makeTile.style.background = "rgb(0, 0, 0)";
+            document.body.append(makeTile);
+        }
+        yPos += sizeY;
+        xPos += sizeX;
+        xPos -= xPos;
+    }
+}
+
+// makes iframes in a row to add content to our level
+function showWebsiteOrVideos(whichArray, xPos, yPos, sizeX, sizeY)
+{
+    whichArray = eval(whichArray);
+
+    // correct x position by subtracting the sizeX
+    xPos -= sizeX;
+
+    for (let x = 0; x < whichArray.length; x++)
+    {
+        // add the sizeX to xPos and add an offset
+        xPos = xPos + sizeX + 40;
+
+        let theFrame = document.createElement("iframe");
+        theFrame.src = whichArray[x].url;
+        theFrame.style.position = "absolute";
+        theFrame.style.left = xPos;
+        theFrame.style.top = yPos;
+        theFrame.style.width = sizeX;
+        theFrame.style.height = sizeY;
+        theFrame.style.zIndex = "2";
+        theFrame.style.background = "rgb(0, 0, 0)";
+        theFrame.style.fontFamily = "tahoma";
+        theFrame.style.fontWeight = "bold";
+        theFrame.style.fontSize = "20px";
+        theFrame.style.color = "rgb(255, 255, 255)";
+        theFrame.style.textAlign = "center";
+        document.body.append(theFrame);
+    }
+}
+
+// play a Sound or Song
+function audioPlay(whichAudioId, theVolume)
+{
+    let theAudio = document.getElementById(whichAudioId);
+
+    theAudio.play();
+
+    theAudio.volume = theVolume;
+
+    document.getElementById("infoSongStatusId").innerHTML = whichAudioId;
+}
+
+// stop a Sound or Song
+function audioStop(whichAudioId)
+{
+    let theAudio = document.getElementById(whichAudioId);
+
+    theAudio.pause();
+
+    document.getElementById("infoSongStatusId").innerHTML = "Song Stopped";
+}
+
+// when the Page Loads
+function whenLoaded()
+{
+    objectsToScreen("objectsPeriodicTable");
+    objectsToScreen("objectsTriggers");
+    objectsToScreen("objectsPart2");
+    objectsToScreen("objectsPart3");
+
+    // whichArray, xPos, yPos, sizeX, sizeY
+    showWebsiteOrVideos("videosChemistry", 2465, 670, 550, 550);
+
+    // shows periodic table on one row
+    // xPos, yPos, sizeX, sizeY
+    rowOfElements("theElements", 2465, 388, 200);
+
+    // below is a complex way to make a tiled background, one row at a time
+    /*
+    // theTexture, howManyX, xPos, yPos, sizeX, sizeY
+    makeTilesOneRow("textures/asphalt.jpg", 10, 0, 0, 500, 500);
+    makeTilesOneRow("textures/asphalt.jpg", 10, 0, 500, 500, 500);
+    makeTilesOneRow("textures/asphalt.jpg", 10, 0, 1000, 500, 500);
+    */
+
+    // here is an much easier way to make a tiled background with rows and columns specified
+    makeTiles(
+        "https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/asphalt.jpg",      // texture
+        // "textures/asphalt.jpg",  // texture
+        12,         // rows
+        3,           // columns
+        0,           // xPos
+        2790,     // yPos
+        500,       // sizeX
+        500        // sizeY
+    );
+
+    // instructions shown on the player for movement
+    document.getElementById("thePlayer").innerHTML = "WASD<br>TO MOVE";
+
+    // listen for mouse clicks and get mouse pos
+    window.addEventListener("click", mousePos, false);
+
+    // listen for keydown events
+    window.addEventListener("keydown", theControls, false);
+
+    // listen for keyup events
+    window.addEventListener("keyup", theControls, false);
+
+    // console.log(JSON.stringify(getAllInfo('boxIron')));
+}
+
+// the Keyboard Letter Codes that are being pressed
+let keyboard = { };
+
+keyboard.UP = 87;          // 87 is w, 38 is up arrow
+keyboard.DOWN = 83;   // 83 is s, 40 is down arrow
+keyboard.LEFT = 65;     // 65 is a, 37 is left arrow
+keyboard.RIGHT = 68;   // 68 is d, 39 is right arrow
+keyboard.SHIFT = 16;   // Shift Button
+
+// player's start position, id, and more
+let ourPlayer = {
+    x: 100,
+    y: 200,
+    speedMultiplier: 2,
+    playerId: document.getElementById("thePlayer"),
+    playerColor: "rgb(73, 100, 150)"
+};
+
+function theControls(e)
+{
+    // AUDIO
+    if (e.keyCode == 86) // Press Letter v
+    {
+        audioPlay("songActionStrike", 0.5);
+
+        ourPlayer.playerId.innerHTML = "Song Playing";
+    }
+
+    if (e.keyCode == 66) // Press Letter b
+    {
+        audioStop("songActionStrike", 0.5);
+
+        ourPlayer.playerId.innerHTML = "Song Stopped";
+    }
+
+    if (e.keyCode == 27) // Press Esc
+    {
+        audioStop("songActionStrike");
+
+        document.getElementById("thePlayer").innerHTML = "Song Stopped";
+    }
+
+    //TRANSPARENCY
+    if (e.keyCode == 77) // Letter m
+    {
+        ourPlayer.playerId.style.opacity = "1.0";
+    }
+    if (e.keyCode == 78) // Letter n
+    {
+        ourPlayer.playerId.style.opacity = "0.2";
+
+        ourPlayer.playerId.innerHTML = "";
+    }
+
+    //SPEED
+    if (e.keyCode == 192) // tilda ~
+    {
+        ourPlayer.speedMultiplier = 0.5;
+
+        ourPlayer.playerId.innerHTML = "Speed 0.5";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 49 || e.keyCode == 97) // number 1, or numpad 1
+    {
+        ourPlayer.speedMultiplier = 1;
+
+        ourPlayer.playerId.innerHTML = "Speed 1";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 50 || e.keyCode == 98) // number 2
+    {
+        ourPlayer.speedMultiplier = 2;
+
+        ourPlayer.playerId.innerHTML = "Speed 2";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 51 || e.keyCode == 99) // number 3
+    {
+        ourPlayer.speedMultiplier = 3;
+
+        ourPlayer.playerId.innerHTML = "Speed 3";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 52 || e.keyCode == 100) // number 4
+    {
+        ourPlayer.speedMultiplier = 4;
+
+        ourPlayer.playerId.innerHTML = "Speed 4";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 53 || e.keyCode == 101) // number 5
+    {
+        ourPlayer.speedMultiplier = 5;
+
+        ourPlayer.playerId.innerHTML = "Speed 5";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 54  || e.keyCode == 102) // number 6
+    {
+        ourPlayer.speedMultiplier = 6;
+
+        ourPlayer.playerId.innerHTML = "Speed 6";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 55 || e.keyCode == 103) // number 7
+    {
+        ourPlayer.speedMultiplier = 7;
+
+        ourPlayer.playerId.innerHTML = "Speed 7";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 56 || e.keyCode == 104) // number 8
+    {
+        ourPlayer.speedMultiplier = 8;
+
+        ourPlayer.playerId.innerHTML = "Speed 8";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 57 || e.keyCode == 105) // number 9
+    {
+        ourPlayer.speedMultiplier = 9;
+
+        ourPlayer.playerId.innerHTML = "Speed 9";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+    if (e.keyCode == 48 || e.keyCode == 96) // number 0
+    {
+        ourPlayer.speedMultiplier = 10;
+
+        ourPlayer.playerId.innerHTML = "Speed 10";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+    }
+
+    // find out which key was pressed
+    let theKeyCode = e.keyCode || e.which;
+    keyboard[theKeyCode] = e.type == 'keydown';
+}
+
+// character Movement
+function movePlayer(xPos, yPos)
+{
+    ourPlayer.x += (xPos || 0) * ourPlayer.speedMultiplier;
+
+    ourPlayer.y += (yPos || 0) * ourPlayer.speedMultiplier;
+
+    ourPlayer.playerId.style.left = ourPlayer.x + "px";
+
+    ourPlayer.playerId.style.top = ourPlayer.y + "px";
+}
+
+// player Movement Controls
+function playerMotion()
+{
+    if (keyboard[keyboard.LEFT])
+    {
+        movePlayer(-1, 0);
+    }
+    if (keyboard[keyboard.RIGHT])
+    {
+        movePlayer(1, 0);
+    }
+    if (keyboard[keyboard.UP])
+    {
+        movePlayer(0, -1);
+    }
+    if (keyboard[keyboard.DOWN])
+    {
+        movePlayer(0, 1);
+    }
+
+    if (keyboard[keyboard.LEFT] && keyboard[keyboard.SHIFT])
+    {
+        movePlayer(-2, 0);
+    }
+    if (keyboard[keyboard.RIGHT] && keyboard[keyboard.SHIFT])
+    {
+        movePlayer(2, 0);
+    }
+    if (keyboard[keyboard.UP] && keyboard[keyboard.SHIFT])
+    {
+        movePlayer(0, -2);
+    }
+    if (keyboard[keyboard.DOWN] && keyboard[keyboard.SHIFT])
+    {
+        movePlayer(0, 2);
+    }
+}
+
+function getAllInfo(theId)
+{
+    theId = document.getElementById(theId);
+
+    let theRect = theId.getBoundingClientRect();
+
+    return theRect;
+}
+
+function getPos(theId)
+{
+    theId = document.getElementById(theId);
+
+    let theRect = theId.getBoundingClientRect();
+
+    let theRectY = theId.getBoundingClientRect().top + window.scrollY;
+
+    let posXY = {
+        x: parseInt(theRect.x) + parseInt(theRect.width) / 2 + window.scrollX,
+        y: parseInt(theRectY) + parseInt(theRect.height) / 2
+    };
+    return posXY;
+}
+
+// get Size of the specified element by id
+function getSize(theId)
+{
+    theId = document.getElementById(theId);
+
+    let theRect = theId.getBoundingClientRect();
+
+    let sizeXY = {
+        x: parseInt(theRect.width),
+        y: parseInt(theRect.height)
+    };
+
+    return sizeXY;
+}
+
+function mousePos()
+{
+    let mouseX = event.pageX;
+
+    let mouseY = event.pageY;
+
+    let mousePos = "Mouse" + "<br>" + "X " + mouseX + "<br>" + "Y " + mouseY;
+
+    console.log(mousePos);
+
+    ourPlayer.playerId.innerHTML= mousePos;
+
+    document.getElementById("infoMousePositionId").innerHTML = mousePos;
+}
+
+// camera Follows the Player
+function cameraFollowsPlayer()
+{
+   ourPlayer.playerId.scrollIntoView({ block: "center", inline: "center" });
+}
+
+// detects collisions from any side
+function collisionAny(obj1, obj2)
+{
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        // if collision with object occurs
+        if (collided == true)
+        {
+            if (obj2 == "boxIron") // if boxIron is hit
+            {
+                audioPlay("sfxBlip001Id", 1.0);
+
+                // change the text of the player
+                document.getElementById("thePlayer").innerHTML = "IRON <br> 26 <br> Fe";
+
+                // change the color of the player
+                ourPlayer.playerId.style.backgroundColor = "rgb(128, 128, 128)"; // gray
+
+                // show the chemical element data
+                document.getElementById("elementInfo").innerHTML = "IRON <br> 26 <br> Fe <br> <a href = 'https://en.wikipedia.org/wiki/Iron' target = '_blank'> Link </a>";
+            }
+            if (obj2 == "boxCopper") // if boxCopper is hit
+            {
+                audioPlay("sfxBlip001Id", 1.0);
+
+                // change the text of the player
+                document.getElementById("thePlayer").innerHTML = "COPPER <br> 29 <br> Cu";
+
+                // change the color of the player
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(255, 187, 0)";
+
+                // show the chemical element data
+                document.getElementById("elementInfo").innerHTML= "COPPER <br> 29 <br> Cu <br><a href = 'https://en.wikipedia.org/wiki/Copper' target = '_blank'> Link </a>";
+            }
+            if (obj2 == "boxSilver") // if boxSilver is hit
+            {
+                audioPlay("sfxBlip001Id", 1.0);
+
+                // change the text of the player
+                document.getElementById("thePlayer").innerHTML = "SILVER <br> 47 <br> Ag";
+
+                // change the color of the player
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(192, 192, 192)"; // silver
+
+                // show the chemical element data
+                document.getElementById("elementInfo").innerHTML= "SILVER <br> 47 <br> Ag <br><a href = 'https://en.wikipedia.org/wiki/Silver' target = '_blank'> Link </a>";
+            }
+            if (obj2 == "boxGold") // if boxGold is hit
+            {
+                audioPlay("sfxBlip001Id", 1.0);
+
+                // change the text of the player
+                document.getElementById("thePlayer").innerHTML = "GOLD <br> 79 <br> Au";
+
+                // change the color of the player
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(255, 215, 0)"; // gold
+
+                // show the chemical element data
+                document.getElementById("elementInfo").innerHTML= "GOLD <br> 79 <br> Au <br><a href = 'https://en.wikipedia.org/wiki/Gold' target = '_blank'> Link </a>";
+            }
+        }
+    }
+}
+
+// detects collisions from top side only
+function collisionTopSide(obj1, obj2)
+{
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        let collidedY1 = theRect1.top > theRect2.top || theRect1.bottom > theRect2.bottom;
+
+        if (collided == true && collidedY1 != true)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the color of the player
+            document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "COLLIDED WITH TOP";
+
+            // change the color of the object
+            document.getElementById(obj2).style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){ document.getElementById(obj2).style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+        }
+    }
+}
+
+// detects collisions from bottom side only
+function collisionBottomSide(obj1, obj2)
+{
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        let collidedY1 = theRect1.top < theRect2.top || theRect1.bottom < theRect2.bottom;
+
+        if (collided == true && collidedY1 != true)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the color of the player
+            document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "COLLIDED WITH BOTTOM";
+
+            // change the color of the object
+            document.getElementById(obj2).style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){ document.getElementById(obj2).style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+        }
+    }
+}
+
+// detects collisions from left side only
+function collisionLeftSide(obj1, obj2)
+{
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        let collidedY1 = theRect1.left > theRect2.left || theRect1.right > theRect2.right;
+
+        if (collided == true && collidedY1 != true)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the color of the player
+            document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "COLLIDED WITH LEFT";
+
+            // change the color of the object
+            document.getElementById(obj2).style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){ document.getElementById(obj2).style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+        }
+    }
+}
+
+// detects collisions from right side only
+function collisionRightSide(obj1, obj2)
+{
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        let collidedY1 = theRect1.left < theRect2.left || theRect1.right < theRect2.right;
+
+        if (collided == true && collidedY1 != true)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the color of the player
+            document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "COLLIDED WITH RIGHT";
+
+            // change the color of the object
+            document.getElementById(obj2).style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){ document.getElementById(obj2).style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+        }
+    }
+}
+
+let lineYBoxThreeFlag = 0;
+let lineYBoxFourFlag = 0;
+let lineAt1700Flag = 0;
+let lineAt1900Flag = 0;
+let lineAt2830Flag = 0;
+let lineAt5730Flag = 0;
+
+let carbonFlag = 0;
+let nitrogenFlag = 0;
+
+// detect if the player crossed a specified object's x or y coordinate
+function wasObjectLineCrossed()
+{
+    // if objects exist
+    if (document.getElementById("thePlayer") &&
+        document.getElementById("boxCarbonTrigger"))
+    {
+        // if the player is located at a certain x position, compared with boxCarbonTrigger
+        if (getPos("thePlayer").x > getPos("boxCarbonTrigger").x - 20 &&
+            getPos("thePlayer").x < getPos("boxCarbonTrigger").x + 20)
+        {
+            audioPlay("sfxCrystalBell001Id", 1.0);
+
+            // change the color of the object
+            document.getElementById("boxCarbonTrigger").style.backgroundColor = collisionColor002;
+
+            // creates only one
+            if (carbonFlag == 0)
+            {
+                audioPlay("sfxZap001Id", 1.0);
+
+                // showOneElement("Carbon", 6, "https://en.wikipedia.org/wiki/Carbon", getPos("boxCarbonTrigger").x, getPos("boxCarbonTrigger").y);
+
+                showElementFromArrayOfObjects(theElements, "Carbon", getPos("boxCarbonTrigger").x, getPos("boxCarbonTrigger").y);
+
+                carbonFlag = 1;
+            }
+
+            // change the color of the player
+            document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "boxCarbonTrigger X Crossed";
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){ document.getElementById("boxCarbonTrigger").style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+        }
+
+        // if objects exist
+        if (document.getElementById("thePlayer") &&
+            document.getElementById("boxNitrogenTrigger"))
+        {
+            // if the player is located at a certain x position, compared with boxNitrogenTrigger
+            if (getPos("thePlayer").x > getPos("boxNitrogenTrigger").x - 20 &&
+                getPos("thePlayer").x < getPos("boxNitrogenTrigger").x + 20)
+            {
+                audioPlay("sfxCrystalBell001Id", 1.0);
+
+                // change the color of the player
+                document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+                // change the text of the player
+                document.getElementById("thePlayer").innerHTML = "boxNitrogenTrigger X Crossed";
+
+                // change the color of the object
+                document.getElementById("boxNitrogenTrigger").style.backgroundColor = collisionColor002;
+
+                // creates only one
+                if (nitrogenFlag == 0)
+                {
+                    audioPlay("sfxZap001Id", 1.0);
+
+                    // showOneElement("Nitrogen", 7, "https://en.wikipedia.org/wiki/Nitrogen", getPos("boxNitrogenTrigger").x, getPos("boxNitrogenTrigger").y);
+
+                    showElementFromArrayOfObjects(theElements, "Nitrogen", getPos("boxNitrogenTrigger").x, getPos("boxNitrogenTrigger").y);
+
+                    nitrogenFlag = 1;
+                }
+
+                // change the text of the player to an empty string
+                setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+                // change the color of the player back to original
+                setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+                // change the color of the object back to original
+                setTimeout(function(){ document.getElementById("boxNitrogenTrigger").style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+            }
+        }
+
+        // if objects exist
+        if (document.getElementById("thePlayer") &&
+            document.getElementById("boxSilverTrigger"))
+        {
+            // if the player is located at a certain position, compared with boxSilverTrigger
+            if (getPos("thePlayer").y > getPos("boxSilverTrigger").y - 20 &&
+                getPos("thePlayer").y < getPos("boxSilverTrigger").y + 20)
+            {
+                audioPlay("sfxCrystalBell001Id", 1.0);
+
+                // change the color of the player
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(192, 192, 192)"; // Silver
+
+                // change the color of the object
+                document.getElementById("boxSilverTrigger").style.backgroundColor = collisionColor002;
+
+                // change the text of the player
+                document.getElementById("thePlayer").innerHTML= "boxSilverTrigger Y Crossed<br>SILVER";
+
+                // creates only one
+                if (lineYBoxThreeFlag == 0)
+                {
+                    audioPlay("sfxZap001Id", 1.0);
+
+                    // showOneElement("Silver", 47, "https://en.wikipedia.org/wiki/Silver", getPos("boxSilverTrigger").x, getPos("boxSilverTrigger").y);
+
+                    showElementFromArrayOfObjects(theElements, "Silver", getPos("boxSilverTrigger").x, getPos("boxSilverTrigger").y);
+
+                    lineYBoxThreeFlag = 1;
+                }
+
+                // change the text of the player to an empty string
+                setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+                // change the color of the player back to original
+                setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+                // change the color of the object back to original
+                setTimeout(function(){ document.getElementById("boxSilverTrigger").style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+            }
+        }
+
+        // if objects exist
+        if (document.getElementById("thePlayer") &&
+            document.getElementById("boxGoldTrigger"))
+        {
+            // if the player is located at a certain position, compared with boxGoldTrigger
+            if (getPos("thePlayer").y > getPos("boxGoldTrigger").y - 20 &&
+                getPos("thePlayer").y < getPos("boxGoldTrigger").y + 20)
+            {
+                audioPlay("sfxCrystalBell001Id", 1.0);
+
+                // change the color of the player
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(255, 215, 0)"; // gold
+
+                // change the color of the object
+                document.getElementById("boxGoldTrigger").style.backgroundColor = collisionColor002;
+
+                // change the text of the player
+                document.getElementById("thePlayer").innerHTML = "boxGoldTrigger Y Crossed<br>GOLD";
+
+                // creates only one
+                if (lineYBoxFourFlag == 0)
+                {
+                    audioPlay("sfxZap001Id", 1.0);
+
+                    // showOneElement("Gold", 79, "https://en.wikipedia.org/wiki/Gold", getPos("boxGoldTrigger").x, getPos("boxGoldTrigger").y);
+
+                    showElementFromArrayOfObjects(theElements, "Gold", getPos("boxGoldTrigger").x, getPos("boxGoldTrigger").y);
+
+                    lineYBoxFourFlag = 1;
+                }
+
+                // change the text of the player to an empty string
+                setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+                // change the color of the player back to original
+                setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+                // change the color of the object back to original
+                setTimeout(function(){ document.getElementById("boxGoldTrigger").style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+            }
+        }
+    }
+}
+
+// detect if the player crossed a specific x or y coordinate
+function wasLineCrossed()
+{
+    // if player object exists
+    if (document.getElementById("thePlayer"))
+    {
+        /*
+        // if the player is located at a certain x position
+        if (getPos("thePlayer").x > 150 - 20 &&
+            getPos("thePlayer").x < 150 + 20)
+        {
+            audioPlay("songActionStrike", 0.5);
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+        }
+        */
+
+        // if the player is located at a certain y position
+        if (getPos("thePlayer").y > 1700 - 20 &&
+            getPos("thePlayer").y < 1700 + 20)
+        {
+            audioPlay("sfxCrystalBell001Id", 1.0);
+
+            // change the text of the player
+            ourPlayer.playerId.innerHTML = "1700 Y Crossed<br>Hydrogen";
+
+            // change the color of the player
+            document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+            // creates only one
+            if (lineAt1700Flag == 0)
+            {
+                audioPlay("sfxZap001Id", 1.0);
+
+                // showOneElement("Hydrogen", 1, "https://en.wikipedia.org/wiki/Hydrogen", 50, 1700);
+
+                showElementFromArrayOfObjects(theElements, "Hydrogen", 50, 1700);
+            }
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 1000);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            lineAt1700Flag = 1;
+        }
+
+        // if the player is located at a certain y position
+        if (getPos("thePlayer").y > 1900 - 20 &&
+            getPos("thePlayer").y < 1900 + 20)
+        {
+            audioPlay("sfxCrystalBell001Id", 1.0);
+
+            // change the color of the player
+            document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "1900 Y Crossed<br>Helium";
+
+            // creates only one
+            if (lineAt1900Flag == 0)
+            {
+                audioPlay("sfxZap001Id", 1.0);
+
+                // showOneElement("Helium", 2, "https://en.wikipedia.org/wiki/Helium", 50, 1900);
+
+                showElementFromArrayOfObjects(theElements, "Helium", 50, 1900);
+            }
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 1000);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            lineAt1900Flag = 1;
+        }
+
+        // if the player is located at a certain y position
+        if (getPos("thePlayer").y > 2830 - 20 &&
+            getPos("thePlayer").y < 2830 + 20)
+        {
+            audioPlay("sfxCrystalBell001Id", 1.0);
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "2830 Y Crossed";
+
+            // change the color of the player
+            document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+            // creates only one
+            if (lineAt2830Flag == 0)
+            {
+                audioPlay("sfxCrystalBell001Id", 1.0);
+
+                audioPlay("sfxZap001Id", 1.0);
+
+                periodicElements("theElements", 250, 2832, 300);
+            }
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            lineAt2830Flag = 1;
+        }
+
+        // if the player is located at a certain y position
+        if (getPos("thePlayer").y > 5730 - 20 &&
+            getPos("thePlayer").y < 5730 + 20)
+        {
+            audioPlay("sfxCrystalBell001Id", 1.0);
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "5730 Y Crossed";
+
+            // change the color of the player
+            document.getElementById("thePlayer").style.backgroundColor = collisionColor001;
+
+            // creates only one
+            if (lineAt5730Flag == 0)
+            {
+                audioPlay("sfxCrystalBell001Id", 1.0);
+
+                audioPlay("sfxZap001Id", 1.0);
+
+                periodicElementsNameAsLink("theElements", 800, 5730);
+            }
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            lineAt5730Flag = 1;
+        }
+    }
+}
+
+function updateWorld()
+{
+   playerMotion();
+
+   cameraFollowsPlayer();
+
+   collisionAny("thePlayer", "boxIron");
+   collisionAny("thePlayer", "boxCopper");
+   collisionAny("thePlayer", "boxSilver");
+   collisionAny("thePlayer", "boxGold");
+
+   collisionTopSide("thePlayer", "boxCollideTop");
+   collisionBottomSide("thePlayer", "boxCollideBottom");
+   collisionLeftSide("thePlayer", "boxCollideLeft");
+   collisionRightSide("thePlayer", "boxCollideRight");
+
+   wasObjectLineCrossed();
+
+   wasLineCrossed()
+
+   requestAnimationFrame(updateWorld);
+}
+
+// our game loop
+updateWorld();
+
+// start Player at ourPlayer.x and ourPlayer.y position
+movePlayer();
+
+</script>
+</body>
+</html>

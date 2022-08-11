@@ -1,0 +1,1357 @@
+<!-- Dedicated to God the Father -->
+<!-- All Rights Reserved Christopher Topalian Copyright 2020-2022 -->
+<!-- https://github.com/ChristopherTopalian -->
+<!-- Topalian_Game_Engine_Camera_Stays_018.html -->
+<!-- Camera Stays Static -->
+
+<!--
+Controls:
+W is up,
+S is Down,
+A is Left,
+D is Right
+
+Speed:
+~ 1 2 3 4 5 for Speed Setting
+Hold Shift to Boost Speed
+
+Mouse Position:
+Click the left mouse button to get the X and Y coordinates of any place on the screen
+
+Level Change:
+Numpad 1, 2, 3, 4 to change levels
+or
+Left Click the Level Buttons
+
+Audio:
+Letter V to Start Song
+Letter B to Stop Song
+or
+Left Click the Play Song Button
+Left Click the Stop Song Button
+-->
+
+<!-- https://github.com/ChristopherTopalian/Topalian-Game-Engine -->
+
+<html>
+<head>
+<title> Topalian Game Engine Camera Stays 018 </title>
+<style>
+
+body
+{
+    height: 100%;
+
+    /* scroll bars hidden */
+    overflow: hidden;
+}
+
+audio
+{
+    display: none;
+}
+
+#thePlayer
+{
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    padding: 4px;
+    z-index: 5;
+    border-radius: 8px;
+    background: rgb(73, 100, 150);
+    font-family: tahoma;
+    font-size: 13px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    word-wrap: break-word;
+    text-align: center;
+}
+
+#theBackground
+{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+    align-content: center;
+
+    background-image: url("https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/stars-nice-edited_orig.png");
+}
+
+.boxStyle001
+{
+    position: absolute;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    z-index: 4;
+    border-style: solid;
+    border-width: 3px;
+    border-color: rgb(170, 170, 170);
+    background: rgb(0, 0, 0);
+    font-family: tahoma;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.boxStyle002
+{
+    position: absolute;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    z-index: 4;
+    border-style: solid;
+    border-width: 3px;
+    border-color: rgb(170, 170, 170);
+    background: rgb(85, 85, 85);
+    font-family: tahoma;
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.levelButtonsFlexStyle
+{
+    position: absolute;
+    left: 200px;
+    top: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+.levelButtonStyle
+{
+    margin: 1px;
+    padding: 9px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(100, 100, 100);
+    border-radius: 3px;
+    background-color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-family: arial;
+    font-size: 14.5px;
+    font-weight: bold;
+    color: rgb(247, 247, 247);
+    text-indent: 0px;
+    text-align: center;
+    line-height: 0px;
+    display: inline-block;
+}
+
+.levelButtonStyle:hover
+{
+    border-color: rgb(255, 255, 255);
+    background: rgb(0, 0, 0);
+}
+
+.levelButtonStyle:active
+{
+    position: relative;
+    top: 1px;
+    border-color: rgb(255, 255, 0);
+}
+
+/* instructions menu on the top left */
+.instructionsDetailsStyle
+{
+    position: absolute;
+    top: 1;
+    left: 1;
+    max-width: 300px;
+    color: rgb(255, 255, 255);
+    z-index: 998;
+    padding-left: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(170, 170, 170);
+    border-radius: 4px;
+    background: rgb(0, 0, 0);
+}
+
+#instructions
+{
+    padding-left: 4px;
+    padding-right: 8px;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    font-family: tahoma;
+    font-size: 17px;
+    color: rgb(255, 255, 255);
+    line-height: 18px;
+    word-wrap: break-word;
+}
+
+/* menu on the top right */
+.infoStyle
+{
+    position: absolute;
+    top: 1;
+    right: 1;
+    max-width: 100px;
+    z-index: 998;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-style: solid;
+    border-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    background: rgb(0, 0, 0);
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    word-wrap: break-word;
+}
+
+.dedicationStyle
+{
+    position: absolute;
+    left: 700px;
+    top: 5px;
+    width: 500px;
+    height: 400px;
+    z-index: 5;
+    font-family: arial;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    word-wrap: break-word;
+}
+
+.textStyle001
+{
+    padding-left: 4px;
+    padding-right: 8px;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    font-family: tahoma;
+    font-size: 17px;
+    color: rgb(255, 255, 255);
+    line-height: 18px;
+    word-wrap: break-word;
+}
+
+.textStyle002
+{
+    padding-left: 4px;
+    padding-right: 8px;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    font-family: arial;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    line-height: 18px;
+    word-wrap: break-word;
+}
+
+</style>
+</head>
+
+<body onload = "whenLoaded();">
+
+<!-- sound files -->
+<!-- if no internet resource is found, it instead uses the local file -->
+<audio id = "songActionStrike" controls preload = "auto" loop>
+    <source src = "https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/action_strike.mp3">
+    <source src = "songs\Action Strike.mp3" type = "audio/mpeg">
+</audio>
+
+<audio id = "sfxBlip001Id" controls preload = "auto">
+    <source src = "https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/sfx_blip_001.mp4">
+    <source src = "sfx\sfx_blip_001.mp4" type = "video/mp4">
+</audio>
+
+<audio id = "sfxCrystalBell001Id" controls preload = "auto">
+    <source src = "https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/sfx_crystal_bell_001.mp4" type = "video/mp4">
+    <source src = "sfx\sfx_crystal_bell_001.mp4" type = "video/mp4">
+</audio>
+
+<audio id = "sfxZap001Id" controls preload = "auto">
+    <source src = "https://collegeofscripting.weebly.com/uploads/6/4/4/8/64482293/sfx_zap_001.mp4" type = "video/mp4">
+    <source src = "sfx\sfx_zap_001.mp4" type = "video/mp4">
+ </audio>
+
+<!-- info -->
+<details class = "instructionsDetailsStyle">
+<summary></summary>
+<!-- instructions -->
+<div id = "instructions">
+W is up, S is down, <br>
+A is left, D is Right <br>
+~ 1 2 3 4 5 6 7 8 9 0 for speed <br>
+Hold Shift to Boost Speed <br>
+Letter V to Start Song <br>
+Letter B to Stop Song <br>
+Numpad 1, 2, 3, 4 for Level Change
+</div>
+</details>
+
+<div id = "thePlayer" class = "box"> WASD<br>To Move </div>
+
+<div id = "theBackground" class = "box"></div>
+
+<div class = "levelButtonsFlexStyle">
+<button onclick = "level('objectsLevel001');" class = "levelButtonStyle"> Level 1 </button>
+
+<button onclick = "level('objectsLevel002');" class = "levelButtonStyle"> Level 2 </button>
+
+<button onclick = "level('objectsLevel003');" class = "levelButtonStyle"> Level 3 </button>
+
+<button onclick = "level('objectsLevel004');" class = "levelButtonStyle"> Level 4 </button>
+</div>
+
+<details class = "infoStyle" open>
+<summary></summary>
+<button onclick = "audioPlay('songActionStrike', 0.5);" class = "levelButtonStyle"> Play Song </button>
+
+<button onclick = "audioStop('songActionStrike');" class = "levelButtonStyle"> Stop Song </button>
+</details>
+
+<!-- dedication -->
+<div id = "theDedication" class = "dedicationStyle">
+Dedicated to God the Father<br>
+TOPALIAN GAME ENGINE<br>
+<a href = "https://github.com/ChristopherTopalian" target = "_blank" class = "textStyle002">https://github.com/ChristopherTopalian</a>
+</div>
+
+<script>
+
+let collisionColor001 = "rgb(128, 128, 128)";
+
+let collisionColor002 = "rgb(170, 170, 170)";
+
+let objectsLevel001 = [
+{
+    name: "box001",
+    positionType: "absolute",
+    x: 300,
+    y: 250,
+    width: 70,
+    height: 70,
+    id: "box001",
+    text: "box001",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+{
+    name: "box002",
+    positionType: "absolute",
+    x: 500,
+    y: 250,
+    width: 70,
+    height: 70,
+    id: "box002",
+    text: "box002",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+{
+    name: "box003",
+    positionType: "absolute",
+    x: 700,
+    y: 250,
+    width: 70,
+    height: 70,
+    id: "box003",
+    text: "box003",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+}
+];
+
+let objectsLevel002 = [
+{
+    name: "boxCollideTop",
+    positionType: "absolute",
+    x: 200,
+    y: 250,
+    width: 70,
+    height: 70,
+    id: "boxCollideTop",
+    text: "box\nCollide\nTop",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+{
+    name: "boxCollideBottom",
+    positionType: "absolute",
+    x: 400,
+    y: 250,
+    width: 70,
+    height: 70,
+    id: "boxCollideBottom",
+    text: "box\nCollide\nBottom",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+{
+    name: "boxCollideLeft",
+    positionType: "absolute",
+    x: 600,
+    y: 250,
+    width: 70,
+    height: 70,
+    id: "boxCollideLeft",
+    text: "box\nCollide\nLeft",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+{
+    name: "boxCollideRight",
+    positionType: "absolute",
+    x: 800,
+    y: 250,
+    width: 70,
+    height: 70,
+    id: "boxCollideRight",
+    text: "box\nCollide\nRight",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+];
+
+let objectsLevel003 = [
+{
+    name: "box004",
+    positionType: "absolute",
+    x: 300,
+    y: 150,
+    width: 70,
+    height: 70,
+    id: "box004",
+    text: "box004",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+{
+    name: "box005",
+    positionType: "absolute",
+    x: 500,
+    y: 150,
+    width: 70,
+    height: 70,
+    id: "box005",
+    text: "box005",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+{
+    name: "box006",
+    positionType: "absolute",
+    x: 700,
+    y: 150,
+    width: 70,
+    height: 70,
+    id: "box006",
+    text: "box006",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+];
+
+let objectsLevel004 = [
+{
+    name: "box007",
+    positionType: "absolute",
+    x: 500,
+    y: 100,
+    width: 70,
+    height: 70,
+    id: "box007",
+    text: "box007",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+{
+    name: "box008",
+    positionType: "absolute",
+    x: 500,
+    y: 300,
+    width: 70,
+    height: 70,
+    id: "box008",
+    text: "box008",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+{
+    name: "box009",
+    positionType: "absolute",
+    x: 500,
+    y: 500,
+    width: 70,
+    height: 70,
+    id: "box009",
+    text: "box009",
+    kind: "box",
+    type: "div",
+    styleName: "boxStyle001"
+},
+];
+
+// create the objects on the screen
+function objectsToScreen(whichArray)
+{
+    whichArray = eval(whichArray);
+
+    for (let x = 0; x < whichArray.length; x++)
+    {
+        let theElement = document.createElement(whichArray[x].type);
+        theElement.style.position = whichArray[x].positionType;
+        theElement.style.left = whichArray[x].x + "px";
+        theElement.style.top = whichArray[x].y + "px";
+        theElement.style.width = whichArray[x].width + "px";
+        theElement.style.height = whichArray[x].height + "px";
+        theElement.style.display = "block";
+        theElement.id = whichArray[x].id;
+        theElement.innerHTML = whichArray[x].text;
+        theElement.title = whichArray[x].name;
+        theElement.className = whichArray[x].styleName;
+        document.body.append(theElement);
+    }
+}
+
+function erase(whichClass)
+{
+    whichClass = "." + whichClass;
+
+    let theElements = document.querySelectorAll(whichClass);
+
+    for (let x = 0; x < theElements.length; x++)
+    {
+        theElements[x].remove();
+    }
+}
+
+function audioPlay(whichAudioId, theVolume)
+{
+    let theAudio = document.getElementById(whichAudioId);
+
+    theAudio.play();
+
+    theAudio.volume = theVolume;
+}
+
+function audioStop(whichAudioId)
+{
+    let theAudio = document.getElementById(whichAudioId);
+
+    theAudio.pause();
+}
+
+// Keyboard Letter Codes Being Pressed
+let keyboard = { };
+
+keyboard.UP = 87;          // 87 is w, 38 is up arrow
+keyboard.DOWN = 83;   // 83 is s, 40 is down arrow
+keyboard.LEFT = 65;     // 65 is a, 37 is left arrow
+keyboard.RIGHT = 68;   // 68 is d, 39 is right arrow
+keyboard.SHIFT = 16;   // Shift Button
+
+// Player's start position, speedMultiplier, id, and color
+let ourPlayer =
+{
+    x: 100,
+    y: 300,
+    speedMultiplier: 2,
+    playerId: document.getElementById("thePlayer"),
+    playerColor: "rgb(73, 100, 150)"
+};
+
+function level(whichLevel)
+{
+    audioPlay("sfxCrystalBell001Id", 1.0);
+
+    whichLevel = eval(whichLevel);
+
+    erase("boxStyle001");
+
+    objectsToScreen(whichLevel);
+}
+
+function theControls(e)
+{
+    if (e.keyCode == 86) // Press Letter v
+    {
+        ourPlayer.playerId.innerHTML = "Song Playing";
+
+        audioPlay("songActionStrike", 0.5);
+    }
+
+    if (e.keyCode == 66) // Press Letter b
+    {
+        ourPlayer.playerId.innerHTML = "Song Stopped";
+
+        audioStop("songActionStrike");
+    }
+    if (e.keyCode == 27) // Press Esc
+    {
+        audioStop("songActionStrike");
+
+        document.getElementById("thePlayer").innerHTML = "Song Stopped";
+    }
+
+    // SPEED
+    if (e.keyCode == 192) // tilda ~
+    {
+        ourPlayer.speedMultiplier = 0.5;
+
+        ourPlayer.playerId.innerHTML = "<br>Speed Slow";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML=""; }, 5000);
+    }
+
+    if (e.keyCode == 49) // number 1
+    {
+        ourPlayer.speedMultiplier = 1;
+
+        ourPlayer.playerId.innerHTML = "<br>Speed 1";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 5000);
+    }
+    if (e.keyCode == 50) // number 2
+    {
+        ourPlayer.speedMultiplier = 2;
+
+        ourPlayer.playerId.innerHTML = "<br>Speed 2";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 5000);
+    }
+    if (e.keyCode == 51) // number 3
+    {
+        ourPlayer.speedMultiplier = 5;
+
+        ourPlayer.playerId.innerHTML = "<br>Speed 5";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 5000);
+    }
+    if (e.keyCode == 52) // number 4
+    {
+        ourPlayer.speedMultiplier = 10;
+
+        ourPlayer.playerId.innerHTML = "<br>Speed 10";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 5000);
+    }
+    if (e.keyCode == 53) // number 5
+    {
+        ourPlayer.speedMultiplier = 15;
+
+        ourPlayer.playerId.innerHTML = "<br>Speed 15";
+
+        setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 5000);
+    }
+
+    // choose a Level to load using the Numpad numbers
+    if (e.keyCode == 97) // numpad 1
+    {
+        audioPlay("sfxCrystalBell001Id", 1.0);
+
+        erase("boxStyle001");
+
+        objectsToScreen("objectsLevel001");
+    }
+
+    if (e.keyCode == 98) // numpad 2
+    {
+        audioPlay("sfxCrystalBell001Id", 1.0);
+
+        erase("boxStyle001");
+
+        objectsToScreen("objectsLevel002");
+    }
+
+    if (e.keyCode == 99) // numpad 3
+    {
+        audioPlay("sfxCrystalBell001Id", 1.0);
+
+        erase("boxStyle001");
+
+        objectsToScreen("objectsLevel003");
+    }
+
+    if (e.keyCode == 100) // numpad 4
+    {
+        audioPlay("sfxCrystalBell001Id", 1.0);
+
+        erase("boxStyle001");
+
+        objectsToScreen("objectsLevel004");
+    }
+
+    // find out which key was pressed
+    let theKeyCode = e.keyCode || e.which;
+    keyboard[theKeyCode] = e.type == 'keydown';
+}
+
+// Character Movement
+function movePlayer(theX, theY)
+{
+    ourPlayer.x += (theX || 0) * ourPlayer.speedMultiplier;
+
+    ourPlayer.y += (theY || 0) * ourPlayer.speedMultiplier;
+
+    ourPlayer.playerId.style.left = ourPlayer.x + 'px';
+
+    ourPlayer.playerId.style.top = ourPlayer.y + 'px';
+}
+
+// Player Controls
+function playerMotion()
+{
+    if (keyboard[keyboard.LEFT])
+    {
+        movePlayer(-1, 0);
+    }
+    if (keyboard[keyboard.RIGHT])
+    {
+        movePlayer(1, 0);
+    }
+    if (keyboard[keyboard.UP])
+    {
+        movePlayer(0, -1);
+    }
+    if (keyboard[keyboard.DOWN])
+    {
+        movePlayer(0, 1);
+    }
+    if (keyboard[keyboard.LEFT] && keyboard[keyboard.SHIFT])
+    {
+        movePlayer(-2, 0);
+    }
+    if (keyboard[keyboard.RIGHT] && keyboard[keyboard.SHIFT])
+    {
+        movePlayer(2, 0);
+    }
+    if (keyboard[keyboard.UP] && keyboard[keyboard.SHIFT])
+    {
+        movePlayer(0, -2);
+    }
+    if (keyboard[keyboard.DOWN] && keyboard[keyboard.SHIFT])
+    {
+        movePlayer(0, 2);
+    }
+}
+
+function getAllInfo(theId)
+{
+    theId = document.getElementById(theId);
+
+    let theRect = theId.getBoundingClientRect();
+
+    return theRect;
+}
+
+function getPos(theId)
+{
+    theId = document.getElementById(theId);
+
+    let theRect = theId.getBoundingClientRect();
+
+    let posXY = {
+        x: parseInt(theRect.x) + parseInt(theRect.width) / 2,
+        y: parseInt(theRect.y) + parseInt(theRect.height) / 2
+    };
+
+    return posXY;
+}
+
+function getSize(theId)
+{
+    theId = document.getElementById(theId);
+
+    let theRect = theId.getBoundingClientRect();
+
+    let sizeXY = {
+        x: parseInt(theRect.width),
+        y: parseInt(theRect.height)
+    };
+
+    return sizeXY;
+}
+
+// detects collisions from any side
+function collisionAny(obj1, obj2)
+{
+    // if objects exist
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        // collision of any part of obj1 and obj2
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        if (collided == true)
+        {
+            if (obj2 == "box001")
+            {
+                audioPlay("sfxBlip001Id", 1.0);
+
+                // change the text of the player
+                ourPlayer.playerId.innerHTML = obj2 + " Hit";
+
+                // change the color of the player
+                ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+                // change the color of the object
+                document.getElementById("box001").style.backgroundColor = collisionColor002;
+
+                // change the color of the player back to original
+                setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+                // change the text of the player to an empty string
+                setTimeout(function(){
+                    document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+                // change the color of the object back to original
+                setTimeout(function(){
+                    document.getElementById("box001").style.backgroundColor = "rgb(0, 0, 0)";
+                }, 500);
+            }
+
+            if (obj2 == "box002")
+            {
+                audioPlay("sfxBlip001Id", 1.0);
+
+                // change the text of the player
+                ourPlayer.playerId.innerHTML = obj2 + " Hit";
+
+                // change the color of the player
+                ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+                // change the color of the object
+                document.getElementById("box002").style.backgroundColor = collisionColor002;
+
+                // change the text of the player to an empty string
+                setTimeout(function(){
+                    document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+                // change the color of the player back to original
+                setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+                // change the color of the player back to original
+                setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+                // change the color of the object back to original
+                setTimeout(function(){
+                    document.getElementById("box002").style.backgroundColor = "rgb(0, 0, 0)";
+                }, 500);
+            }
+
+            if (obj2 == "box003")
+            {
+                audioPlay("sfxBlip001Id", 1.0);
+
+                // change the text of the player
+                ourPlayer.playerId.innerHTML = obj2 + " Hit";
+
+                // change the color of the player
+                ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+                // change the color of the object
+                document.getElementById("box003").style.backgroundColor = collisionColor002;
+
+                // change the text of the player to an empty string
+                setTimeout(function(){
+                    document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+                // change the color of the player back to original
+                setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+                // change the color of the object back to original
+                setTimeout(function(){
+                    document.getElementById("box003").style.backgroundColor = "rgb(0, 0, 0)";
+                }, 500);
+            }
+        }
+    }
+}
+
+// detects collisions from top side only
+function collisionTopSide(obj1, obj2)
+{
+    // if objects exist
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        let collidedY1 = theRect1.top > theRect2.top || theRect1.bottom > theRect2.bottom;
+
+        if (collided == true && collidedY1 != true)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "COLLIDED WITH TOP";
+
+            // change the color of the object
+            document.getElementById("boxCollideTop").style.backgroundColor = collisionColor002;
+
+            // change the color of the object back to original
+            setTimeout(function(){ document.getElementById("boxCollideTop").style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+        }
+    }
+}
+
+// detects collisions from bottom side only
+function collisionBottomSide(obj1, obj2)
+{
+    // if objects exist
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        let collidedY1 = theRect1.top < theRect2.top || theRect1.bottom < theRect2.bottom;
+
+        if (collided == true && collidedY1 != true)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the color of the object
+            document.getElementById("boxCollideBottom").style.backgroundColor = collisionColor002;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "COLLIDED WITH BOTTOM";
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){ document.getElementById("boxCollideBottom").style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+        }
+    }
+}
+
+// detects collisions from left side only
+function collisionLeftSide(obj1, obj2)
+{
+    // if objects exist
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        let collidedY1 = theRect1.left > theRect2.left || theRect1.right > theRect2.right;
+
+        if (collided == true && collidedY1 != true)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the color of the object
+            document.getElementById("boxCollideLeft").style.backgroundColor = collisionColor002;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "COLLIDED WITH LEFT";
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // after x seconds, change player object back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("boxCollideLeft").style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+        }
+    }
+}
+
+// detects collisions from right side only
+function collisionRightSide(obj1, obj2)
+{
+    // if objects exist
+    if (document.getElementById(obj1) && document.getElementById(obj2))
+    {
+        let theRect1 = document.getElementById(obj1).getBoundingClientRect();
+
+        let theRect2 = document.getElementById(obj2).getBoundingClientRect();
+
+        let collided = !(theRect1.right < theRect2.left ||
+        theRect1.left > theRect2.right ||
+        theRect1.bottom < theRect2.top ||
+        theRect1.top > theRect2.bottom);
+
+        let collidedY1 = theRect1.left < theRect2.left || theRect1.right < theRect2.right;
+
+        if (collided == true && collidedY1 != true)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the color of the object
+            document.getElementById("boxCollideRight").style.backgroundColor = collisionColor002;
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "COLLIDED WITH RIGHT";
+
+            // change the text of the player to an empty string
+            setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 500);
+
+            // change the color of the player back to original
+            setTimeout(function(){ document.getElementById("thePlayer").style.backgroundColor = ourPlayer.playerColor; }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){ document.getElementById("boxCollideRight").style.backgroundColor = "rgb(0, 0, 0)"; }, 500);
+        }
+    }
+}
+
+function wasObjectLineCrossed()
+{
+    // if objects exist
+    if (document.getElementById("thePlayer") &&
+        document.getElementById("box004"))
+    {
+        // if the player is located at a certain x position, compared with box004
+        if (getPos("thePlayer").x > getPos("box004").x - 20 &&
+            getPos("thePlayer").x < getPos("box004").x + 20)
+        {
+            //document.getElementById("sfxBlip001Id").play();
+
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "box004 <br>X<br>Crossed";
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the color of the object
+            document.getElementById("box004").style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            // change the color of the player back to original
+            setTimeout(function(){
+                document.getElementById("thePlayer").innerHTML = "";
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(73, 100, 150)";
+            }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){
+                document.getElementById("box004").style.backgroundColor = "rgb(0, 0, 0)";
+            }, 500);
+        }
+    }
+
+    // if objects exist
+    if (document.getElementById("thePlayer") &&
+        document.getElementById("box005"))
+    {
+        // if the player is located at a certain x position, compared with box005
+        if (getPos("thePlayer").x > getPos("box005").x - 20 &&
+            getPos("thePlayer").x < getPos("box005").x + 20)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "box005<br>X<br>Crossed";
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the color of the object
+            document.getElementById("box005").style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            // change the color of the player back to original
+            setTimeout(function(){
+                document.getElementById("thePlayer").innerHTML = "";
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(73, 100, 150)";
+            }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){
+                document.getElementById("box005").style.backgroundColor = "rgb(0, 0, 0)";
+            }, 500);
+        }
+    }
+
+    // if objects exist
+    if (document.getElementById("thePlayer") &&
+        document.getElementById("box006"))
+    {
+        // if the player is located at a certain x position, compared with box006
+        if (getPos("thePlayer").x > getPos("box006").x - 20 &&
+            getPos("thePlayer").x < getPos("box006").x + 20)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "box006<br>X<br>Crossed";
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the color of the object
+            document.getElementById("box006").style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            // change the color of the player back to original
+            setTimeout(function(){
+                document.getElementById("thePlayer").innerHTML = "";
+                ourPlayer.playerId.style.backgroundColor = "rgb(73, 100, 150)";
+            }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){
+                document.getElementById("box006").style.backgroundColor = "rgb(0, 0, 0)";
+            }, 500);
+        }
+    }
+
+    // if objects exist
+    if (document.getElementById("thePlayer") &&
+        document.getElementById("box007"))
+    {
+        // if the player is located at a certain y position, compared with box007
+        if (getPos("thePlayer").y > getPos("box007").y - 20 &&
+            getPos("thePlayer").y < getPos("box007").y + 20)
+        {
+            // play sound effect
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "box007 <br>Y<br>Crossed";
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the color of the object
+            document.getElementById("box007").style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            // change the color of the player back to original
+            setTimeout(function(){
+                document.getElementById("thePlayer").innerHTML = "";
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(73, 100, 150)";
+            }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){
+                document.getElementById("box007").style.backgroundColor = "rgb(0, 0, 0)";
+            }, 500);
+        }
+    }
+
+    // if objects exist
+    if (document.getElementById("thePlayer") &&
+        document.getElementById("box008"))
+    {
+        // if the player is located at a certain y position, compared with box008
+        if (getPos("thePlayer").y > getPos("box008").y - 20 &&
+            getPos("thePlayer").y < getPos("box008").y + 20)
+        {
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "box008 <br>Y<br>Crossed";
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the color of the object
+            document.getElementById("box008").style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            // change the color of the player back to original
+            setTimeout(function(){
+                document.getElementById("thePlayer").innerHTML = "";
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(73, 100, 150)";
+            }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){
+                document.getElementById("box008").style.backgroundColor = "rgb(0, 0, 0)";
+            }, 500);
+        }
+    }
+
+    // if objects exist
+    if (document.getElementById("thePlayer") &&
+        document.getElementById("box009"))
+    {
+        // if the player is located at a certain y position, compared with box009
+        if (getPos("thePlayer").y > getPos("box009").y - 20 &&
+            getPos("thePlayer").y < getPos("box009").y + 20)
+        {
+            // play sound effect
+            audioPlay("sfxBlip001Id", 1.0);
+
+            // change the text of the player
+            document.getElementById("thePlayer").innerHTML = "box009 <br>Y<br>Crossed";
+
+            // change the color of the player
+            ourPlayer.playerId.style.backgroundColor = collisionColor001;
+
+            // change the color of the object
+            document.getElementById("box009").style.backgroundColor = collisionColor002;
+
+            // change the text of the player to an empty string
+            // change the color of the player back to original
+            setTimeout(function(){
+                document.getElementById("thePlayer").innerHTML = "";
+                document.getElementById("thePlayer").style.backgroundColor = "rgb(73, 100, 150)";
+            }, 500);
+
+            // change the color of the object back to original
+            setTimeout(function(){
+                document.getElementById("box009").style.backgroundColor = "rgb(0, 0, 0)";
+            }, 500);
+        }
+    }
+}
+
+let lineFlag001 = 0;
+let lineFlag002 = 0;
+
+function wasLineCrossed()
+{
+    // if player object exists
+    if (document.getElementById("thePlayer"))
+    {
+        /*
+        // if the player is located at a certain x position
+        if (getPos("thePlayer").x > 200 - 20 &&
+            getPos("thePlayer").x < 200 + 20)
+        {
+            if (lineFlag001 == 0)   // allows one time execution
+            {
+                // document.getElementById("songActionStrike").play();
+
+                audioPlay("songActionStrike", 0.5);
+
+                // change the text of the player
+                document.getElementById("thePlayer").innerHTML = "SONG PLAYING";
+
+                // change the text of the player to an empty string
+                setTimeout(function(){ document.getElementById("thePlayer").innerHTML = ""; }, 3000);
+
+                lineFlag001 = 1;
+            }
+        }
+        */
+    }
+}
+
+function mousePos()
+{
+    let mouseX = event.pageX;
+
+    let mouseY = event.pageY;
+
+    let mousePos = "Mouse" + "<br>" + "X " + mouseX + "<br>" + "Y " + mouseY;
+
+    console.log(mousePos);
+
+    ourPlayer.playerId.innerHTML = mousePos;
+}
+
+function whenLoaded()
+{
+    objectsToScreen("objectsLevel001");
+
+    window.addEventListener("click", mousePos, false);
+
+    window.addEventListener("keydown", theControls, false);
+
+    window.addEventListener("keyup", theControls, false);
+
+    // console.log(JSON.stringify(getAllInfo('box001')));
+}
+
+function updateWorld()
+{
+    playerMotion();
+
+    collisionAny("thePlayer", "box001");
+    collisionAny("thePlayer", "box002");
+    collisionAny("thePlayer", "box003");
+
+    collisionTopSide("thePlayer", "boxCollideTop");
+    collisionBottomSide("thePlayer", "boxCollideBottom");
+    collisionLeftSide("thePlayer", "boxCollideLeft");
+    collisionRightSide("thePlayer", "boxCollideRight");
+
+    wasObjectLineCrossed();
+
+    wasLineCrossed();
+
+    requestAnimationFrame(updateWorld);
+}
+
+// our game loop
+updateWorld();
+
+// start Player at ourPlayer.x and ourPlayer.y
+movePlayer();
+
+</script>
+
+</body>
+</html>
