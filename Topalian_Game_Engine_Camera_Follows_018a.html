@@ -1671,7 +1671,7 @@ function makeTilesOneRow(theTexture, howManyX, xPos, yPos, sizeX, sizeY)
 // make Tiles by specifying the amount of rows and columns for a Background
 function makeTiles(theTexture, rows, columns, xPos, yPos, sizeX, sizeY)
 {
-    let startingPosition = xPos;
+    let startingXPosition = xPos;
 
     // rows
     for (let j = 0; j < rows; j++)
@@ -1701,7 +1701,7 @@ function makeTiles(theTexture, rows, columns, xPos, yPos, sizeX, sizeY)
             makeTile.style.background = "rgb(0, 0, 0)";
             document.body.append(makeTile);
         }
-        xPos = startingPosition;
+        xPos = startingXPosition;
         
         yPos += sizeY;
     }
